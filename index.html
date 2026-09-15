@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diamantene Hochzeit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Newsreader:ital,wght@0,300;0,400;0,600;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FARB- UND SCHRIFT-SYSTEM
+   ============================================================ */
+:root{
+  font-variant-numeric:tabular-nums;
+  --papier:        #eceadd;   /* Leinen mit einem Hauch Grün   */
+  --papier-tief:   #d3d1c0;   /* Schatten auf dem Papier       */
+  --tinte:         #242a20;   /* fast Schwarz, grünstichig     */
+  --tinte-leise:   #5b6152;   /* Nebentext                     */
+  --sepia:         #8a7346;   /* Holz der Hochbeete            */
+  --patina:        #4a6338;   /* Blattgrün, tief               */
+  --diamant:       #a6bfd2;   /* Himmel über dem Garten        */
+  --label:         #6b5733;   /* Kleintext: dunkler als Sepia,
+                                 damit 4,5:1 Kontrast erreicht wird */
+  /* Abstandsskala – alles Weiße folgt diesen Werten */
+  --s1: 8px; --s2: 16px; --s3: 26px; --s4: 44px; --s5: 72px; --s6: 112px;
+  --serif-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --serif-text:    "Newsreader", Georgia, "Times New Roman", serif;
+  --stempel:       "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;hyphens:auto;-webkit-hyphens:auto}
+h1,h2,h3,.namen,.station-titel,.jubel-titel,.ansicht-kopf h2{text-wrap:balance;hyphens:manual}
+p,li,.gb-text{text-wrap:pretty;overflow-wrap:break-word}
+html,body{max-width:100%;overflow-x:hidden}
+body{
+  margin:0;
+  background:var(--papier);
+  background-image:
+    radial-gradient(ellipse at 20% 4%, rgba(138,115,70,.1), transparent 60%),
+    radial-gradient(ellipse at 86% 78%, rgba(74,99,56,.11), transparent 55%);
+  background-attachment:fixed;
+  color:var(--tinte);
+  font-family:var(--serif-text);
+  font-size:18px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+/* florales Bild als leiser Grund der ganzen Seite */
+.mit-bild body::after, html.mit-bild body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background-image:var(--bild,none);background-size:cover;background-position:center;
+  background-attachment:fixed;
+  filter:saturate(.42) brightness(1.07);opacity:.1;
+}
+
+/* Papierkorn über alles */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+img{max-width:100%;display:block}
+:focus-visible{outline:2.5px solid var(--patina);outline-offset:3px;border-radius:4px}
+
+/* ============================================================
+   PASSWORT-SCHLEUSE
+   ============================================================ */
+#schleuse{
+  position:fixed;inset:0;z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  background:var(--papier);
+}
+/* florales Bild, falls hinterlegt */
+#schleuse::before{
+  content:"";position:absolute;inset:0;
+  background-image:var(--bild,none);background-size:cover;background-position:center;
+  filter:saturate(.82) brightness(1.0) contrast(1.02);opacity:.97;
+}
+#schleuse::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(rgba(30,38,26,.34), rgba(30,38,26,.52)),
+    radial-gradient(ellipse at 50% 44%, transparent 26%, rgba(22,30,20,.58) 100%);
+}
+#schleuse[hidden]{display:none}
+
+.schleuse-karte{
+  position:relative;z-index:2;max-width:440px;width:100%;text-align:center;
+  padding:52px 40px 40px;
+  background:rgba(238,237,228,.96);
+  backdrop-filter:blur(3px);
+  border:1px solid rgba(213,205,189,.9);border-radius:16px;
+  outline:1px solid rgba(141,117,72,.32);outline-offset:11px;
+  box-shadow:0 34px 80px -30px rgba(18,26,16,.72);
+}
+.ziereck{
+  position:absolute;width:8px;height:8px;transform:rotate(45deg);
+  background:var(--sepia);opacity:.7;
+}
+.ziereck.lo{top:-14px;left:-14px}
+.ziereck.ro{top:-13px;right:-13px}
+.ziereck.lu{bottom:-13px;left:-13px}
+.ziereck.ru{bottom:-13px;right:-13px}
+
+.schleuse-stein{
+  width:15px;height:15px;margin:0 auto 22px;transform:rotate(45deg);
+  background:linear-gradient(135deg,#fff,#dbe3e7 45%,#8fa2ac);
+  box-shadow:0 0 18px rgba(179,194,201,.7);
+  animation:glitzern 3.6s ease-in-out infinite;
+}
+.schleuse-zahl{
+  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--label);margin-bottom:14px;
+}
+.schleuse-karte h1{
+  font-family:var(--serif-display);
+  font-weight:300;font-size:clamp(32px,8vw,44px);line-height:1.05;
+  margin:0 0 16px;letter-spacing:-.01em;
+}
+.schleuse-karte h1 em{
+  display:block;font-size:.42em;font-style:italic;color:var(--tinte-leise);
+  margin:.12em 0;font-weight:300;
+}
+.schleuse-datum{
+  font-family:var(--stempel);font-size:13px;letter-spacing:.02em;
+  color:var(--tinte-leise);
+}
+.schleuse-linie{
+  border:0;height:1px;width:86px;margin:26px auto;
+  background:linear-gradient(to right,transparent,var(--sepia),transparent);opacity:.55;
+}
+.schleuse-hinweis{
+  font-family:var(--stempel);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--label);
+  margin-bottom:10px;
+}
+.schleuse-karte p{
+  color:var(--tinte-leise);font-size:17px;font-style:italic;margin:0 0 22px;
+}
+.feld{
+  width:100%;padding:11px 6px;font-family:var(--stempel);font-size:16px;
+  letter-spacing:.08em;text-align:center;
+  background:transparent;color:var(--tinte);
+  border:0;border-bottom:1.5px solid var(--papier-tief);border-radius:0;
+  transition:border-color .25s;
+}
+.feld:focus{outline:none;border-bottom-color:var(--sepia)}
+.feld::placeholder{color:#a8977f}
+.knopf{
+  margin-top:24px;width:100%;padding:14px 18px;cursor:pointer;
+  font-family:var(--stempel);font-weight:600;font-size:13px;letter-spacing:.1em;
+  background:var(--tinte);color:#f0efe4;border:none;border-radius:999px;
+  box-shadow:0 10px 24px -12px rgba(18,26,16,.65);
+  transition:filter .25s,letter-spacing .25s,box-shadow .25s;
+}
+.knopf:hover{background:var(--patina);letter-spacing:.14em;box-shadow:0 14px 30px -12px rgba(20,18,15,.7)}
+.fehler{min-height:22px;margin-top:14px;font-size:15px;font-style:italic;color:#8a3a2c}
+
+/* ============================================================
+   KOPF
+   ============================================================ */
+.kopf{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:64px 24px;position:relative;
+}
+.oberzeile{
+  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--label);margin-bottom:22px;
+  max-width:22ch;line-height:1.7;
+}
+.namen{
+  font-family:var(--serif-display);
+  font-weight:300;font-size:clamp(46px,12vw,104px);
+  line-height:.98;margin:0;letter-spacing:-.02em;
+}
+.und{
+  display:block;font-size:.38em;font-style:italic;font-weight:300;
+  color:var(--sepia);margin:.18em 0;
+}
+.datum{
+  font-family:var(--stempel);font-size:14px;letter-spacing:.04em;
+  color:var(--tinte-leise);margin-top:44px;position:relative;padding-top:34px;
+}
+.datum::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:52px;height:1px;background:var(--sepia);opacity:.55;
+}
+.zaehler{
+  margin-top:26px;font-family:var(--serif-display);font-weight:300;
+  font-size:clamp(15px,2.4vw,19px);color:var(--tinte-leise);
+}
+.zaehler b{
+  font-weight:500;color:var(--tinte);
+  font-variant-numeric:tabular-nums;
+  border-bottom:1px solid var(--diamant);
+}
+.hinweis-runter{
+  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.08em;
+  color:var(--label);text-decoration:none;
+}
+.hinweis-runter span{display:block;margin-top:8px;animation:sinken 2.4s ease-in-out infinite}
+@keyframes sinken{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(7px);opacity:1}}
+
+/* ============================================================
+   ZEITSTRAHL
+   ============================================================ */
+.strahl{
+  max-width:780px;margin:0 auto;padding:40px 24px 90px;position:relative;
+}
+/* der Faden */
+.strahl::before{
+  content:"";position:absolute;top:0;bottom:120px;left:50%;width:1px;
+  background:repeating-linear-gradient(to bottom,var(--sepia) 0 7px,transparent 7px 15px);
+  opacity:.5;
+}
+@media (max-width:700px){.strahl::before{left:26px}}
+
+.station{
+  position:relative;margin:0 0 var(--s6);
+  opacity:0;transform:translateY(34px);
+  transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.3,1);
+}
+.station.sichtbar{opacity:1;transform:translateX(var(--schub,0))}
+.station{max-width:100%}
+.jahr{
+  display:inline-block;
+  font-family:var(--stempel);font-size:13px;font-weight:700;
+  letter-spacing:.24em;color:var(--sepia);
+  background:var(--papier);padding:4px 0;position:relative;z-index:2;
+  margin-bottom:26px;
+}
+
+
+/* Fotorahmen mit Ecken – entwickelt sich beim Scrollen */
+.bild-rahmen{
+  position:relative;background:#f6f5ec;padding:var(--rand,14px) var(--rand,14px) 0;
+  border:1px solid rgba(213,205,189,.8);border-radius:16px;
+  box-shadow:0 22px 44px -26px rgba(58,48,32,.55);
+  transform:rotate(var(--rahmen-dreh,-1.1deg));
+  transition:transform .5s ease;
+}
+.bild-rahmen:hover{transform:rotate(0deg) scale(1.012)}
+.bild-flaeche{
+  border-radius:8px;
+  aspect-ratio:var(--verhaeltnis,4/3);width:100%;object-fit:cover;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 11px),
+    linear-gradient(150deg,#c8ccb6,#8f9578 55%,#63684f);
+  filter:sepia(.85) contrast(.8) blur(9px);
+  transition:filter 1.6s ease .15s;
+}
+.station.sichtbar .bild-flaeche{filter:sepia(var(--alterung,.34)) contrast(1) blur(0)}
+.bild-platzhalter{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  color:rgba(255,255,255,.82);font-family:var(--stempel);font-size:13px;
+  font-weight:500;letter-spacing:.06em;padding:20px;text-shadow:0 1px 3px rgba(30,38,26,.5);
+}
+.bildunterschrift{
+  transform:rotate(var(--schild-dreh,0deg));
+  font-family:var(--stempel);font-size:13px;letter-spacing:.01em;
+  color:var(--tinte-leise);padding:11px 2px 13px;text-align:center;
+}
+.ecke{position:absolute;width:26px;height:26px;border:0 solid var(--sepia);opacity:.55}
+.ecke.lo{top:5px;left:5px;border-top-width:2px;border-left-width:2px}
+.ecke.ro{top:5px;right:5px;border-top-width:2px;border-right-width:2px}
+.ecke.lu{bottom:5px;left:5px;border-bottom-width:2px;border-left-width:2px}
+.ecke.ru{bottom:5px;right:5px;border-bottom-width:2px;border-right-width:2px}
+
+.station-text{margin-top:var(--s3);
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s ease .22s, transform .7s cubic-bezier(.2,.7,.3,1) .22s;}
+.station.sichtbar .station-text{opacity:1;transform:none}
+.station-text p{max-width:62ch}
+.station-titel{
+  font-family:var(--serif-display);font-weight:500;
+  font-size:clamp(25px,4.4vw,34px);line-height:1.16;margin:0 0 10px;
+}
+.station-ort{
+  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.06em;
+  color:var(--patina);margin:0 0 14px;
+}
+.station-text p{margin:0 0 14px}
+@media (max-width:700px){
+  .station{padding-left:52px}
+  .bild-rahmen{transform:rotate(-.7deg)}
+}
+
+/* --- Zusatz-Bausteine innerhalb einer Station --- */
+.baustein{margin-top:20px}
+
+.zitat{
+  border-left:2px solid var(--sepia);padding:4px 0 4px 20px;
+  font-family:var(--serif-display);font-style:italic;font-weight:300;
+  font-size:clamp(20px,3.4vw,25px);line-height:1.4;
+}
+.zitat cite{
+  display:block;margin-top:10px;font-family:var(--stempel);font-style:normal;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinte-leise);
+}
+.notiz{
+  background:rgba(247,244,237,.7);border:1px solid rgba(213,205,189,.9);border-radius:16px;padding:18px 20px;
+  font-size:17px;
+}
+.notiz b{
+  display:block;font-family:var(--stempel);font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sepia);margin-bottom:6px;font-weight:700;
+}
+.ortslink{
+  display:inline-block;font-family:var(--stempel);font-size:12px;letter-spacing:.12em;
+  color:var(--patina);text-decoration:none;border-bottom:1px solid var(--patina);
+  padding-bottom:2px;
+}
+audio,video{width:100%;margin-top:4px}
+video{border:1px solid var(--papier-tief);background:#2a201a}
+.film-rahmen{position:relative;aspect-ratio:16/9;margin-top:6px;background:#2a201a;border:1px solid var(--papier-tief)}
+.film-rahmen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Frage zum Aufklappen */
+.frage{background:rgba(247,244,237,.7);border:1px solid rgba(213,205,189,.9);border-radius:16px;padding:18px 20px}
+.frage-text{font-family:var(--serif-display);font-size:20px;font-weight:500;margin:0 0 12px}
+.frage-knopf{
+  font-family:var(--stempel);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:1px solid var(--sepia);color:var(--sepia);border-radius:999px;
+  padding:8px 17px;cursor:pointer;transition:background .2s,color .2s;
+}
+.frage-knopf:hover{background:var(--sepia);color:#f6efe0}
+.antwort{margin-top:13px;font-style:italic;color:var(--tinte-leise)}
+.antwort[hidden]{display:none}
+
+/* Schlusspunkt */
+.diamant-punkt{text-align:center;padding:10px 0 30px}
+.diamant-punkt .stein{
+  width:19px;height:19px;margin:0 auto 20px;transform:rotate(45deg);
+  background:linear-gradient(135deg,#fff,var(--diamant) 45%,#7fa3b4);
+  box-shadow:0 0 26px rgba(169,198,212,.95);
+}
+.diamant-punkt p{
+  font-family:var(--serif-display);font-size:clamp(23px,4.6vw,32px);
+  font-weight:300;font-style:italic;margin:0;
+}
+
+/* ============================================================
+   GÄSTEBUCH
+   ============================================================ */
+.gaestebuch{
+  background:var(--tinte);color:#eee2cd;padding:var(--s5) 24px var(--s5);
+}
+.gb-innen{max-width:700px;margin:0 auto}
+.gb-titel{
+  font-family:var(--serif-display);font-weight:300;
+  font-size:clamp(31px,6.4vw,50px);margin:0 0 8px;text-align:center;
+}
+.gb-unter{
+  text-align:center;color:#a89d86;font-size:17px;margin:0 0 40px;
+}
+.gb-formular{
+  background:rgba(255,255,255,.05);border:1px solid rgba(233,224,205,.18);
+  border-radius:16px;padding:26px;
+}
+.gb-formular label{
+  display:block;font-family:var(--stempel);font-size:13px;font-weight:500;letter-spacing:.02em;color:#a89d86;margin:0 0 6px;
+}
+.gb-feld{
+  width:100%;padding:13px 15px;margin-bottom:16px;border-radius:16px;
+  background:rgba(255,255,255,.07);color:#f4ecdb;
+  border:1px solid rgba(233,224,205,.22);border-radius:0;
+  font-family:var(--serif-text);font-size:17px;
+}
+.gb-feld::placeholder{color:#a89d86}
+textarea.gb-feld{min-height:110px;resize:vertical}
+.gb-knopf{
+  width:100%;padding:13px;cursor:pointer;
+  background:#d7dac6;color:#242a20;border:none;border-radius:999px;
+  font-family:var(--stempel);font-weight:600;font-size:13px;letter-spacing:.06em;
+  transition:filter .2s;
+}
+.gb-knopf:hover{filter:brightness(1.1)}
+.gb-knopf:disabled{opacity:.5;cursor:default}
+.gb-status{min-height:22px;margin-top:12px;font-size:15px;color:#a89d86;text-align:center}
+.gb-liste{margin-top:44px;display:flex;flex-direction:column;gap:20px}
+.gb-eintrag{
+  border-top:1px solid rgba(233,224,205,.2);padding-top:20px;
+  opacity:0;animation:auftauchen .6s ease forwards;
+}
+@keyframes auftauchen{to{opacity:1}}
+.gb-von{
+  font-family:var(--stempel);font-weight:600;font-size:13px;letter-spacing:.02em;color:var(--diamant);margin-bottom:7px;
+}
+.gb-von span{color:#a89d86;margin-left:9px;letter-spacing:.1em}
+.gb-text{margin:0;font-size:17px;line-height:1.6;max-width:62ch}
+.gb-leer{color:#a89d86;font-style:italic;text-align:center;padding:26px 0}
+
+.fuss{
+  text-align:center;padding:34px 24px 44px;
+  font-family:var(--stempel);font-size:13px;letter-spacing:.04em;
+  color:var(--label);
+}
+
+
+
+/* ============================================================
+   NAVIGATION UND WEITERE ANSICHTEN
+   ============================================================ */
+.navi{
+  position:sticky;top:0;z-index:40;display:flex;justify-content:center;gap:6px;
+  padding:12px;background:rgba(236,231,220,.86);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(213,205,189,.7);
+}
+.navi-knopf{
+  font-family:var(--stempel);font-size:14px;font-weight:500;
+  padding:9px 20px;border-radius:999px;cursor:pointer;
+  background:transparent;border:1px solid transparent;color:var(--tinte-leise);
+  transition:background .2s,color .2s;
+}
+.navi-knopf:hover{color:var(--tinte)}
+.navi-knopf.ist-aktiv{background:var(--tinte);color:#f2eee5}
+
+.ansicht{max-width:1000px;margin:0 auto;padding:var(--s4) 20px var(--s5)}
+.ansicht-kopf{text-align:center;margin-bottom:28px}
+.ansicht-kopf h2{
+  font-family:var(--serif-display);font-weight:300;
+  font-size:clamp(30px,6vw,46px);margin:0 0 10px;
+}
+.ansicht-kopf p{color:var(--tinte-leise);font-size:16px;margin:0}
+
+/* Zoombare Bühne */
+.buehne{
+  position:relative;overflow:hidden;touch-action:none;cursor:grab;
+  height:min(70svh,620px);border-radius:16px;
+  background:
+    linear-gradient(rgba(247,244,237,.5),rgba(247,244,237,.5)),
+    repeating-linear-gradient(0deg,rgba(141,117,72,.07) 0 1px,transparent 1px 26px),
+    repeating-linear-gradient(90deg,rgba(141,117,72,.07) 0 1px,transparent 1px 26px);
+  border:1px solid rgba(213,205,189,.9);
+}
+.buehne:active{cursor:grabbing}
+.buehne-inhalt{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+.zoom-knoepfe{
+  position:absolute;right:14px;bottom:14px;display:flex;flex-direction:column;gap:7px;
+}
+.zoom-knoepfe button{
+  width:40px;height:40px;border-radius:16px;cursor:pointer;
+  background:rgba(247,244,237,.94);border:1px solid rgba(213,205,189,.9);
+  color:var(--tinte);font-size:20px;line-height:1;
+  box-shadow:0 6px 16px -8px rgba(20,18,15,.5);
+}
+.zoom-knoepfe button:hover{background:#fff}
+
+.zurueck{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;cursor:pointer;
+  font-family:var(--stempel);font-size:13px;font-weight:500;color:var(--tinte-leise);
+  background:rgba(247,244,237,.8);border:1px solid rgba(213,205,189,.9);
+  border-radius:999px;padding:9px 18px;transition:background .2s,color .2s;
+}
+.zurueck::before{content:"←"}
+.zurueck:hover{background:#fff;color:var(--tinte)}
+.zurueck[hidden]{display:none}
+
+.uebersichten{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:0 24px 56px;
+}
+.uebersicht-knopf{
+  cursor:pointer;font-family:var(--stempel);font-size:14px;font-weight:500;
+  padding:13px 24px;border-radius:999px;color:var(--tinte);
+  background:rgba(247,244,237,.75);border:1px solid rgba(141,117,72,.35);
+  transition:background .2s,transform .2s;
+}
+.uebersicht-knopf:hover{background:#fff;transform:translateY(-2px)}
+
+.sprung{
+  display:inline-flex;align-items:center;gap:7px;margin-top:18px;cursor:pointer;
+  font-family:var(--stempel);font-size:13px;font-weight:500;
+  color:var(--patina);background:transparent;
+  border:1px solid rgba(74,90,72,.45);border-radius:999px;padding:8px 16px;
+  transition:background .2s,color .2s;
+}
+.sprung::after{content:"→"}
+.sprung:hover{background:var(--patina);color:#f2eee5}
+.station:nth-child(even) .sprung{align-self:flex-end}
+
+.baum-person.ist-ziel .baum-kasten{
+  fill:#fff;stroke:var(--patina);stroke-width:2.5;
+}
+@keyframes pochen{0%,100%{opacity:0}50%{opacity:.5}}
+.baum-person.ist-ziel .baum-kasten{animation:pochen 1.6s ease-in-out 3}
+
+/* Stammbaum */
+.baum-person{cursor:pointer}
+.baum-kasten{
+  fill:#f7f4ed;stroke:rgba(213,205,189,.95);stroke-width:1;
+  transition:fill .2s,stroke .2s;
+}
+.baum-person:hover .baum-kasten{fill:#fff;stroke:var(--sepia)}
+.baum-person.ist-gewaehlt .baum-kasten{fill:#fff;stroke:var(--patina);stroke-width:2}
+.baum-kasten--paar{fill:var(--tinte);stroke:var(--tinte)}
+.baum-name{
+  font-family:var(--serif-display);font-size:15px;font-weight:500;
+  fill:var(--tinte);text-anchor:middle;
+}
+.baum-name--hell{fill:#f2eee5}
+.baum-jahr{
+  font-family:var(--stempel);font-size:12px;fill:var(--tinte-leise);text-anchor:middle;
+}
+.baum-jahr--hell{fill:rgba(242,238,229,.72)}
+.baum-linie{stroke:rgba(141,117,72,.5);stroke-width:1.4;fill:none}
+.baum-herz{fill:var(--sepia);opacity:.65}
+
+.person-karte{
+  margin-top:22px;padding:22px 24px;border-radius:16px;
+  background:rgba(247,244,237,.8);border:1px solid rgba(213,205,189,.9);
+}
+.person-karte h3{font-family:var(--serif-display);font-weight:500;font-size:24px;margin:0 0 4px}
+.person-karte .rolle{font-family:var(--stempel);font-size:13px;color:var(--patina);margin:0 0 10px}
+.person-karte p{margin:0;color:var(--tinte-leise)}
+
+/* Karte */
+#karte{
+  height:min(66svh,560px);border-radius:16px;overflow:hidden;
+  border:1px solid rgba(213,205,189,.9);background:#e7e2d6;
+}
+.leaflet-tile{filter:saturate(.45) contrast(.95) brightness(1.04)}
+.leaflet-container{font-family:var(--serif-text)}
+.leaflet-control-attribution{
+  background:rgba(247,244,237,.82)!important;font-family:var(--stempel);
+  font-size:11px;color:var(--tinte-leise);
+}
+.leaflet-popup-content-wrapper{border-radius:12px;background:#f6f5ec}
+.leaflet-popup-content{font-size:15px;line-height:1.5;margin:14px 16px}
+.karten-nadel{
+  width:16px;height:16px;border-radius:50%;border:2.5px solid #f7f4ed;
+  box-shadow:0 3px 10px rgba(20,18,15,.45);
+}
+.nadel--wohnort{background:var(--tinte)}
+.nadel--kind{background:var(--patina)}
+.nadel--ort{background:var(--sepia)}
+.karte-legende{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-bottom:16px;
+  font-family:var(--stempel);font-size:13px;color:var(--tinte-leise);
+}
+.karte-legende span{display:flex;align-items:center;gap:7px}
+.punkt{width:11px;height:11px;border-radius:50%;display:inline-block}
+.punkt--wohnort{background:var(--tinte)}
+.punkt--kind{background:var(--patina)}
+.punkt--ort{background:var(--sepia)}
+.weg-nummer{
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(247,244,237,.95);border:1px solid rgba(42,39,34,.55);
+  font-family:var(--stempel);font-size:12px;font-weight:600;color:var(--tinte);
+  box-shadow:0 2px 6px rgba(20,18,15,.3);
+}
+.strich-legende{
+  width:22px;height:0;display:inline-block;
+  border-top:2.5px dotted var(--tinte);opacity:.75;
+}
+.orte-liste{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+@media (min-width:700px){.orte-liste{grid-template-columns:1fr 1fr}}
+.orte-liste li{
+  padding:16px 18px;border-radius:16px;cursor:pointer;
+  background:rgba(247,244,237,.7);border:1px solid rgba(213,205,189,.9);
+  transition:background .2s,transform .2s;
+}
+.orte-liste li:hover{background:#fff;transform:translateY(-2px)}
+.orte-liste b{display:block;font-family:var(--serif-display);font-size:20px;font-weight:500}
+.orte-liste .wann{font-family:var(--stempel);font-size:13px;color:var(--patina)}
+.orte-liste .was{color:var(--tinte-leise);font-size:16px;margin-top:5px;display:block}
+.karten-fehler{padding:26px;text-align:center;color:var(--tinte-leise)}
+
+/* ============================================================
+   WÜRZE – Layout, Textur, Details
+   ============================================================ */
+
+/* Geisterzahl im Kopf */
+.kopf{overflow:hidden}
+.geist60{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);
+  font-family:var(--serif-display);font-weight:300;
+  font-size:min(62vw,560px);line-height:1;color:var(--sepia);
+  opacity:.045;pointer-events:none;user-select:none;z-index:0;letter-spacing:-.04em;
+}
+.oberzeile,.funke,.namen,.datum,.zaehler{position:relative;z-index:1}
+.hinweis-runter{z-index:2}
+.namen{text-shadow:0 1px 0 rgba(255,255,255,.4)}
+
+/* Funkeln neben den Namen */
+.funke{
+  display:block;width:13px;height:13px;margin:0 auto 26px;
+  transform:rotate(45deg);
+  background:linear-gradient(135deg,#fff,var(--diamant) 50%,#7fa3b4);
+  box-shadow:0 0 14px rgba(169,198,212,.9);
+  animation:glitzern 3.6s ease-in-out infinite;
+}
+@keyframes glitzern{0%,100%{opacity:.45;transform:rotate(45deg) scale(.85)}50%{opacity:1;transform:rotate(45deg) scale(1.15)}}
+
+/* Der Faden füllt sich beim Scrollen */
+#faden-fuellung{
+  position:absolute;top:0;left:50%;width:2px;height:0;
+  background:linear-gradient(to bottom,var(--sepia),var(--patina) 70%,var(--diamant));
+  opacity:.85;z-index:1;transition:height .12s linear;
+}
+@media (max-width:820px){#faden-fuellung{left:26px}}
+
+/* Jahreszahl als Stempel */
+.jahr{
+  display:inline-block;padding:6px 15px;background:rgba(247,244,237,.9);
+  border:1px solid rgba(141,117,72,.4);color:var(--sepia);border-radius:999px;
+  transform:rotate(var(--stempel-dreh,-2.4deg));
+  font-size:13px;font-weight:600;letter-spacing:.1em;
+}
+
+/* Klebestreifen auf den Fotos */
+.bild-rahmen::before,.bild-rahmen::after{
+  content:"";position:absolute;width:76px;height:23px;z-index:3;
+  background:rgba(214,206,190,.6);
+  border-left:1px solid rgba(255,255,255,.35);border-right:1px solid rgba(154,115,80,.2);
+  box-shadow:0 1px 3px rgba(51,38,29,.18);
+}
+.bild-rahmen::before{top:-11px;left:-16px;transform:rotate(var(--band-l,-27deg))}
+.bild-rahmen::after{top:-11px;right:-16px;transform:rotate(var(--band-r,26deg))}
+.bild-flaeche{box-shadow:inset 0 0 44px rgba(51,38,29,.28)}
+
+
+/* Zweispaltiges Album ab Tablet */
+@media (min-width:820px){
+  .strahl{max-width:1140px;padding-bottom:120px}
+  .station{width:var(--breite,45%);margin-bottom:var(--luft,110px)}
+  .station:nth-child(odd){margin-right:auto}
+  .station:nth-child(even){margin-left:auto;margin-top:var(--hoch,-90px)}
+  .jahr{margin-bottom:20px}
+  .station:nth-child(even){display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+  .station:nth-child(even) .bild-rahmen,
+  .station:nth-child(even) .station-text{width:100%}
+  .diamant-punkt{width:100%!important;margin-left:0!important;margin-right:0!important;margin-top:40px!important}
+}
+
+/* Auf schmalen Schirmen kein seitlicher Versatz – sonst rutscht es aus dem Bild */
+@media (max-width:819px){
+  .station{--schub:0px!important;--breite:auto!important;--hoch:0!important;width:auto!important}
+  .station.sichtbar{transform:none}
+  .bild-rahmen{--rahmen-dreh:-1deg}
+}
+
+/* Jubiläen quer über die Seite */
+.station--jubel{
+  width:100%!important;margin:30px 0 90px!important;--schub:0px;
+  display:flex;justify-content:center;
+}
+.jubel-karte{
+  max-width:520px;text-align:center;padding:46px 36px 40px;position:relative;
+  background:linear-gradient(#f5f4ea,#eae8db);
+  border:1px solid rgba(213,205,189,.9);border-radius:16px;
+  box-shadow:0 20px 44px -26px rgba(51,38,29,.6);
+}
+.jubel-karte::before,.jubel-karte::after{
+  content:"";position:absolute;left:26px;right:26px;height:1px;
+  background:var(--ton,var(--sepia));opacity:.45;
+}
+.jubel-karte::before{top:15px}
+.jubel-karte::after{bottom:15px}
+.jubel-stein{
+  width:26px;height:26px;margin:0 auto 20px;transform:rotate(45deg);
+  background:var(--stein-farbe,linear-gradient(135deg,#fff,var(--diamant) 45%,#7fa3b4));
+  box-shadow:0 0 24px var(--stein-schein,rgba(169,198,212,.8));
+}
+.jubel-jahr{
+  display:block;font-family:var(--stempel);font-size:13px;font-weight:600;
+  letter-spacing:.16em;color:var(--ton,var(--sepia));margin-bottom:12px;
+}
+.jubel-titel{
+  font-family:var(--serif-display);font-weight:300;font-style:italic;
+  font-size:clamp(29px,5.4vw,42px);line-height:1.1;margin:0 0 14px;
+}
+.jubel-karte p{margin:0 0 12px;max-width:46ch;margin-left:auto;margin-right:auto}
+.jubel-karte .station-ort{margin-bottom:14px}
+.jubel-bild{margin-top:18px;border:1px solid var(--papier-tief)}
+.station--jubel[data-stein="silber"]{--ton:#7e8792;--stein-farbe:linear-gradient(135deg,#fff,#c3ccd4 45%,#8d98a3);--stein-schein:rgba(160,175,190,.75)}
+.station--jubel[data-stein="perle"] {--ton:#9a8f7e;--stein-farbe:radial-gradient(circle at 32% 28%,#fff,#e8dcc8 55%,#c3b39a);--stein-schein:rgba(220,205,180,.75)}
+.station--jubel[data-stein="rubin"] {--ton:#9c3b48;--stein-farbe:linear-gradient(135deg,#c58c93,#8e3742 50%,#5e202a);--stein-schein:rgba(142,55,66,.4)}
+.station--jubel[data-stein="gold"]  {--ton:#a8813a;--stein-farbe:linear-gradient(135deg,#e6d3a4,#b1913f 50%,#7d6524);--stein-schein:rgba(177,145,63,.45)}
+.station--jubel[data-stein="diamant"]{--ton:#5d8598;--stein-farbe:linear-gradient(135deg,#fff,#a9c6d4 45%,#6d94a8);--stein-schein:rgba(169,198,212,.95)}
+.station--jubel[data-stein="diamant"] .jubel-karte{border-width:2px;border-color:var(--diamant)}
+
+/* Gästebuch als Zettel */
+.gaestebuch{
+  background-image:radial-gradient(ellipse at 30% 0%,rgba(169,198,212,.09),transparent 60%);
+}
+.gb-titel::after{
+  content:"";display:block;width:54px;height:1px;margin:18px auto 0;
+  background:var(--diamant);opacity:.7;
+}
+.gb-eintrag{
+  background:rgba(244,236,219,.05);border:1px solid rgba(233,224,205,.14);
+  border-radius:16px;padding:22px 24px;transform:rotate(-.35deg);
+}
+.gb-eintrag:nth-child(even){transform:rotate(.4deg)}
+.gb-formular{position:relative}
+.gb-formular::before{
+  content:"";position:absolute;top:-1px;left:24px;right:24px;height:1px;
+  background:linear-gradient(to right,transparent,var(--diamant),transparent);opacity:.5;
+}
+
+/* Zierlinie zwischen den Abschnitten */
+.trenner{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:0 24px 60px;color:var(--label);
+}
+.trenner span{flex:0 0 auto;font-size:13px;letter-spacing:.14em;font-family:var(--stempel);font-weight:500}
+.trenner i{flex:1 1 auto;max-width:180px;height:1px;background:currentColor;opacity:.35}
+
+.fuss{border-top:1px solid rgba(154,115,80,.25)}
+
+
+/* ============================================================
+   FEINSCHLIFF FÜR SCHMALE BILDSCHIRME
+   ============================================================ */
+@media (max-width:560px){
+
+  body{font-size:17px}
+
+  /* Passwortkarte: weniger Polster, Rahmen näher heran */
+  .schleuse-karte{padding:38px 22px 30px;outline-offset:6px;border-radius:16px}
+  .ziereck{display:none}
+  .schleuse-karte h1{font-size:clamp(27px,8.5vw,36px)}
+  .schleuse-datum{font-size:12px;letter-spacing:0}
+  .schleuse-linie{margin:20px auto}
+  .feld{font-size:16px}            /* unter 16px zoomt iOS beim Tippen hinein */
+
+  /* Kopf: die Geisterzahl nicht über den Text wachsen lassen */
+  .geist60{font-size:min(68vw,330px);opacity:.035;transform:translate(-50%,-58%)}
+  .kopf{padding:72px 20px 96px}
+  .oberzeile{letter-spacing:.16em;font-size:12px}
+  .datum{font-size:13px}
+  .zaehler{margin-top:30px}
+  .hinweis-runter{bottom:22px}
+  .oberzeile{max-width:18ch}
+  .zaehler{margin-top:22px;font-size:15px}
+  .kopf{min-height:92svh}
+
+  /* Zeitleiste: Faden näher an den Rand, mehr Platz für die Karten */
+  .strahl{padding:28px 16px 70px}
+  .strahl::before,#faden-fuellung{left:16px}
+  .station{padding-left:38px;margin-bottom:64px}
+  .station-titel{font-size:clamp(23px,6.4vw,30px)}
+  .jahr{padding:5px 12px;font-size:12px}
+  .bild-rahmen{--rand:10px}
+  .bild-rahmen::before,.bild-rahmen::after{width:58px;height:18px}
+  .bildunterschrift{font-size:12px;--schild-dreh:0deg}
+
+  /* Bausteine */
+  .notiz,.frage{padding:15px 16px}
+  .zitat{font-size:clamp(19px,5.4vw,23px);padding-left:16px}
+  .sprung{width:100%;justify-content:center}
+
+  /* Jubiläumskarten */
+  .station--jubel{margin:16px 0 64px!important}
+  .jubel-karte{padding:34px 22px 28px;border-radius:16px}
+  .jubel-titel{font-size:clamp(25px,7vw,32px)}
+
+  /* Übersichtsknöpfe untereinander */
+  .uebersichten{padding:0 16px 42px}
+  .uebersicht-knopf{width:100%}
+
+  /* Stammbaum und Karte: höher, damit man etwas erkennt */
+  .ansicht{padding:30px 16px 70px}
+  .buehne{height:min(62svh,460px);border-radius:16px}
+  #karte{height:min(58svh,440px);border-radius:16px}
+  .zoom-knoepfe button{width:44px;height:44px}
+  .karte-legende{gap:10px 14px;font-size:13px}
+  .person-karte{padding:18px}
+
+  /* Gästebuch */
+  .gaestebuch{padding:58px 16px 64px}
+  .gb-formular{padding:20px;border-radius:16px}
+  .gb-eintrag{padding:18px;transform:none}
+  .gb-eintrag:nth-child(even){transform:none}
+  .gb-feld{font-size:16px}
+
+  .trenner{padding:0 16px 44px}
+  .trenner i{max-width:70px}
+}
+
+/* Sehr schmale Geräte (iPhone SE und ähnlich) */
+@media (max-width:380px){
+  .station{padding-left:32px}
+  .strahl{padding:24px 12px 60px}
+  .namen{font-size:clamp(38px,13vw,60px)}
+  .schleuse-karte{padding:32px 18px 26px}
+}
+
+@media print{
+  @page{margin:18mm}
+  body{background:#fff!important;font-size:11pt}
+  body::before, body::after, .geist60, .funke, #faden-fuellung,
+  .zoom-knoepfe, .sprung, .zurueck, .uebersichten, .gb-formular,
+  .hinweis-runter, .strahl::before{display:none!important}
+  #schleuse{display:none!important}
+  #seite{display:block!important}
+  .ansicht{display:block!important}
+  .kopf{min-height:auto;padding:0 0 14mm;page-break-after:always}
+  .station{
+    opacity:1!important;transform:none!important;width:100%!important;
+    margin:0 0 10mm!important;padding-left:0!important;page-break-inside:avoid;
+  }
+  .station-text{opacity:1!important;transform:none!important}
+  .bild-rahmen{transform:none!important;box-shadow:none;border:1px solid #ccc}
+  .bild-rahmen::before,.bild-rahmen::after{display:none}
+  .bild-flaeche{filter:none}
+  .jahr{transform:none!important;border-color:#999}
+  .station--jubel{page-break-inside:avoid}
+  .gaestebuch{background:#fff!important;color:#000!important;padding:0}
+  .gb-eintrag{border:1px solid #ddd;transform:none!important;page-break-inside:avoid}
+  .gb-von,.gb-titel,.gb-unter{color:#000!important}
+  .buehne{height:auto;border:none}
+  .buehne-inhalt{position:static;transform:none!important}
+  a[href]::after{content:""}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .station,.station-text{opacity:1;transform:none}
+  .bild-flaeche{filter:sepia(.34)}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== PASSWORT-SCHLEUSE ========== -->
+<div id="schleuse">
+  <div class="schleuse-karte">
+    <i class="ziereck lo"></i><i class="ziereck ro"></i><i class="ziereck lu"></i><i class="ziereck ru"></i>
+    <div class="schleuse-stein"></div>
+    <div class="schleuse-zahl">Sechzig Jahre</div>
+    <h1>Hildegard<em>und</em>Peter</h1>
+    <div class="schleuse-datum">23. Oktober 1966 &nbsp;—&nbsp; 23. Oktober 2026</div>
+    <hr class="schleuse-linie">
+    <div class="schleuse-hinweis">Sicherheitsfrage</div>
+    <p id="schleuse-frage">Bitte das Passwort eingeben.</p>
+    <input class="feld" id="passwort-feld" type="text" placeholder="Straßenname" autocomplete="off" spellcheck="false" aria-label="Straßenname">
+    <button class="knopf" id="passwort-knopf" type="button">Die Geschichte beginnt</button>
+    <div class="fehler" id="passwort-fehler" role="status"></div>
+  </div>
+</div>
+
+<!-- ========== SEITE ========== -->
+<main id="seite" hidden>
+
+
+
+  <div id="ansicht-album">
+  <header class="kopf">
+    <div class="geist60" aria-hidden="true">60</div>
+    <div class="oberzeile" id="kopf-anlass"></div>
+    <i class="funke" aria-hidden="true"></i>
+    <h1 class="namen" id="kopf-namen"></h1>
+    <div class="datum" id="kopf-datum"></div>
+    <div class="zaehler" id="kopf-zaehler"></div>
+    <a class="hinweis-runter" href="#zeitstrahl">Die Stationen<span>↓</span></a>
+  </header>
+
+  <section class="strahl" id="zeitstrahl"></section>
+
+  <div class="uebersichten">
+    <button type="button" class="uebersicht-knopf" data-oeffne="stammbaum">Der ganze Stammbaum</button>
+    <button type="button" class="uebersicht-knopf" data-oeffne="orte">Alle Orte auf der Karte</button>
+  </div>
+
+  <div class="trenner"><i></i><span>Für die beiden</span><i></i></div>
+
+  <section class="gaestebuch">
+    <div class="gb-innen">
+      <h2 class="gb-titel">Glückwünsche</h2>
+      <p class="gb-unter" id="gb-unter"></p>
+
+      <div class="gb-formular">
+        <label for="gb-name">Von wem</label>
+        <input class="gb-feld" id="gb-name" type="text" maxlength="60" placeholder="Dein Name">
+        <label for="gb-text">Dein Glückwunsch</label>
+        <textarea class="gb-feld" id="gb-text" maxlength="600" placeholder="Was du den beiden mitgeben möchtest …"></textarea>
+        <button class="gb-knopf" id="gb-senden" type="button">Eintragen</button>
+        <div class="gb-status" id="gb-status"></div>
+      </div>
+
+      <div class="gb-liste" id="gb-liste"></div>
+    </div>
+  </section>
+
+  </div><!-- Ende Album -->
+
+  <section id="ansicht-stammbaum" class="ansicht" hidden>
+    <button type="button" class="zurueck" data-zurueck>Zurück zur Zeitleiste</button>
+    <div class="ansicht-kopf"><h2>Der Stammbaum</h2></div>
+    <div class="buehne" id="baum-buehne">
+      <div class="buehne-inhalt" id="baum-inhalt"></div>
+      <div class="zoom-knoepfe">
+        <button type="button" data-zoom="rein" aria-label="Vergrößern">+</button>
+        <button type="button" data-zoom="raus" aria-label="Verkleinern">−</button>
+        <button type="button" data-zoom="reset" aria-label="Zurücksetzen">⟲</button>
+      </div>
+    </div>
+    <div class="person-karte" id="person-karte" hidden></div>
+  </section>
+
+  <section id="ansicht-orte" class="ansicht" hidden>
+    <button type="button" class="zurueck" data-zurueck>Zurück zur Zeitleiste</button>
+    <div class="ansicht-kopf"><h2>Die Orte</h2></div>
+    <div class="karte-legende">
+      <span><i class="punkt punkt--wohnort"></i>Wohnorte</span>
+      <span><i class="punkt punkt--kind"></i>Die Töchter heute</span>
+      <span><i class="punkt punkt--ort"></i>Weitere Orte</span>
+      <span><i class="strich-legende"></i>Der Weg der Umzüge</span>
+    </div>
+    <div id="karte"></div>
+    <ul class="orte-liste" id="orte-liste"></ul>
+  </section>
+
+  <footer class="fuss" id="fuss"></footer>
+</main>
+
+<script>
+/* ============================================================================
+   ▓▓▓  HIER ALLES ANPASSEN  ▓▓▓
+   Alles unterhalb dieser Zeile bis "ENDE DER DATEN" ist zum Ändern gedacht.
+   ============================================================================ */
+
+/* ============================================================================
+   ANLEITUNG ZUM AUSFÜLLEN
+   ----------------------------------------------------------------------------
+   Alles, was du ändern musst, steht in diesem einen Block. Der Rest der Datei
+   darf so bleiben, wie er ist.
+
+   Regeln:
+   • Texte stehen immer zwischen "Anführungszeichen". Die dürfen nicht weg.
+   • Am Zeilenende gehört ein Komma, außer bei der letzten Zeile im Block.
+   • Alles hinter zwei Schrägstrichen // ist ein Kommentar für dich und
+     erscheint nicht auf der Seite.
+   • Willst du in einem Text ein Anführungszeichen benutzen, schreib \" davor.
+   • Eine ganze Station löschen: von { bis }, samt Komma dahinter.
+
+   Reihenfolge im Block:
+   1. Passwort   2. Hintergrundbild   3. Stammbaum   4. Orte auf der Karte
+   5. Kopfbereich   6. Gästebuch   7. Die Stationen der Zeitleiste
+   ============================================================================ */
+
+const DATEN = {
+
+  /* ---- Passwort für die Seite ------------------------------------------
+     Großzügige Prüfung: Groß-/Kleinschreibung, Leerzeichen, Bindestriche
+     und bis zu 3 Tippfehler werden verziehen.                              */
+  passwort: "Kupferhammerweg",
+  passwortAuchOk: ["Kupferhammer Weg"],
+  passwortFrage: "In welcher Straße wohnen die beiden?",
+
+  /* ---- Hintergrundbild --------------------------------------------------
+     Florales Motiv, liegt neben der HTML-Datei. Leer lassen = kein Bild.   */
+  hintergrund: "hintergrund.png",   // liegt neben dieser Datei
+
+
+  /* ---- Stammbaum --------------------------------------------------------
+     Jede Person: { name, jahr, partner, kinder:[…] }
+     "Platzhalter" = Name fehlt mir noch.                                   */
+  /* ---- 3. STAMMBAUM -----------------------------------------------------
+     Der Baum baut sich aus dieser Verschachtelung von selbst auf.
+     Pro Person gibt es vier Felder zum Ausfüllen:
+        name    – der Vorname
+        jahr    – Geburtsjahr, Schreibweise "* 1997"
+        rolle   – die kleine Zeile unter dem Namen, z. B. "Die Älteste"
+        text    – die Beschreibung, erscheint beim Antippen. Ruhig frech.
+     "partner" nur bei den Töchtern. Die Kennungen (id) bitte NICHT ändern,
+     daran hängen die Sprungknöpfe aus der Zeitleiste.
+     ---------------------------------------------------------------------- */
+  familie: {
+
+    /* Oma und Opa – bekommen bewusst keine Beschreibung */
+    paar: [
+      { id:"oma", name:"Hildegard", jahr:"* 1944" },
+      { id:"opa", name:"Peter",     jahr:"* 1944" }
+    ],
+
+    kinder: [
+
+      /* ═══ KIND 1 · die älteste Tochter, geboren 1967 ═══════════════════ */
+      { id:"t1",
+        name:    "Platzhalter",     // ← Vorname Tochter 1
+        jahr:    "* 1967",
+        partner: "Platzhalter",     // ← Name ihres Partners, sonst "" leer lassen
+        rolle:   "Die Älteste",
+        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 1
+        kinder:[
+
+          /* ── ENKEL 1 · Kind von Tochter 1, geboren 1997 ── */
+          { id:"e1",
+            name:  "Platzhalter",   // ← Vorname Enkel 1
+            jahr:  "* 1997",
+            rolle: "Platzhalter",   // ← kurze Rolle, z. B. "Der Erstgeborene"
+            text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 1
+
+          /* ── ENKEL 2 · Kind von Tochter 1, geboren 2000 ── */
+          { id:"e2",
+            name:  "Platzhalter",   // ← Vorname Enkel 2
+            jahr:  "* 2000",
+            rolle: "Platzhalter",
+            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 2
+      ]},
+
+      /* ═══ KIND 2 · die mittlere Tochter, geboren 1969 ══════════════════ */
+      { id:"t2",
+        name:    "Platzhalter",     // ← Vorname Tochter 2
+        jahr:    "* 1969",
+        partner: "Platzhalter",
+        rolle:   "Die Mittlere",
+        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 2
+        kinder:[
+
+          /* ── ENKEL 3 · Kind von Tochter 2, geboren 2002 ── */
+          { id:"e3",
+            name:  "Platzhalter",   // ← Vorname Enkel 3
+            jahr:  "* 2002",
+            rolle: "Platzhalter",
+            text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 3
+
+          /* ── ENKEL 4 · Kind von Tochter 2, geboren 2004 ── */
+          { id:"e4",
+            name:  "Platzhalter",   // ← Vorname Enkel 4
+            jahr:  "* 2004",
+            rolle: "Platzhalter",
+            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 4
+      ]},
+
+      /* ═══ KIND 3 · die jüngste Tochter, geboren 1976 ═══════════════════ */
+      { id:"t3",
+        name:    "Platzhalter",     // ← Vorname Tochter 3
+        jahr:    "* 1976",
+        partner: "Platzhalter",
+        rolle:   "Die Jüngste",
+        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 3
+        kinder:[
+
+          /* ── ENKEL 5 · Kind von Tochter 3, geboren 2002.
+                Nur an diesem Enkel hängt der Urenkel. ── */
+          { id:"e5",
+            name:  "Platzhalter",   // ← Vorname Enkel 5
+            jahr:  "* 2002",
+            rolle: "Platzhalter",
+            text:  "Platzhalter",   // ← HIER die Beschreibung von Enkel 5
+            kinder:[
+
+              /* ── URENKEL · Kind von Enkel 5, geboren 2020 ── */
+              { id:"u1",
+                name:  "Platzhalter",   // ← Vorname des Urenkels
+                jahr:  "* 2020",
+                rolle: "Der Urenkel",
+                text:  "Platzhalter" }  // ← HIER die Beschreibung des Urenkels
+          ]}
+      ]}
+    ]
+  },
+
+  /* ---- Orte im Rhein-Main-Gebiet ----------------------------------------
+     art: "wohnort" (wo die beiden gelebt haben) | "kind" (wo die Töchter
+     heute wohnen) | "ort" (alles andere, z. B. Garten, Schule)
+     lat/lng findest du, indem du bei openstreetmap.org rechtsklickst.      */
+  orte: [
+    /* Koordinaten holst du bei openstreetmap.org: Rechtsklick auf die Stelle,
+       dann "Adresse anzeigen" – lat und lng stehen dann in der Adresszeile.
+       art: "wohnort" zeichnet den Punkt in die Umzugslinie mit ein.
+       Die Kennungen (id) bitte nicht ändern.                                */
+
+    { id:"frankfurt",    name:"Frankfurt am Main", art:"wohnort", jahr:"1966",
+      text:"Die Hochzeit.",                                    lat:50.1109, lng:8.6821 },
+
+    { id:"heusenstamm",  name:"Heusenstamm",       art:"wohnort", jahr:"1966",
+      text:"Platzhalter",              // ← die erste eigene Wohnung
+      lat:50.0556, lng:8.8000 },       // ← genaue Adresse noch nachtragen
+
+    { id:"umzug1978",    name:"Platzhalter",       art:"wohnort", jahr:"1978",
+      text:"Platzhalter",              // ← der erste Umzug
+      lat:50.1200, lng:8.7000 },       // ← Koordinaten geschätzt, bitte ersetzen
+
+    { id:"kupferhammer", name:"Kupferhammerweg",   art:"wohnort", jahr:"2008",
+      text:"Das Zuhause bis heute.",
+      lat:50.2085, lng:8.5646 },       // ← Hausnummer fehlt, Punkt sitzt ungefähr
+
+    { id:"garten",       name:"Der Garten",        art:"ort",     jahr:"Ende der 1990er",
+      text:"Platzhalter",
+      lat:50.2000, lng:8.5800 },       // ← du weißt, wo er liegt – hier eintragen
+
+    { id:"schule",       name:"Platzhalter",       art:"ort",     jahr:"Platzhalter",
+      text:"Die Schule, an der Opa Direktor war.",
+      lat:50.1000, lng:8.6500 },       // ← Paul-Hindemith-Schule? dann Koordinaten anpassen
+
+    /* Wo die Töchter heute wohnen – Reihenfolge wie im Stammbaum */
+    { id:"kind1", name:"Platzhalter", art:"kind", jahr:"heute",
+      text:"Hier wohnt die älteste Tochter.",  lat:50.1800, lng:8.6300 },
+    { id:"kind2", name:"Platzhalter", art:"kind", jahr:"heute",
+      text:"Hier wohnt die mittlere Tochter.", lat:50.2300, lng:8.6100 },
+    { id:"kind3", name:"Platzhalter", art:"kind", jahr:"heute",
+      text:"Hier wohnt die jüngste Tochter.",  lat:50.1500, lng:8.5200 }
+  ],
+
+  /* ---- Kopfbereich ------------------------------------------------------ */
+  anlass:  "Diamantene Hochzeit · 60 Jahre",
+  name1:   "Hildegard",
+  name2:   "Peter",
+  hochzeitsdatum: "1966-10-23",
+  datumText: "23. Oktober 1966 · Frankfurt am Main",
+
+  /* ---- Gästebuch -------------------------------------------------------- */
+  gaestebuchText: "Platzhalter",     // Einleitung über dem Gästebuch
+  fusszeile: "Für Oma und Opa",
+
+  /* ---- Die Lebensstationen ---------------------------------------------
+     "Platzhalter" = fehlt noch. Was dort hin soll, steht als Notiz // rechts.
+     Bausteine je Station, frei kombinierbar:
+        { art:"zitat",  text:"…", von:"Oma" }
+        { art:"notiz",  titel:"Wusstest du?", text:"…" }
+        { art:"frage",  text:"Frage?", antwort:"Antwort" }
+        { art:"audio",  quelle:"aufnahme.mp3", titel:"Opa erzählt" }
+        { art:"video",  quelle:"film.mp4", titel:"Super-8", vorschaubild:"bild.jpg" }
+        { art:"video",  quelle:"https://youtu.be/XXXXXXXXXXX", titel:"Hochzeitsfilm" }
+     ---------------------------------------------------------------------- */
+  stationen: [
+    /* ═══ STATION 01 · 1956 · Wie alles anfing ══════════════════════════════ */
+    {
+      jahr: "1956",                     // Jahr prüfen – da waren beide erst 12
+      titel: "Wie alles anfing",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Wo haben sie sich kennengelernt, wer hat wen angesprochen
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 02 · 1966 · Der 23. Oktober ═══════════════════════════════ */
+    {
+      jahr: "1966",
+      titel: "Der 23. Oktober",
+      ortId: "frankfurt",
+      ort: "Frankfurt am Main",
+      text: "Platzhalter",              // Wo gefeiert, wer dabei, was passiert
+      bild: "",
+      bildunterschrift: "Hochzeitstag, 23.10.1966",
+      bausteine: []
+    },
+    /* ═══ STATION 03 · 1966 · Der erste Arbeitstag ══════════════════════════ */
+    {
+      jahr: "1966",
+      titel: "Der erste Arbeitstag",
+      ort: "Platzhalter",               // Ort des Kindergartens
+      text: "Platzhalter",              // Welcher Kindergarten, wie lange, was am liebsten
+      bild: "",
+      bildunterschrift: "Hildegard mit ihrer ersten Gruppe",
+      bausteine: []
+    },
+    /* ═══ STATION 04 · 1966 · Die erste eigene Wohnung ══════════════════════ */
+    {
+      jahr: "1966",                     // direkt nach der Hochzeit – prüfen
+      titel: "Die erste eigene Wohnung",
+      ortId: "heusenstamm",
+      ort: "Heusenstamm",               // prüfen
+      text: "Platzhalter",              // Wie groß, was hat sie gekostet, wie lange gewohnt
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 05 · 1967 · Die erste Tochter ═════════════════════════════ */
+    {
+      jahr: "1967",
+      titel: "Die erste Tochter",
+      person: "t1",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein, zwei Sätze
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 06 · 1968 · Das Studium ist geschafft ═════════════════════ */
+    {
+      jahr: "1968",
+      titel: "Das Studium ist geschafft",
+      ort: "Platzhalter",               // Ort der Universität
+      text: "Platzhalter",              // Fächer, erste Schule
+      bild: "",
+      bildunterschrift: "Peter, frisch im Beruf",
+      bausteine: []
+    },
+    /* ═══ STATION 07 · 1969 · Die zweite Tochter ════════════════════════════ */
+    {
+      jahr: "1969",
+      titel: "Die zweite Tochter",
+      person: "t2",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein, zwei Sätze
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 08 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
+    {
+      jahr: "In den 1970ern",           // genaues Jahr nachtragen
+      titel: "Der erste gemeinsame Urlaub",
+      ort: "Platzhalter",               // Reiseziel
+      text: "Platzhalter",              // Wohin, wie hingekommen, wer war dabei
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 09 · 1976 · Die dritte Tochter ════════════════════════════ */
+    {
+      jahr: "1976",
+      titel: "Die dritte Tochter",
+      person: "t3",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein, zwei Sätze
+      bild: "",
+      bildunterschrift: "Zu fünft",
+      bausteine: []
+    },
+    /* ═══ STATION 10 · 1978 · Der erste Umzug ═══════════════════════════════ */
+    {
+      jahr: "1978",                     // Jahr unklar – prüfen
+      titel: "Der erste Umzug",
+      ortId: "umzug1978",
+      ort: "Platzhalter",               // Zielort
+      text: "Platzhalter",              // Woher, wohin, warum
+      bild: "",
+      bildunterschrift: "Das neue Zuhause",
+      bausteine: []
+    },
+    /* ═══ STATION 11 · Platzhalter · Herr Direktor ══════════════════════════ */
+    {
+      jahr: "Platzhalter",              // Jahr der Beförderung, 198?
+      titel: "Herr Direktor",
+      ortId: "schule",
+      ort: "Platzhalter",               // Name der Schule
+      text: "Platzhalter",              // Jahr, Schule, wie lange
+      bild: "",
+      bildunterschrift: "Im Direktorat",
+      bausteine: []
+    },
+    /* ═══ STATION 12 · Platzhalter · Das erste Haustier ═════════════════════ */
+    {
+      jahr: "Platzhalter",              // Jahr des ersten Haustiers
+      titel: "Das erste Haustier",
+      ort: "Zuhause",
+      text: "Platzhalter",              // Womit fing es an, was kam über die Jahre dazu
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: [
+        { art:"notiz", titel:"Der ganze Zoo", text:"Platzhalter" },      // alle Tiere: Name, Art, von–bis
+        { art:"frage", text:"Platzhalter", antwort:"Platzhalter" }
+      ]
+    },
+    /* ═══ STATION 13 · 1991 · Silberne Hochzeit ═════════════════════════════ */
+    {
+      jahr: "1991",
+      titel: "Silberne Hochzeit",
+      typ: "jubilaeum", stein: "silber",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Wie wurde gefeiert, wer war dabei
+      bild: "",
+      bildunterschrift: "Silberhochzeit, 23.10.1991",
+      bausteine: []
+    },
+    /* ═══ STATION 14 · 1995 · Das Haus wird still ═══════════════════════════ */
+    {
+      jahr: "1995",                     // dritte Tochter wird 19
+      titel: "Das Haus wird still",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Die letzte Tochter zieht aus – wie war das für die beiden
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 15 · 1996 · Perlenhochzeit ════════════════════════════════ */
+    {
+      jahr: "1996",
+      titel: "Perlenhochzeit",
+      typ: "jubilaeum", stein: "perle",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Station löschen, falls nichts zu erzählen
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 16 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
+    {
+      jahr: "1996",                     // prüfen
+      titel: "Zum ersten Mal über den Ozean",
+      ort: "Australien",                // prüfen
+      text: "Platzhalter",              // Wohin, mit wem, was ist geblieben
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 17 · 1997 · Das erste Enkelkind ═══════════════════════════ */
+    {
+      jahr: "1997",
+      titel: "Das erste Enkelkind",
+      person: "e1",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein Satz
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 18 · Ende der 1990er · Der Garten ═════════════════════════ */
+    {
+      jahr: "Ende der 1990er",
+      titel: "Der Garten",
+      ortId: "garten",
+      ort: "Platzhalter",               // Wo liegt die Parzelle
+      text: "Platzhalter",              // Wann gepachtet, wofür sie ihn nutzen, wie oft sind sie da
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 19 · 2000 · Das zweite Enkelkind ══════════════════════════ */
+    {
+      jahr: "2000",
+      titel: "Das zweite Enkelkind",
+      person: "e2",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein Satz
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 20 · 2002 · Das dritte Enkelkind ══════════════════════════ */
+    {
+      jahr: "2002",
+      titel: "Das dritte Enkelkind",
+      person: "e3",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein Satz
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 21 · 2002 · Das vierte Enkelkind ══════════════════════════ */
+    {
+      jahr: "2002",
+      titel: "Das vierte Enkelkind",
+      person: "e4",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name und ein Satz
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 22 · 2004 · Und dann waren es fünf ════════════════════════ */
+    {
+      jahr: "2004",
+      titel: "Und dann waren es fünf",
+      ort: "",
+      text: "Platzhalter",              // Ein Satz über alle fünf zusammen
+      bild: "",
+      bildunterschrift: "Alle fünf zusammen",
+      bausteine: [
+        { art:"notiz", titel:"Fünf Enkelkinder", text:"Platzhalter" }    // Namen in Geburtsreihenfolge
+      ]
+    },
+    /* ═══ STATION 23 · 2006 · Rubinhochzeit ═════════════════════════════════ */
+    {
+      jahr: "2006",
+      titel: "Rubinhochzeit",
+      typ: "jubilaeum", stein: "rubin",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Station löschen, falls nichts zu erzählen
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 24 · 2008 · Der zweite Umzug ══════════════════════════════ */
+    {
+      jahr: "2008",
+      titel: "Der zweite Umzug",
+      ortId: "kupferhammer",
+      ort: "Kupferhammerweg",
+      text: "Platzhalter",              // Woher, wohin, warum
+      bild: "",
+      bildunterschrift: "Kupferhammerweg",
+      bausteine: []
+    },
+    /* ═══ STATION 25 · 2009 · Beide im Ruhestand ════════════════════════════ */
+    {
+      jahr: "2009",
+      titel: "Beide im Ruhestand",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Jahrgang 1944, Regelaltersgrenze 65 = 2009. Auch: Opas Abschied an der Schule, Omas Abschied im Kindergarten
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 26 · 2016 · Goldene Hochzeit ══════════════════════════════ */
+    {
+      jahr: "2016",
+      titel: "Goldene Hochzeit",
+      typ: "jubilaeum", stein: "gold",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Fünfzig Jahre – wie wurde gefeiert
+      bild: "",
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 27 · 2020 · Urgroßeltern ══════════════════════════════════ */
+    {
+      jahr: "2020",
+      titel: "Urgroßeltern",
+      person: "u1",
+      ort: "Platzhalter",
+      text: "Platzhalter",              // Name des Urenkels, von welchem Enkelkind
+      bild: "",
+      bildunterschrift: "Vier Generationen",
+      bausteine: []
+    },
+    /* ═══ STATION 28 · 2026 · Sechzig Jahre ═════════════════════════════════ */
+    {
+      jahr: "2026",
+      titel: "Sechzig Jahre",
+      typ: "jubilaeum", stein: "diamant",
+      ort: "23. Oktober",
+      text: "Platzhalter",              // Was ihr den beiden zum Schluss sagen möchtet
+      bild: "",
+      bildunterschrift: "Diamantene Hochzeit",
+      bausteine: []
+    }
+  ]
+};
+
+
+/* ============================ ENDE DER DATEN ============================== */
+
+
+/* ---------- kleine Helfer ---------- */
+const $ = (s) => document.querySelector(s);
+const sicher = (t) => String(t ?? "").replace(/[&<>"']/g, c => (
+  {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]
+));
+
+/* ---------- Passwort-Schleuse ----------
+   Hinweis: Das ist ein Sichtschutz, keine echte Sicherheit – das Passwort
+   steht im Quelltext. Für echten Schutz die Seite beim Hoster mit einem
+   Passwort belegen (z. B. Netlify: Site settings → Access & security).      */
+const schleuse = $("#schleuse");
+const seite = $("#seite");
+
+function oeffnen(){
+  schleuse.hidden = true;
+  seite.hidden = false;
+  aufbauen();
+}
+/* Vereinheitlicht die Eingabe: Kleinschreibung, Umlaute aufgelöst,
+   alles außer Buchstaben und Ziffern entfernt.                            */
+function vereinheitlichen(t){
+  return String(t).toLowerCase()
+    .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+    .replace(/[^a-z0-9]/g,"");
+}
+/* Zählt, wie viele Zeichen zwei Wörter auseinanderliegen (Levenshtein).   */
+function abstand(a,b){
+  const z=[];
+  for(let i=0;i<=b.length;i++) z[i]=[i];
+  for(let j=0;j<=a.length;j++) z[0][j]=j;
+  for(let i=1;i<=b.length;i++)
+    for(let j=1;j<=a.length;j++)
+      z[i][j] = b[i-1]===a[j-1] ? z[i-1][j-1]
+              : Math.min(z[i-1][j-1]+1, z[i][j-1]+1, z[i-1][j]+1);
+  return z[b.length][a.length];
+}
+function passt(eingabe){
+  const e = vereinheitlichen(eingabe);
+  if(!e) return false;
+  const loesungen = [DATEN.passwort].concat(DATEN.passwortAuchOk || []);
+  return loesungen.some(l => {
+    const v = vereinheitlichen(l);
+    return e === v || abstand(e, v) <= 3;   // bis zu 3 Zeichen daneben
+  });
+}
+
+function pruefen(){
+  const eingabe = $("#passwort-feld").value.trim();
+  if(passt(eingabe)){
+    oeffnen();
+  }else{
+    $("#passwort-fehler").textContent = "Das stimmt noch nicht. Frag jemanden aus der Familie.";
+    $("#passwort-feld").value = "";
+    $("#passwort-feld").focus();
+  }
+}
+$("#passwort-knopf").addEventListener("click", pruefen);
+$("#passwort-feld").addEventListener("keydown", e => { if(e.key === "Enter") pruefen(); });
+$("#schleuse-frage").textContent = DATEN.passwortFrage;
+if(!DATEN.passwort){ oeffnen(); }   // leeres Passwort = Schleuse aus
+
+/* ---------- Kopfbereich ---------- */
+if(DATEN.hintergrund){
+  document.documentElement.style.setProperty("--bild", 'url("' + DATEN.hintergrund + '")');
+  document.documentElement.classList.add("mit-bild");
+}
+
+function kopfAufbauen(){
+  $("#kopf-anlass").textContent = DATEN.anlass;
+  $("#kopf-namen").innerHTML =
+    sicher(DATEN.name1) + '<span class="und">und</span>' + sicher(DATEN.name2);
+  $("#kopf-datum").textContent = DATEN.datumText;
+  $("#gb-unter").textContent = DATEN.gaestebuchText;
+  $("#fuss").textContent = DATEN.fusszeile;
+
+  const start = new Date(DATEN.hochzeitsdatum);
+  if(!isNaN(start)){
+    const tage = Math.floor((Date.now() - start) / 86400000);
+    $("#kopf-zaehler").innerHTML =
+      "<b>" + tage.toLocaleString("de-DE") + "</b> gemeinsame Tage";
+  }
+}
+
+/* ---------- Bausteine einer Station ---------- */
+function bausteinHTML(b){
+  switch(b.art){
+    case "zitat":
+      return '<blockquote class="baustein zitat">„' + sicher(b.text) + '”' +
+             (b.von ? "<cite>" + sicher(b.von) + "</cite>" : "") + "</blockquote>";
+    case "notiz":
+      return '<div class="baustein notiz"><b>' + sicher(b.titel || "Notiz") + "</b>" +
+             sicher(b.text) + "</div>";
+    case "frage":
+      return '<div class="baustein frage">' +
+             '<p class="frage-text">' + sicher(b.text) + "</p>" +
+             '<button class="frage-knopf" type="button" data-frage>Antwort zeigen</button>' +
+             '<p class="antwort" hidden>' + sicher(b.antwort) + "</p></div>";
+    case "audio":
+      return '<div class="baustein notiz"><b>' + sicher(b.titel || "Tonaufnahme") + "</b>" +
+             '<audio controls preload="none" src="' + sicher(b.quelle) + '"></audio></div>';
+    case "video": {
+      const q = String(b.quelle || "");
+      let spieler;
+      // YouTube- oder Vimeo-Link erkennen und einbetten
+      const yt = q.match(/(?:youtu\.be\/|v=)([\w-]{11})/);
+      const vi = q.match(/vimeo\.com\/(\d+)/);
+      if(yt){
+        spieler = '<div class="film-rahmen"><iframe src="https://www.youtube-nocookie.com/embed/' + yt[1] +
+                  '" allow="fullscreen; picture-in-picture" loading="lazy" title="' + sicher(b.titel || "Film") + '"></iframe></div>';
+      }else if(vi){
+        spieler = '<div class="film-rahmen"><iframe src="https://player.vimeo.com/video/' + vi[1] +
+                  '" allow="fullscreen" loading="lazy" title="' + sicher(b.titel || "Film") + '"></iframe></div>';
+      }else{
+        spieler = '<video controls preload="none"' +
+                  (b.vorschaubild ? ' poster="' + sicher(b.vorschaubild) + '"' : "") +
+                  ' src="' + sicher(q) + '"></video>';
+      }
+      return '<div class="baustein notiz"><b>' + sicher(b.titel || "Film") + "</b>" + spieler +
+             (b.text ? '<p style="margin:10px 0 0">' + sicher(b.text) + "</p>" : "") + "</div>";
+    }
+    case "ort":
+      return '<div class="baustein"><a class="ortslink" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=' +
+             encodeURIComponent(b.suche || "") + '">' + sicher(b.text || "Auf der Karte ansehen") + " ↗</a></div>";
+    default:
+      return "";
+  }
+}
+
+/* Knopf, der von einer Station in den Stammbaum oder auf die Karte führt. */
+function sprungHTML(s){
+  if(s.person){
+    return '<button type="button" class="sprung" data-sprung="person" data-ziel="' +
+           sicher(s.person) + '">Im Stammbaum ansehen</button>';
+  }
+  if(s.ortId){
+    const o = (DATEN.orte || []).find(x => x.id === s.ortId);
+    return '<button type="button" class="sprung" data-sprung="ort" data-ziel="' + sicher(s.ortId) +
+           '">' + (o ? sicher(o.name) : "Ort") + ' auf der Karte</button>';
+  }
+  return "";
+}
+
+/* ---------- Zeitstrahl ---------- */
+function strahlAufbauen(){
+  const ziel = $("#zeitstrahl");
+  /* Immer dieselbe "Unordnung": Werte aus dem Index berechnet, nicht zufällig. */
+  const streuung = (i) => {
+    const w = (n, a, b) => a + (Math.abs(Math.sin((i + 1) * n)) * (b - a));
+    const gross = (i % 7 === 3);          // ab und zu ein Foto zum Blickfang
+    return "--rahmen-dreh:" + w(12.9898, -4.6, 4.6).toFixed(2) + "deg;" +
+           "--stempel-dreh:" + w(78.233, -7, 7).toFixed(2) + "deg;" +
+           "--band-l:" + w(4.898, -44, -8).toFixed(1) + "deg;" +
+           "--band-r:" + w(9.11, 7, 43).toFixed(1) + "deg;" +
+           "--schub:" + w(3.77, -34, 34).toFixed(0) + "px;" +
+           "--breite:" + (gross ? "56" : w(6.41, 36, 48).toFixed(1)) + "%;" +
+           "--luft:" + w(2.13, 90, 170).toFixed(0) + "px;" +
+           "--hoch:" + w(7.53, -90, -10).toFixed(0) + "px;" +
+           "--rand:" + w(5.19, 9, 22).toFixed(0) + "px;" +
+           "--alterung:" + w(8.31, .06, .28).toFixed(2) + ";" +
+           "--schild-dreh:" + w(1.77, -1.6, 1.6).toFixed(2) + "deg;" +
+           "--verhaeltnis:" + [ "4/3", "1/1", "5/4", "3/4", "16/10", "4/5", "3/2" ][i % 7] + ";";
+  };
+
+  const teile = DATEN.stationen.map((s, i) => {
+    const bild = s.bild
+      ? '<img class="bild-flaeche" src="' + sicher(s.bild) + '" alt="' + sicher(s.bildunterschrift || s.titel) + '">'
+      : '<div class="bild-flaeche bild-platzhalter">Hier kommt ein Foto hin</div>';
+
+    if(s.typ === "jubilaeum"){
+      return '<article class="station station--jubel" data-stein="' + sicher(s.stein || "diamant") + '">' +
+        '<div class="jubel-karte">' +
+          '<div class="jubel-stein"></div>' +
+          '<span class="jubel-jahr">' + sicher(s.jahr) + "</span>" +
+          '<h2 class="jubel-titel">' + sicher(s.titel) + "</h2>" +
+          (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
+          "<p>" + sicher(s.text) + "</p>" +
+          (s.bild ? '<img class="jubel-bild" src="' + sicher(s.bild) + '" alt="' + sicher(s.titel) + '">' : "") +
+          (s.bausteine || []).map(bausteinHTML).join("") +
+          sprungHTML(s) +
+        "</div></article>";
+    }
+    return '<article class="station" style="' + streuung(i) + '">' +
+      '<span class="jahr">' + sicher(s.jahr) + "</span>" +
+      '<figure class="bild-rahmen" style="margin:0">' +
+        '<span class="ecke lo"></span><span class="ecke ro"></span>' +
+        '<span class="ecke lu"></span><span class="ecke ru"></span>' +
+        bild +
+        '<figcaption class="bildunterschrift">' + sicher(s.bildunterschrift || "") + "</figcaption>" +
+      "</figure>" +
+      '<div class="station-text">' +
+        '<h2 class="station-titel">' + sicher(s.titel) + "</h2>" +
+        (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
+        "<p>" + sicher(s.text) + "</p>" +
+        (s.bausteine || []).map(bausteinHTML).join("") +
+        sprungHTML(s) +
+      "</div></article>";
+  });
+
+  teile.push('<div id="faden-fuellung"></div>');
+  teile.push('<div class="diamant-punkt station"><div class="stein"></div><p>… und es geht weiter.</p></div>');
+  ziel.innerHTML = teile.join("");
+
+  // Antworten aufklappen
+  ziel.addEventListener("click", e => {
+    const k = e.target.closest("[data-frage]");
+    if(!k) return;
+    const antwort = k.parentElement.querySelector(".antwort");
+    antwort.hidden = !antwort.hidden;
+    k.textContent = antwort.hidden ? "Antwort zeigen" : "Antwort verbergen";
+  });
+
+  // Einblenden beim Scrollen
+  const beobachter = new IntersectionObserver((eintraege) => {
+    eintraege.forEach(e => { if(e.isIntersecting){ e.target.classList.add("sichtbar"); beobachter.unobserve(e.target); }});
+  }, { threshold:.18, rootMargin:"0px 0px -60px 0px" });
+  ziel.querySelectorAll(".station").forEach(el => beobachter.observe(el));
+  fadenVerfolgen(ziel);
+}
+
+/* Der Faden wächst mit dem Scrollen mit. */
+function fadenVerfolgen(strahl){
+  const fuellung = document.getElementById("faden-fuellung");
+  if(!fuellung) return;
+  let laeuft = false;
+  const rechnen = () => {
+    const k = strahl.getBoundingClientRect();
+    const gesamt = strahl.offsetHeight - 120;
+    const anteil = Math.min(Math.max((window.innerHeight * .62 - k.top) / gesamt, 0), 1);
+    fuellung.style.height = (anteil * gesamt) + "px";
+    laeuft = false;
+  };
+  addEventListener("scroll", () => { if(!laeuft){ laeuft = true; requestAnimationFrame(rechnen); }}, {passive:true});
+  addEventListener("resize", rechnen);
+  rechnen();
+}
+
+/* ---------- Gästebuch ----------
+   Speichert über window.storage (in Claude verfügbar, für alle sichtbar).
+   Läuft die Seite später woanders, merkt sie sich Einträge nur bis zum
+   Neuladen – dann braucht es einen Dienst wie Formspree oder Netlify Forms. */
+const SCHLUESSEL = "gaestebuch:eintraege";
+let eintraege = [];
+let speicherAktiv = typeof window.storage !== "undefined";
+
+async function eintraegeLaden(){
+  if(!speicherAktiv) return;
+  try{
+    const ergebnis = await window.storage.get(SCHLUESSEL, true);
+    if(ergebnis && ergebnis.value) eintraege = JSON.parse(ergebnis.value);
+  }catch(e){ /* noch kein Eintrag vorhanden */ }
+}
+async function eintraegeSpeichern(){
+  if(!speicherAktiv) return;
+  try{ await window.storage.set(SCHLUESSEL, JSON.stringify(eintraege), true); }
+  catch(e){ speicherAktiv = false; }
+}
+function eintraegeZeigen(){
+  const liste = $("#gb-liste");
+  if(!eintraege.length){
+    liste.innerHTML = '<p class="gb-leer">Noch nichts eingetragen. Mach du den Anfang.</p>';
+    return;
+  }
+  liste.innerHTML = eintraege.map(e =>
+    '<div class="gb-eintrag"><div class="gb-von">' + sicher(e.name) +
+    "<span>" + sicher(e.datum) + "</span></div>" +
+    '<p class="gb-text">' + sicher(e.text) + "</p></div>"
+  ).join("");
+}
+async function eintragen(){
+  const name = $("#gb-name").value.trim();
+  const text = $("#gb-text").value.trim();
+  const status = $("#gb-status");
+  if(!name || !text){
+    status.textContent = "Name und Glückwunsch fehlen noch.";
+    return;
+  }
+  const knopf = $("#gb-senden");
+  knopf.disabled = true;
+  eintraege.unshift({
+    name, text,
+    datum: new Date().toLocaleDateString("de-DE", { day:"2-digit", month:"long", year:"numeric" })
+  });
+  await eintraegeSpeichern();
+  eintraegeZeigen();
+  $("#gb-name").value = "";
+  $("#gb-text").value = "";
+  status.textContent = speicherAktiv
+    ? "Eingetragen. Danke!"
+    : "Eingetragen – auf dieser Seite aber nur bis zum Neuladen sichtbar.";
+  knopf.disabled = false;
+}
+$("#gb-senden").addEventListener("click", eintragen);
+
+/* Alle 15 Sekunden nachsehen, ob jemand anders etwas geschrieben hat.
+   Läuft nur, wenn der Nutzer gerade nicht selbst tippt.                    */
+function nachladenStarten(){
+  if(!speicherAktiv) return;
+  setInterval(async () => {
+    if(document.hidden) return;
+    if(document.activeElement && document.activeElement.classList.contains("gb-feld")) return;
+    const vorher = eintraege.length;
+    await eintraegeLaden();
+    if(eintraege.length !== vorher) eintraegeZeigen();
+  }, 15000);
+}
+
+
+/* ============================================================================
+   ANSICHTEN: Album, Stammbaum, Orte
+   ============================================================================ */
+let karteGebaut = false, baumGebaut = false;
+let baumPunkte = {}, baumSteuerung = null, karteObjekt = null, karteNadeln = [];
+
+let rueckkehrZu = null;   // merkt sich, von welcher Station aus gesprungen wurde
+
+function ansichtZeigen(name){
+  $("#ansicht-album").hidden     = name !== "album";
+  $("#ansicht-stammbaum").hidden = name !== "stammbaum";
+  $("#ansicht-orte").hidden      = name !== "orte";
+  document.querySelectorAll("[data-zurueck]").forEach(k => k.hidden = !rueckkehrZu);
+  if(name === "stammbaum" && !baumGebaut){ baumBauen(); baumGebaut = true; }
+  if(name === "orte" && !karteGebaut){ karteBauen(); karteGebaut = true; }
+  if(name !== "album") window.scrollTo(0, 0);
+}
+
+/* Zurück zur Zeitleiste – genau dorthin, wo man weggegangen ist. */
+function zurueckZurZeitleiste(){
+  const nr = rueckkehrZu;
+  rueckkehrZu = null;
+  ansichtZeigen("album");
+  if(nr === null || nr === undefined) return;
+  const station = document.querySelectorAll("#zeitstrahl .station")[nr];
+  if(station) requestAnimationFrame(() =>
+    station.scrollIntoView({ behavior:"smooth", block:"center" }));
+}
+document.querySelectorAll("[data-zurueck]").forEach(k =>
+  k.addEventListener("click", zurueckZurZeitleiste));
+
+/* Die beiden ruhigen Einstiege unter der Zeitleiste */
+document.querySelectorAll("[data-oeffne]").forEach(k =>
+  k.addEventListener("click", () => { rueckkehrZu = null; ansichtZeigen(k.dataset.oeffne); }));
+
+/* Sprung aus einer Station heraus */
+function stationsNummer(el){
+  const alle = [...document.querySelectorAll("#zeitstrahl .station")];
+  return alle.indexOf(el.closest(".station"));
+}
+document.addEventListener("click", e => {
+  const k = e.target.closest("[data-sprung]");
+  if(!k) return;
+  rueckkehrZu = stationsNummer(k);
+  if(k.dataset.sprung === "person"){
+    ansichtZeigen("stammbaum");
+    personZeigen(k.dataset.ziel);
+  }else{
+    ansichtZeigen("orte");
+    ortZeigen(k.dataset.ziel);
+  }
+});
+
+/* ---------- Zoomen und Schieben (für den Stammbaum) ---------------------- */
+function buehneSteuern(buehne, inhalt){
+  let z = 1, x = 0, y = 0, zieht = false, letzteX = 0, letzteY = 0, startAbstand = 0, startZ = 1;
+  const setzen = () => inhalt.style.transform = `translate(${x}px,${y}px) scale(${z})`;
+  const grenzen = () => { z = Math.min(Math.max(z, .35), 3); };
+
+  const zoomAuf = (faktor, mx, my) => {
+    const alt = z; z *= faktor; grenzen();
+    x = mx - (mx - x) * (z / alt);
+    y = my - (my - y) * (z / alt);
+    setzen();
+  };
+
+  buehne.addEventListener("wheel", e => {
+    e.preventDefault();
+    const k = buehne.getBoundingClientRect();
+    zoomAuf(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX - k.left, e.clientY - k.top);
+  }, {passive:false});
+
+  buehne.addEventListener("pointerdown", e => {
+    if(e.target.closest(".zoom-knoepfe")) return;
+    zieht = true; letzteX = e.clientX; letzteY = e.clientY;
+    buehne.setPointerCapture(e.pointerId);
+  });
+  buehne.addEventListener("pointermove", e => {
+    if(!zieht) return;
+    x += e.clientX - letzteX; y += e.clientY - letzteY;
+    letzteX = e.clientX; letzteY = e.clientY; setzen();
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(t =>
+    buehne.addEventListener(t, () => { zieht = false; }));
+
+  /* zwei Finger */
+  const abstand = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  buehne.addEventListener("touchstart", e => {
+    if(e.touches.length === 2){ zieht = false; startAbstand = abstand(e.touches); startZ = z; }
+  }, {passive:true});
+  buehne.addEventListener("touchmove", e => {
+    if(e.touches.length === 2 && startAbstand){
+      e.preventDefault();
+      const k = buehne.getBoundingClientRect();
+      const mx = (e.touches[0].clientX + e.touches[1].clientX)/2 - k.left;
+      const my = (e.touches[0].clientY + e.touches[1].clientY)/2 - k.top;
+      const alt = z; z = startZ * (abstand(e.touches) / startAbstand); grenzen();
+      x = mx - (mx - x) * (z / alt); y = my - (my - y) * (z / alt); setzen();
+    }
+  }, {passive:false});
+  buehne.addEventListener("touchend", () => { startAbstand = 0; }, {passive:true});
+
+  buehne.querySelectorAll("[data-zoom]").forEach(b => b.addEventListener("click", () => {
+    const k = buehne.getBoundingClientRect();
+    if(b.dataset.zoom === "reset"){ return einpassen(); }
+    zoomAuf(b.dataset.zoom === "rein" ? 1.25 : .8, k.width/2, k.height/2);
+  }));
+
+  function einpassen(){
+    const b = inhalt.firstElementChild;
+    if(!b) return;
+    const bb = buehne.getBoundingClientRect();
+    const bw = parseFloat(b.getAttribute("width")), bh = parseFloat(b.getAttribute("height"));
+    z = Math.min((bb.width - 30) / bw, (bb.height - 30) / bh, 1.4);
+    x = (bb.width - bw * z) / 2; y = (bb.height - bh * z) / 2;
+    setzen();
+  }
+  function zentrieren(px, py, zoom){
+    const bb = buehne.getBoundingClientRect();
+    z = zoom || 1.05; grenzen();
+    x = bb.width / 2 - px * z;
+    y = bb.height / 2.4 - py * z;
+    setzen();
+  }
+  return { einpassen, zentrieren };
+}
+
+/* ---------- Stammbaum ---------------------------------------------------- */
+function baumBauen(){
+  const F = DATEN.familie;
+  const KB = 150, KH = 56, LUECKE = 22, EBENE = 132;
+
+  /* Wurzel ist das Paar; darunter die Kinder */
+  const wurzel = { paar:F.paar, kinder:F.kinder || [] };
+  let naechstesX = 0;
+
+  function auslegen(k, tiefe){
+    k._y = tiefe * EBENE;
+    const breite = k.paar ? KB * 2 + 16 : KB;
+    if(!k.kinder || !k.kinder.length){
+      k._x = naechstesX + breite / 2;
+      naechstesX += breite + LUECKE;
+      return;
+    }
+    k.kinder.forEach(c => auslegen(c, tiefe + 1));
+    const erst = k.kinder[0]._x, letzt = k.kinder[k.kinder.length - 1]._x;
+    k._x = (erst + letzt) / 2;
+    naechstesX = Math.max(naechstesX, k._x + breite / 2 + LUECKE);
+  }
+  auslegen(wurzel, 0);
+
+  /* Bei Bedarf nach rechts schieben, damit nichts negativ wird */
+  let minX = Infinity, maxX = -Infinity, maxY = 0;
+  (function messen(k){
+    const halb = (k.paar ? KB * 2 + 16 : KB) / 2;
+    minX = Math.min(minX, k._x - halb); maxX = Math.max(maxX, k._x + halb);
+    maxY = Math.max(maxY, k._y);
+    (k.kinder || []).forEach(messen);
+  })(wurzel);
+  const rand = 30, verschub = rand - minX;
+  const breiteGesamt = (maxX - minX) + rand * 2;
+  const hoeheGesamt = maxY + KH + rand * 2;
+
+  const teile = [];
+  (function zeichnen(k, elternRolle){
+    const x = k._x + verschub, y = k._y + rand;
+
+    /* Linien zu den Kindern */
+    (k.kinder || []).forEach(c => {
+      const cx = c._x + verschub, cy = c._y + rand;
+      const mitte = y + KH + (EBENE - KH) / 2;
+      teile.push(`<path class="baum-linie" d="M ${x} ${y + KH} V ${mitte} H ${cx} V ${cy}"/>`);
+    });
+
+    if(k.paar){
+      const links = x - KB - 8, rechts = x + 8;
+      k.paar.forEach((person, i) => {
+        const px = i === 0 ? links : rechts;
+        teile.push(`<g class="baum-person" data-id="${sicher(person.id||"")}" data-name="${sicher(person.name)}" data-jahr="${sicher(person.jahr||"")}" data-rolle="${i===0?"Oma":"Opa"}">
+          <rect class="baum-kasten baum-kasten--paar" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
+          <text class="baum-name baum-name--hell" x="${px + KB/2}" y="${y + 24}">${sicher(person.name)}</text>
+          <text class="baum-jahr baum-jahr--hell" x="${px + KB/2}" y="${y + 42}">${sicher(person.jahr||"")}</text>
+        </g>`);
+      });
+      teile.push(`<path class="baum-herz" d="M ${x} ${y + KH/2 + 5} l -6 -7 a 4 4 0 0 1 6 -5 a 4 4 0 0 1 6 5 z"/>`);
+    }else{
+      const beschriftung = k.partner && k.partner !== ""
+        ? `<text class="baum-jahr" x="${x}" y="${y + KH + 16}">mit ${sicher(k.partner)}</text>` : "";
+      teile.push(`<g class="baum-person" data-id="${sicher(k.id||"")}" data-name="${sicher(k.name)}" data-jahr="${sicher(k.jahr||"")}" data-rolle="${sicher(k.rolle || elternRolle)}" data-text="${sicher(k.text||"")}" data-partner="${sicher(k.partner||"")}">
+        <rect class="baum-kasten" x="${x - KB/2}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
+        <text class="baum-name" x="${x}" y="${y + 24}">${sicher(k.name)}</text>
+        <text class="baum-jahr" x="${x}" y="${y + 42}">${sicher(k.jahr||"")}</text>
+      </g>${beschriftung}`);
+    }
+    const rollen = { "Das Paar":"Tochter", "Tochter":"Enkelkind", "Enkelkind":"Urenkel" };
+    (k.kinder || []).forEach(c => zeichnen(c, rollen[elternRolle] || "Tochter"));
+  })(wurzel, "Das Paar");
+
+  $("#baum-inhalt").innerHTML =
+    `<svg width="${breiteGesamt}" height="${hoeheGesamt}" viewBox="0 0 ${breiteGesamt} ${hoeheGesamt}" xmlns="http://www.w3.org/2000/svg">${teile.join("")}</svg>`;
+
+  /* Positionen merken, damit man einzelne Personen anspringen kann */
+  baumPunkte = {};
+  (function sammeln(k){
+    if(k.paar){ k.paar.forEach(pp => baumPunkte[pp.id] = { x:k._x + verschub, y:k._y + rand }); }
+    else if(k.id){ baumPunkte[k.id] = { x:k._x + verschub, y:k._y + rand }; }
+    (k.kinder || []).forEach(sammeln);
+  })(wurzel);
+
+  baumSteuerung = buehneSteuern($("#baum-buehne"), $("#baum-inhalt"));
+  const steuerung = baumSteuerung;
+  steuerung.einpassen();
+  addEventListener("resize", () => { if(!$("#ansicht-stammbaum").hidden) steuerung.einpassen(); });
+
+  $("#baum-inhalt").addEventListener("click", e => {
+    const g = e.target.closest(".baum-person");
+    if(!g) return;
+    document.querySelectorAll(".baum-person").forEach(p => p.classList.remove("ist-gewaehlt"));
+    g.classList.add("ist-gewaehlt");
+    const karte = $("#person-karte");
+    karte.hidden = false;
+    const partner = g.dataset.partner && g.dataset.partner !== "Platzhalter"
+      ? " · mit " + g.dataset.partner : "";
+    karte.innerHTML = "<h3>" + g.dataset.name + "</h3>" +
+      '<p class="rolle">' + g.dataset.rolle +
+      (g.dataset.jahr ? " · " + g.dataset.jahr : "") + partner + "</p>" +
+      "<p>" + (g.dataset.text || "Platzhalter") + "</p>";
+  });
+}
+
+/* Eine bestimmte Person im Baum ansteuern und hervorheben. */
+function personZeigen(id){
+  const tun = () => {
+    const g = document.querySelector('.baum-person[data-id="' + id + '"]');
+    const punkt = baumPunkte[id];
+    if(punkt && baumSteuerung) baumSteuerung.zentrieren(punkt.x, punkt.y, 1.15);
+    document.querySelectorAll(".baum-person").forEach(x => x.classList.remove("ist-ziel","ist-gewaehlt"));
+    if(g){ g.classList.add("ist-ziel"); g.dispatchEvent(new Event("click", { bubbles:true })); }
+  };
+  requestAnimationFrame(() => requestAnimationFrame(tun));
+}
+
+/* Einen bestimmten Ort auf der Karte ansteuern. */
+function ortZeigen(id){
+  const nr = (DATEN.orte || []).findIndex(o => o.id === id);
+  if(nr < 0) return;
+  const tun = () => {
+    if(!karteObjekt) return setTimeout(tun, 220);
+    const o = DATEN.orte[nr];
+    karteObjekt.invalidateSize();
+    karteObjekt.setView([o.lat, o.lng], 14, { animate:false });
+    if(karteNadeln[nr]) karteNadeln[nr].openPopup();
+  };
+  setTimeout(tun, 120);
+}
+
+/* ---------- Karte -------------------------------------------------------- */
+function karteBauen(){
+  const orte = DATEN.orte || [];
+
+  /* Liste immer aufbauen – sie funktioniert auch ohne Kartendienst */
+  $("#orte-liste").innerHTML = orte.map((o, i) =>
+    '<li data-nr="' + i + '"><b>' + sicher(o.name) + "</b>" +
+    '<span class="wann">' + sicher(o.jahr || "") + "</span>" +
+    '<span class="was">' + sicher(o.text || "") + "</span></li>").join("");
+
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+  document.head.appendChild(css);
+
+  const skript = document.createElement("script");
+  skript.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+  skript.onload = () => {
+    const karte = L.map("karte", { scrollWheelZoom:true });
+    karteObjekt = karte;
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom:18, attribution:"© OpenStreetMap"
+    }).addTo(karte);
+
+    const nadeln = karteNadeln = orte.map(o => {
+      const nadel = L.marker([o.lat, o.lng], {
+        icon: L.divIcon({
+          className:"", iconSize:[16,16], iconAnchor:[8,8],
+          html:'<div class="karten-nadel nadel--' + (o.art || "ort") + '"></div>'
+        })
+      }).addTo(karte);
+      nadel.bindPopup("<b>" + sicher(o.name) + "</b><br>" +
+                      (o.jahr ? sicher(o.jahr) + "<br>" : "") + sicher(o.text || ""));
+      return nadel;
+    });
+    /* Der Weg durch die Wohnorte, in zeitlicher Reihenfolge */
+    const weg = orte.filter(o => o.art === "wohnort");
+    if(weg.length > 1){
+      const punkte = weg.map(o => [o.lat, o.lng]);
+      L.polyline(punkte, {
+        color:"#2a2722", weight:2.5, opacity:.75, dashArray:"1 9", lineCap:"round"
+      }).addTo(karte);
+      /* kleine Nummern an den Stationen des Wegs */
+      weg.forEach((o, i) => {
+        L.marker([o.lat, o.lng], {
+          icon: L.divIcon({
+            className:"", iconSize:[22,22], iconAnchor:[-6,20],
+            html:'<div class="weg-nummer">' + (i + 1) + "</div>"
+          }),
+          interactive:false
+        }).addTo(karte);
+      });
+    }
+
+    if(nadeln.length) karte.fitBounds(L.latLngBounds(orte.map(o => [o.lat, o.lng])).pad(.18));
+
+    $("#orte-liste").addEventListener("click", e => {
+      const li = e.target.closest("li");
+      if(!li) return;
+      const o = orte[+li.dataset.nr];
+      karte.setView([o.lat, o.lng], 14, { animate:true });
+      nadeln[+li.dataset.nr].openPopup();
+      document.getElementById("karte").scrollIntoView({ behavior:"smooth", block:"center" });
+    });
+  };
+  skript.onerror = () => {
+    document.getElementById("karte").innerHTML =
+      '<div class="karten-fehler">Die Karte konnte nicht geladen werden – ohne Internet geht es nicht. Die Orte stehen unten in der Liste.</div>';
+  };
+  document.head.appendChild(skript);
+}
+
+/* ---------- Start ---------- */
+async function aufbauen(){
+  kopfAufbauen();
+  strahlAufbauen();
+  $("#gb-liste").innerHTML = '<p class="gb-leer">Wird geladen …</p>';
+  await eintraegeLaden();
+  eintraegeZeigen();
+  nachladenStarten();
+  if(speicherAktiv){
+    $("#gb-status").textContent = "Alle Einträge sind für alle Besucher sichtbar.";
+  }
+}
+</script>
+</body>
+</html>

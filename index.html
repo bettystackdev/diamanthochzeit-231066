@@ -473,7 +473,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .uebersicht-knopf:hover{background:#fff;transform:translateY(-2px)}
 
 .sprung{
-  display:inline-flex;align-items:center;gap:7px;margin-top:18px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;margin:18px 8px 0 0;cursor:pointer;
   font-family:var(--stempel);font-size:13px;font-weight:500;
   color:var(--patina);background:transparent;
   border:1px solid rgba(74,90,72,.45);border-radius:999px;padding:8px 16px;
@@ -527,26 +527,6 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .person-karte p{margin:0;color:var(--tinte-leise);max-width:62ch;line-height:1.6}
 
 /* Karte */
-.karten-feld{position:relative}
-.fern-feld{
-  position:absolute;right:14px;bottom:24px;z-index:500;max-width:220px;
-  padding:14px 16px;border-radius:16px;
-  background:rgba(246,245,236,.95);border:1px solid rgba(213,209,192,.95);
-  box-shadow:0 10px 26px -14px rgba(18,26,16,.6);
-}
-.fern-feld[hidden]{display:none}
-.fern-feld b{display:block;font-family:var(--serif-display);font-size:18px;font-weight:500}
-.fern-feld .pfeil{
-  float:right;font-size:20px;color:var(--label);line-height:1;margin-left:8px;
-}
-.fern-feld .weite{font-family:var(--stempel);font-size:12px;color:var(--label);display:block;margin-bottom:5px}
-.fern-feld p{margin:4px 0 0;font-size:14px;color:var(--tinte-leise);line-height:1.45}
-@media (max-width:560px){
-  .fern-feld{right:10px;bottom:14px;max-width:170px;padding:11px 13px}
-  .fern-feld b{font-size:16px}
-  .fern-feld p{font-size:13px}
-}
-
 #karte{
   height:min(66svh,560px);border-radius:16px;overflow:hidden;
   border:1px solid rgba(213,205,189,.9);background:#e7e2d6;
@@ -567,6 +547,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .nadel--kind{background:var(--patina)}
 .nadel--ort{background:var(--sepia)}
 .nadel--enkel{background:var(--diamant)}
+.nadel--elternhaus{background:#9a7b9c}
 .karte-legende{
   display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-bottom:16px;
   font-family:var(--stempel);font-size:13px;color:var(--tinte-leise);
@@ -577,6 +558,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .punkt--kind{background:var(--patina)}
 .punkt--ort{background:var(--sepia)}
 .punkt--enkel{background:var(--diamant)}
+.punkt--elternhaus{background:#9a7b9c}
 .weg-nummer{
   width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   background:rgba(247,244,237,.95);border:1px solid rgba(42,39,34,.55);
@@ -595,9 +577,24 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   transition:background .2s,transform .2s;
 }
 .orte-liste li:hover{background:#fff;transform:translateY(-2px)}
+/* Orte außerhalb der Karte: nur lesen, nicht anspringen */
+.orte-liste li.ist-fern{cursor:default;opacity:.85}
+.orte-liste li.ist-fern:hover{background:rgba(247,244,237,.88);transform:none}
 .orte-liste b{display:block;font-family:var(--serif-display);font-size:20px;font-weight:500}
 .orte-liste .wann{font-family:var(--stempel);font-size:13px;color:var(--patina)}
 .orte-liste .was{color:var(--tinte-leise);font-size:16px;margin-top:5px;display:block}
+.abstand{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding:16px 20px;border-radius:16px;
+  background:rgba(247,244,237,.88);border:1px solid rgba(213,205,189,.9);
+}
+.abstand[hidden]{display:none}
+.abstand-zahl{
+  font-family:var(--serif-display);font-size:clamp(26px,5vw,34px);
+  font-weight:500;color:var(--tinte);line-height:1;
+}
+.abstand-text{font-family:var(--stempel);font-size:14px;color:var(--tinte-leise)}
+
 .galerie{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;
 }
@@ -664,6 +661,11 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .land--besucht{fill:var(--patina);cursor:pointer;transition:fill .2s}
 .land--besucht:hover{fill:#6b8a52}
 .land--besucht.ist-gewaehlt{fill:var(--sepia)}
+.stern path{fill:#c9a227;stroke:#f3f1e8;stroke-width:1.2;stroke-linejoin:round;
+  filter:drop-shadow(0 1px 2px rgba(20,18,15,.4))}
+.sterne-zeile{grid-column:1/-1;cursor:default;background:rgba(201,162,39,.09);border-color:rgba(201,162,39,.4)}
+.sterne-zeile:hover{background:rgba(201,162,39,.09)}
+.sterne-zeile b::before{content:"★ ";color:#c9a227}
 .land--besucht:focus{outline:none}                       /* Maus: kein Rahmen */
 .land--besucht:focus-visible{stroke:var(--tinte);stroke-width:2.5}   /* Tastatur: dicker Rand */
 
@@ -684,11 +686,15 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .laender-liste .was{display:block;font-size:15px;color:var(--tinte-leise);margin-top:3px}
 
 .route-karte{
-  height:300px;border-radius:12px;overflow:hidden;margin-top:4px;
+  height:340px;border-radius:12px;overflow:hidden;margin-top:4px;
   border:1px solid rgba(213,209,192,.9);background:#e7e4d6;
 }
-.nadel--route{background:var(--patina)}
-@media (max-width:560px){.route-karte{height:230px}}
+.nadel--route{
+  width:100%;height:100%;background:#f7f4ed;border:2px solid var(--patina);
+  box-shadow:0 1px 4px rgba(20,18,15,.35);
+}
+.nadel--route.nadel--rand{background:var(--patina);border-color:#f7f4ed;border-width:2.5px}
+@media (max-width:560px){.route-karte{height:260px}}
 .karten-fehler{padding:26px;text-align:center;color:var(--tinte-leise)}
 
 /* ============================================================
@@ -897,23 +903,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .ansicht{padding:30px 16px 70px}
   .buehne{height:min(62svh,460px);border-radius:16px}
   .karten-feld{position:relative}
-.fern-feld{
-  position:absolute;right:14px;bottom:24px;z-index:500;max-width:220px;
-  padding:14px 16px;border-radius:16px;
-  background:rgba(246,245,236,.95);border:1px solid rgba(213,209,192,.95);
-  box-shadow:0 10px 26px -14px rgba(18,26,16,.6);
-}
-.fern-feld[hidden]{display:none}
-.fern-feld b{display:block;font-family:var(--serif-display);font-size:18px;font-weight:500}
-.fern-feld .pfeil{
-  float:right;font-size:20px;color:var(--label);line-height:1;margin-left:8px;
-}
-.fern-feld .weite{font-family:var(--stempel);font-size:12px;color:var(--label);display:block;margin-bottom:5px}
-.fern-feld p{margin:4px 0 0;font-size:14px;color:var(--tinte-leise);line-height:1.45}
 @media (max-width:560px){
-  .fern-feld{right:10px;bottom:14px;max-width:170px;padding:11px 13px}
-  .fern-feld b{font-size:16px}
-  .fern-feld p{font-size:13px}
 }
 
 #karte{height:min(58svh,440px);border-radius:16px}
@@ -1058,16 +1048,14 @@ textarea.gb-feld{min-height:110px;resize:vertical}
     <button type="button" class="zurueck" data-zurueck>Zurück zur Zeitleiste</button>
     <div class="ansicht-kopf"><h2>Die Orte</h2></div>
     <div class="karte-legende">
+      <span><i class="punkt punkt--elternhaus"></i>Die Elternhäuser</span>
       <span><i class="punkt punkt--wohnort"></i>Wohnorte</span>
       <span><i class="punkt punkt--kind"></i>Die Töchter heute</span>
       <span><i class="punkt punkt--enkel"></i>Die Enkel heute</span>
       <span><i class="punkt punkt--ort"></i>Weitere Orte</span>
       <span><i class="strich-legende"></i>Der Weg der Umzüge</span>
     </div>
-    <div class="karten-feld">
-      <div id="karte"></div>
-      <div class="fern-feld" id="fern-feld" hidden></div>
-    </div>
+    <div id="karte"></div>
     <ul class="orte-liste" id="orte-liste"></ul>
   </section>
 
@@ -1128,7 +1116,7 @@ const DATEN = {
      ---------------------------------------------------------------------- */
   familie: {
 
-    /* Oma und Opa – bekommen bewusst keine Beschreibung */
+    /* Hildegard und Peter – bekommen bewusst keine Beschreibung */
     paar: [
       { id:"oma", name:"Hildegard", jahr:"* 1943" },
       { id:"opa", name:"Peter",     jahr:"* 1943" }
@@ -1140,7 +1128,7 @@ const DATEN = {
       { id:"t1",
         name:    "Platzhalter",     // ← Vorname Tochter 1
         jahr:    "* 1967",
-        partner:     "Dr. Zaunkönig",   // ← Spitzname, echten Namen eintragen
+        partner:     "Der Künstler",    // ← Spitzname, echten Namen eintragen
         partnerText: "Die Künstlerseele der Familie. Für jeden Geburtstag baut und werkelt er wochenlang, und fehlt dann selbst, weil ausgerechnet an dem Tag ein Kind krank ist oder ein Hund gehütet werden muss. Beschweren tut er sich zuverlässig darüber – allzu unglücklich wirkt er beim Verpassen des Weihnachtsliedersingens aber nie.",
         rolle:   "Die Älteste",
         text:    "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",     // ← Probetext, später ersetzen
@@ -1153,7 +1141,8 @@ const DATEN = {
             rolle: "Platzhalter",   // ← kurze Rolle, z. B. "Der Erstgeborene"
             text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 1
 
-          /* ── ENKEL 2 · Kind von Tochter 1, geboren 2001 ── */
+          /* ── ENKEL 2 · Kind von Tochter 1, geboren 2001.
+                Wohnt in der Alexander-Heß-Straße. ── */
           { id:"e2",
             name:  "Platzhalter",   // ← Vorname Enkel 2
             jahr:  "* 2001",
@@ -1165,8 +1154,8 @@ const DATEN = {
       { id:"t2",
         name:    "Platzhalter",     // ← Vorname Tochter 2
         jahr:    "* 1969",
-        partner:     "Platzhalter",  // ← Name ihres Mannes
-        partnerText: "Platzhalter",  // ← HIER seine Beschreibung
+        partner:     "Der HR-Gärtner",  // ← Spitzname, echten Namen eintragen
+        partnerText: "Platzhalter",     // ← HIER seine Beschreibung
         rolle:   "Die Mittlere",
         text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 2
         kinder:[
@@ -1178,9 +1167,27 @@ const DATEN = {
             rolle: "Platzhalter",
             text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 3
 
-          /* ── ENKEL 4 · Kind von Tochter 2, geboren 2004 ── */
-          /* ── ENKELIN 4 · Kind von Tochter 2, geboren 2002.
-                An ihr hängt der Urenkel. ── */
+          /* ── ENKEL 5 · Kind von Tochter 2, geboren 2004.
+                Wohnt Am Borkenberg. ── */
+          { id:"e5",
+            name:  "Platzhalter",   // ← Vorname Enkel 5
+            jahr:  "* 2004",
+            rolle: "Platzhalter",
+            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 5
+      ]},
+
+      /* ═══ KIND 3 · die jüngste Tochter, geboren 1976 ═══════════════════ */
+      { id:"t3",
+        name:    "Platzhalter",     // ← Vorname Tochter 3
+        jahr:    "* 1976",
+        partner:     "Der Mann mit dem Unimog",  // ← Spitzname, echten Namen eintragen
+        partnerText: "Platzhalter",              // ← HIER seine Beschreibung
+        rolle:   "Die Jüngste",
+        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 3
+        kinder:[
+
+          /* ── ENKELIN 4 · Kind von Tochter 3, geboren 2002.
+                An ihr hängt der Urenkel. Wohnt in der Hans-Thoma-Straße. ── */
           { id:"e4",
             name:  "Platzhalter",   // ← Vorname Enkelin 4
             jahr:  "* 2002",
@@ -1195,25 +1202,6 @@ const DATEN = {
                 rolle: "Der Urenkel",
                 text:  "Platzhalter" }  // ← HIER die Beschreibung des Urenkels
           ]}
-      ]},
-
-      /* ═══ KIND 3 · die jüngste Tochter, geboren 1976 ═══════════════════ */
-      { id:"t3",
-        name:    "Platzhalter",     // ← Vorname Tochter 3
-        jahr:    "* 1976",
-        partner:     "Platzhalter",  // ← Name ihres Mannes
-        partnerText: "Platzhalter",  // ← HIER seine Beschreibung
-        rolle:   "Die Jüngste",
-        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 3
-        kinder:[
-
-          /* ── ENKEL 5 · Kind von Tochter 3, geboren 2004.
-                Nur an diesem Enkel hängt der Urenkel. ── */
-          { id:"e5",
-            name:  "Platzhalter",   // ← Vorname Enkel 5
-            jahr:  "* 2004",
-            rolle: "Platzhalter",
-            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 5
       ]}
     ]
   },
@@ -1230,19 +1218,25 @@ const DATEN = {
        Die Kennungen (id) bitte nicht ändern.                                  */
 
     /* ── Die Wohnorte, in der Reihenfolge der Umzüge ── */
-    { id:"frankfurt",    name:"Haus der Volksarbeit", art:"wohnort", jahr:"1966",
-      text:"Hier wurde geheiratet – und hier ist Opa aufgewachsen.",
+    /* ── Die Elternhäuser. Zusammen gewohnt haben die beiden hier nie,
+          deshalb gehören sie nicht in die Umzugslinie. ── */
+    { id:"frankfurt",    name:"Haus der Volksarbeit", art:"elternhaus", jahr:"bis 1966",
+      text:"Peters Elternhaus – und der Ort der Hochzeitsfeier.",
       adresse:"Eschenheimer Anlage 21, 60318 Frankfurt am Main" },
 
-    { id:"muehlberg",    name:"Am Mühlberg",       art:"wohnort", jahr:"1966",
-      text:"Die erste eigene Wohnung. Die genaue Adresse ist nicht mehr bekannt – der Punkt sitzt an der S-Bahn-Station.",
-      lat:50.1017, lng:8.7003 },
+    { id:"weberstrasse", name:"Weberstraße 57", art:"elternhaus", jahr:"bis 1966",
+      text:"Hildegards Elternhaus.",
+      adresse:"Weberstraße 57, 60318 Frankfurt am Main" },
 
-    { id:"heusenstamm",  name:"Heusenstamm",       art:"wohnort", jahr:"Platzhalter",
-      text:"Platzhalter",              // ← Jahr und Adresse nachtragen
-      adresse:"Heusenstamm" },         // ← vorerst die Ortsmitte
+    { id:"muehlberg",    name:"Steinhausenstraße", art:"wohnort", jahr:"1966",
+      text:"Die erste eigene Wohnung, am Mühlberg.",
+      adresse:"Steinhausenstraße, 60599 Frankfurt am Main" },
 
-    { id:"altkoenig",    name:"Altkönigstraße 19", art:"wohnort", jahr:"1978",
+    { id:"heusenstamm",  name:"Heusenstamm",       art:"wohnort", jahr:"1969",
+      text:"Der Umzug kurz nach der Geburt der zweiten Tochter.",
+      adresse:"Heusenstamm" },         // ← genaue Adresse fehlt, vorerst die Ortsmitte
+
+    { id:"altkoenig",    name:"Altkönigstraße 19", art:"wohnort", jahr:"1972",
       text:"Platzhalter",
       adresse:"Altkönigstraße 19, 61440 Oberursel" },
 
@@ -1251,12 +1245,8 @@ const DATEN = {
       adresse:"Kupferhammerweg 54, 61440 Oberursel" },
 
     /* ── Wo die beiden herkommen ── */
-    { id:"weberstrasse", name:"Weberstraße 57", art:"ort", jahr:"bis 1966",
-      text:"Omas Elternhaus.",
-      adresse:"Weberstraße 57, 60318 Frankfurt am Main" },
-
-    { id:"stbernhard",   name:"St. Bernhard", art:"ort", jahr:"1956",
-      text:"Hier haben sie sich kennengelernt.",
+    { id:"stbernhard",   name:"St. Bernhard", art:"ort", jahr:"1956 · 1966",
+      text:"Hier haben sie sich kennengelernt – und hier wurden sie getraut.",
       adresse:"St. Bernhard, Eschersheimer Landstraße, Frankfurt am Main" },
 
     /* ── Weitere Orte ── */
@@ -1282,23 +1272,22 @@ const DATEN = {
       adresse:"Am Rosengärtchen 9, 61440 Oberursel" },
 
     /* ── Wo die Enkel heute wohnen ── */
-    { id:"enkel2", name:"Alexanderstraße", art:"enkel", jahr:"heute",
+    { id:"enkel2", name:"Alexander-Heß-Straße", art:"enkel", jahr:"heute",
       text:"Platzhalter",              // ← Enkel 2
-      adresse:"Alexanderstraße, Oberursel" },   // ← Straßenname und Ort prüfen
+      adresse:"Alexander-Heß-Straße, Oberursel" },  // ← Schreibweise prüfen
 
-    { id:"enkel4", name:"Hans-Thoma-Straße", art:"enkel", jahr:"heute",
+    { id:"enkel4", name:"Hans-Thoma-Straße 8", art:"enkel", jahr:"heute",
       text:"Hier wohnen Enkelin 4 und der Urenkel.",
-      adresse:"Hans-Thoma-Straße, Oberursel" },  // ← Ort prüfen
+      adresse:"Hans-Thoma-Straße 8, 61440 Oberursel" },
 
     { id:"enkel5", name:"Am Borkenberg", art:"enkel", jahr:"heute",
       text:"Platzhalter",              // ← Enkel 5
       adresse:"Am Borkenberg, 61440 Oberursel" },
 
-    /* ── Weit weg: erscheint als Hinweisfeld am Rand der Karte,
-          damit die Karte nicht bis Bayern herauszoomen muss. ── */
+    /* ── Weit weg: steht nur in der Liste unter der Karte,
+          nicht als Nadel – sonst müsste die Karte bis Bayern herauszoomen. ── */
     { id:"muenchen", name:"München", art:"fern", jahr:"heute",
-      text:"Platzhalter",              // ← Enkel 1 und Enkel 3
-      richtung:"Südosten", entfernung:"rund 300 km" }
+      text:"Platzhalter" }             // ← wer dort wohnt
   ],
 
   /* ---- Kopfbereich ------------------------------------------------------ */
@@ -1315,10 +1304,10 @@ const DATEN = {
   /* ---- Die Lebensstationen ---------------------------------------------
      "Platzhalter" = fehlt noch. Was dort hin soll, steht als Notiz // rechts.
      Bausteine je Station, frei kombinierbar:
-        { art:"zitat",  text:"…", von:"Oma" }
+        { art:"zitat",  text:"…", von:"Hildegard" }
         { art:"notiz",  titel:"Wusstest du?", text:"…" }
         { art:"frage",  text:"Frage?", antwort:"Antwort" }
-        { art:"audio",  quelle:"aufnahme.mp3", titel:"Opa erzählt" }
+        { art:"audio",  quelle:"aufnahme.mp3", titel:"Peter erzählt" }
         { art:"video",  quelle:"film.mp4", titel:"Super-8", vorschaubild:"bild.jpg" }
         { art:"video",  quelle:"https://youtu.be/XXXXXXXXXXX", titel:"Hochzeitsfilm" }
      ---------------------------------------------------------------------- */
@@ -1327,12 +1316,16 @@ const DATEN = {
     {
       jahr: "1943",
       titel: "Zwei Kinder in Frankfurt",
-      ortId: "weberstrasse",
+      ortId: ["weberstrasse", "frankfurt"],   // beide Elternhäuser
       ort: "Frankfurt am Main",
-      text: "Platzhalter",              // Oma wächst in der Weberstraße 57 auf, Opa im Haus der Volksarbeit
-      bild: "",                         // bilder/01-1944-zwei-kinder-in.jpg
+      text: "Hildegard wächst in der Weberstraße auf, Peter an der Eschenheimer Anlage. Ein paar Straßen dazwischen, mehr nicht.",
+      bild: "",                         // bilder/01-1943-zwei-kinder-in.jpg
       bildunterschrift: "Platzhalter",
-      bausteine: []
+      bausteine: [
+        /* rechnet die Luftlinie zwischen den beiden Elternhäusern selbst aus */
+        { art:"abstand", von:"weberstrasse", nach:"frankfurt",
+          text:"Luftlinie zwischen den beiden Elternhäusern" }
+      ]
     },
     /* ═══ STATION 02 · 1956 · Wie alles anfing ══════════════════════════════ */
     {
@@ -1345,7 +1338,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 03 · 1966 · Hildegards erster Arbeitstag ══════════════════ */
+    /* ═══ STATION 03 · Anfang der 1960er · Hildegards erster Arbeitstag ═══════════ */
     {
       jahr: "Anfang der 1960er",        // ab 18, genaues Jahr fehlt
       titel: "Hildegards erster Arbeitstag",
@@ -1359,13 +1352,13 @@ const DATEN = {
     {
       jahr: "1966",
       titel: "Der 23. Oktober",
-      ortId: "frankfurt",
-      ort: "Haus der Volksarbeit, Frankfurt",
+      ortId: ["stbernhard", "frankfurt"],   // Kirche und Empfang
+      ort: "St. Bernhard · Haus der Volksarbeit",
       text: "Platzhalter",              // Wo gefeiert, wer dabei, was passiert
       bild: "",                         // bilder/04-1966-der-23-oktober.jpg
       bildunterschrift: "Hochzeitstag, 23.10.1966",
       bausteine: [
-        { art:"zitat", text:"Und jedem Anfang wohnt ein Zauber inne.", von:"Hermann Hesse, Stufen" }
+        { art:"zitat", text:"Und jedem Anfang wohnt ein Zauber inne." }
       ]
     },
     /* ═══ STATION 05 · 1966 · Die erste eigene Wohnung ══════════════════════ */
@@ -1390,7 +1383,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 07 · 1968 · Peters erster Arbeitstag ══════════════════════ */
+    /* ═══ STATION 07 · 1968 · Peters erster Arbeitstag ════════════════════════ */
     {
       jahr: "1968",
       titel: "Peters erster Arbeitstag",
@@ -1412,7 +1405,29 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 09 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
+    /* ═══ STATION 09 · 1969 · Der erste Umzug ═══════════════════════════════ */
+    {
+      jahr: "1969",
+      titel: "Der erste Umzug",
+      ortId: "heusenstamm",
+      ort: "Heusenstamm",
+      text: "Platzhalter",              // Kurz nach der zweiten Tochter – warum Heusenstamm, wie war das Haus
+      bild: "",                         // bilder/09-1969-der-erste-umzug.jpg
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 10 · 1972 · Der zweite Umzug ══════════════════════════════ */
+    {
+      jahr: "1972",
+      titel: "Der zweite Umzug",
+      ortId: "altkoenig",
+      ort: "Platzhalter",               // Zielort
+      text: "Platzhalter",              // Woher, wohin, warum
+      bild: "",                         // bilder/11-1978-der-erste-umzug.jpg
+      bildunterschrift: "Das neue Zuhause",
+      bausteine: []
+    },
+    /* ═══ STATION 11 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
     {
       jahr: "In den 1970ern",           // genaues Jahr nachtragen
       titel: "Der erste gemeinsame Urlaub",
@@ -1432,9 +1447,9 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 10 · Platzhalter · Das erste Haustier ═════════════════════ */
+    /* ═══ STATION 12 · In den 1970ern · Das erste Haustier ═════════════════════ */
     {
-      jahr: "Platzhalter",              // vor 1976, genaues Jahr fehlt
+      jahr: "In den 1970ern",           // genaues Jahr fehlt
       titel: "Das erste Haustier",
       ort: "Zuhause",
       text: "Platzhalter",              // Womit fing es an, was kam über die Jahre dazu
@@ -1445,7 +1460,7 @@ const DATEN = {
         { art:"frage", text:"Platzhalter", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 11 · 1976 · Die dritte Tochter ════════════════════════════ */
+    /* ═══ STATION 13 · 1976 · Die dritte Tochter ════════════════════════════ */
     {
       jahr: "1976",
       titel: "Die dritte Tochter",
@@ -1456,18 +1471,7 @@ const DATEN = {
       bildunterschrift: "Zu fünft",
       bausteine: []
     },
-    /* ═══ STATION 12 · 1978 · Der erste Umzug ═══════════════════════════════ */
-    {
-      jahr: "1978",                     // Jahr unklar – prüfen
-      titel: "Der erste Umzug",
-      ortId: "altkoenig",
-      ort: "Platzhalter",               // Zielort
-      text: "Platzhalter",              // Woher, wohin, warum
-      bild: "",                         // bilder/11-1978-der-erste-umzug.jpg
-      bildunterschrift: "Das neue Zuhause",
-      bausteine: []
-    },
-    /* ═══ STATION 13 · 1991 · Silberne Hochzeit ═════════════════════════════ */
+    /* ═══ STATION 14 · 1991 · Silberne Hochzeit ═════════════════════════════ */
     {
       jahr: "1991",
       titel: "Silberne Hochzeit",
@@ -1477,10 +1481,10 @@ const DATEN = {
       bild: "",                         // bilder/14-1991-silberne-hochzeit.jpg
       bildunterschrift: "Silberhochzeit, 23.10.1991",
       bausteine: [
-        { art:"zitat", text:"Glück ist das Einzige, was sich verdoppelt, wenn man es teilt.", von:"Albert Schweitzer zugeschrieben" }
+        { art:"zitat", text:"Glück ist das Einzige, was sich verdoppelt, wenn man es teilt." }
       ]
     },
-    /* ═══ STATION 14 · Mitte der 1990er · Davos ═════════════════════════════ */
+    /* ═══ STATION 15 · Mitte der 1990er · Der Mann im blauen Skianzug ═══════ */
     {
       jahr: "Mitte der 1990er",         // Jahr eingrenzbar, siehe Kasten unten
       titel: "Der Mann im blauen Skianzug",
@@ -1489,22 +1493,20 @@ const DATEN = {
       bild: "",                         // bilder/15-1990-davos.jpg
       bildunterschrift: "Davos, Mitte der 1990er",
       bausteine: [
-        { art:"notiz", titel:"Wen sie da getroffen haben",
-          text:"Prinz Charles – heute König Charles III. – mit seinen Söhnen William und Harry. Die Familie fuhr über Jahre hinweg in Klosters Ski, den Nachbarort im selben Skigebiet. Wann genau es war, lässt sich eingrenzen: Charles und Diana trennten sich im Dezember 1992, Diana starb im August 1997. William kam 1982 zur Welt, Harry 1984 – waren beide noch keine 14, muss es vor dem Sommer 1996 gewesen sein. Bleibt ein Winter zwischen 1993 und 1996. Harry war da zwischen 8 und 11, William zwischen 10 und 13." },
-        { art:"frage", text:"Welche Farbe hatte die Mütze?", antwort:"Rot. Der Skianzug war blau. Und Harry hatte schlechte Laune." }
+        { art:"frage", text:"Wen haben sie hier getroffen?", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 15 · 1995 · Das Haus wird still ═══════════════════════════ */
+    /* ═══ STATION 16 · 1995 · Zweisamkeit ═══════════════════════════════════ */
     {
       jahr: "1995",                     // dritte Tochter wird 19
-      titel: "Das Haus wird still",
+      titel: "Zweisamkeit",
       ort: "Platzhalter",
       text: "Platzhalter",              // Die letzte Tochter zieht aus – wie war das für die beiden
       bild: "",                         // bilder/16-1995-das-haus-wird.jpg
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 16 · 1996 · Perlenhochzeit ════════════════════════════════ */
+    /* ═══ STATION 17 · 1996 · Perlenhochzeit ════════════════════════════════ */
     {
       jahr: "1996",
       titel: "Perlenhochzeit",
@@ -1515,32 +1517,49 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 17 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
+    /* ═══ STATION 18 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
     {
       jahr: "1996",                     // prüfen
       titel: "Zum ersten Mal über den Ozean",
       ort: "Australien",                // prüfen
       text: "Platzhalter",              // Wohin, mit wem, was ist geblieben
-      bild: "",                         // bilder/18-1996-zum-ersten-mal.jpg · ← Foto von Oma in Australien
+      bild: "",                         // bilder/18-1996-zum-ersten-mal.jpg · ← Foto von Hildegard in Australien
       bildunterschrift: "Platzhalter",
       bausteine: [
-        /* Opas Radtour, während Oma in Australien war.
-           Punkte einfach ergänzen oder streichen – die Linie folgt der Reihenfolge.
+        /* Peters Radtour, während Hildegard in Australien war: den Main aufwärts bis Bamberg,
+           über den Main-Donau-Kanal nach Kelheim, dann die Donau hinunter bis Passau.
+           Rund 740 km auf ausgeschilderten Radwegen.
+           Punkte ergänzen oder streichen – die Linie folgt der Reihenfolge.
            Koordinaten bei openstreetmap.org per Rechtsklick → "Adresse anzeigen".  */
-        { art:"route", titel:"Und Opa? Fuhr Rad.",
-          text:"Platzhalter",           // ← Wie lange, wie viele Kilometer, allein oder mit wem
+        { art:"route", titel:"Und Peter? Fuhr Rad.",
+          text:"Platzhalter",           // ← Wie lange war er unterwegs, allein oder mit wem, wo übernachtet
           punkte:[
-            { name:"Platzhalter",  lat:50.2017, lng:8.5776 },   // ← Start, hier: Oberursel
-            { name:"Mainz",        lat:49.9929, lng:8.2473 },
-            { name:"Bingen",       lat:49.9667, lng:7.8991 },
-            { name:"Boppard",      lat:50.2311, lng:7.5900 },
-            { name:"Koblenz",      lat:50.3569, lng:7.5890 },
-            { name:"Bonn",         lat:50.7339, lng:7.0997 },
-            { name:"Köln",         lat:50.9375, lng:6.9603 }    // ← Ziel anpassen
+            { name:"Oberursel",      lat:50.2014, lng:8.5776 },
+            { name:"Frankfurt",      lat:50.1109, lng:8.6821 },
+            { name:"Seligenstadt",   lat:50.0447, lng:8.9736 },
+            { name:"Aschaffenburg",  lat:49.9769, lng:9.1503 },
+            { name:"Miltenberg",     lat:49.7047, lng:9.2586 },
+            { name:"Wertheim",       lat:49.7594, lng:9.5108 },
+            { name:"Lohr am Main",   lat:49.9903, lng:9.5769 },
+            { name:"Karlstadt",      lat:49.9600, lng:9.7717 },
+            { name:"Würzburg",       lat:49.7913, lng:9.9534 },
+            { name:"Kitzingen",      lat:49.7395, lng:10.1583 },
+            { name:"Volkach",        lat:49.8656, lng:10.2281 },
+            { name:"Schweinfurt",    lat:50.0446, lng:10.2213 },
+            { name:"Haßfurt",        lat:50.0353, lng:10.5133 },
+            { name:"Bamberg",        lat:49.8988, lng:10.9028 },
+            { name:"Erlangen",       lat:49.5897, lng:11.0120 },
+            { name:"Nürnberg",       lat:49.4521, lng:11.0767 },
+            { name:"Beilngries",     lat:49.0325, lng:11.4694 },
+            { name:"Kelheim",        lat:48.9175, lng:11.8747 },
+            { name:"Regensburg",     lat:49.0134, lng:12.1016 },
+            { name:"Straubing",      lat:48.8813, lng:12.5730 },
+            { name:"Deggendorf",     lat:48.8409, lng:12.9611 },
+            { name:"Passau",         lat:48.5667, lng:13.4319 }
           ] }
       ]
     },
-    /* ═══ STATION 18 · 1997 · Das erste Enkelkind ═══════════════════════════ */
+    /* ═══ STATION 19 · 1997 · Das erste Enkelkind ═══════════════════════════ */
     {
       jahr: "1997",
       titel: "Das erste Enkelkind",
@@ -1551,7 +1570,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 19 · Ende der 1990er · Der Garten ═════════════════════════ */
+    /* ═══ STATION 20 · Ende der 1990er · Der Garten ═════════════════════════ */
     {
       jahr: "Ende der 1990er",
       titel: "Der Garten",
@@ -1562,7 +1581,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 20 · 2000 · Das zweite Enkelkind ══════════════════════════ */
+    /* ═══ STATION 21 · 2001 · Das zweite Enkelkind ══════════════════════════ */
     {
       jahr: "2001",
       titel: "Das zweite Enkelkind",
@@ -1573,7 +1592,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 21 · 2002 · Das dritte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 22 · 2002 · Das dritte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das dritte Enkelkind",
@@ -1584,7 +1603,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 22 · 2002 · Das vierte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 23 · 2002 · Das vierte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das vierte Enkelkind",
@@ -1595,19 +1614,18 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 23 · 2004 · Und dann waren es fünf ════════════════════════ */
+    /* ═══ STATION 24 · 2004 · Und dann waren es fünf ════════════════════════ */
     {
       jahr: "2004",
       titel: "Und dann waren es fünf",
+      person: "e5",                     // führt zum fünften Enkelkind
       ort: "",
-      text: "Platzhalter",              // Ein Satz über alle fünf zusammen
+      text: "Das Beste zum Schluss.",
       bild: "",                         // bilder/24-2004-und-dann-waren.jpg
       bildunterschrift: "Alle fünf zusammen",
-      bausteine: [
-        { art:"notiz", titel:"Fünf Enkelkinder", text:"Platzhalter" }    // Namen in Geburtsreihenfolge
-      ]
+      bausteine: []
     },
-    /* ═══ STATION 24 · 2006 · Rubinhochzeit ═════════════════════════════════ */
+    /* ═══ STATION 25 · 2006 · Rubinhochzeit ═════════════════════════════════ */
     {
       jahr: "2006",
       titel: "Rubinhochzeit",
@@ -1618,10 +1636,10 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 25 · 2008 · Der zweite Umzug ══════════════════════════════ */
+    /* ═══ STATION 26 · 2008 · Der dritte Umzug ══════════════════════════════ */
     {
       jahr: "2008",
-      titel: "Der zweite Umzug",
+      titel: "Der dritte Umzug",
       ortId: "kupferhammer",
       ort: "Kupferhammerweg",
       text: "Platzhalter",              // Woher, wohin, warum
@@ -1629,31 +1647,51 @@ const DATEN = {
       bildunterschrift: "Kupferhammerweg",
       bausteine: []
     },
-    /* ═══ STATION 26 · 2008 · Beide im Ruhestand ════════════════════════════ */
+    /* ═══ STATION 27 · 2008 · Beide im Ruhestand ════════════════════════════ */
     {
       jahr: "2008",                     // Jahrgang 1943, mit 65 in den Ruhestand
       titel: "Beide im Ruhestand",
       ort: "Platzhalter",
-      text: "Platzhalter",              // Jahrgang 1943, Regelaltersgrenze 65 = 2008. Auch: Opas Abschied an der Schule, Omas Abschied im Kindergarten
-      bild: "",                         // bilder/27-2009-beide-im-ruhestand.jpg
+      text: "Im Ruhestand wird nicht geruht. Neben vielem anderen wird auch das Reisen weiter fortgeführt.",
+      // ← hier noch ergänzen: Peters Abschied an der Schule, Hildegards Abschied im Kindergarten
+      bild: "",                         // bilder/27-2008-beide-im-ruhestand.jpg
       bildunterschrift: "Platzhalter",
       bausteine: [
         /* Europakarte: Länder einfärben, in denen die beiden im Ruhestand waren.
            Länderkürzel nach ISO (DE, FR, IT, ES …). Die Liste unter der Karte
            baut sich daraus von selbst. "jahr" und "text" sind optional.        */
-        { art:"europa", titel:"Wo sie seitdem waren",
-          text:"Platzhalter",           // ← ein, zwei Sätze zum Reisen im Ruhestand
+        { art:"europa", titel:"Wo sie überall waren",
+          text:"Platzhalter",           // ← ein, zwei Sätze zum Reisen
           laender:[
-            { code:"IT", name:"Italien",     jahr:"Platzhalter", text:"Platzhalter" },
-            { code:"FR", name:"Frankreich",  jahr:"Platzhalter", text:"Platzhalter" },
-            { code:"AT", name:"Österreich",  jahr:"Platzhalter", text:"Platzhalter" },
-            { code:"CH", name:"Schweiz",     jahr:"Platzhalter", text:"Platzhalter" },
-            { code:"NL", name:"Niederlande", jahr:"Platzhalter", text:"Platzhalter" },
-            { code:"ES", name:"Spanien",     jahr:"Platzhalter", text:"Platzhalter" }
+            { code:"HU", name:"Ungarn",      jahr:"", text:"" },
+            { code:"RO", name:"Rumänien",    jahr:"", text:"" },
+            { code:"NL", name:"Niederlande", jahr:"", text:"" },
+            { code:"DK", name:"Dänemark",    jahr:"", text:"" },
+            { code:"SE", name:"Schweden",    jahr:"", text:"" },
+            { code:"NO", name:"Norwegen",    jahr:"", text:"" },
+            { code:"FO", name:"Färöer",      jahr:"", text:"" },
+            { code:"IS", name:"Island",      jahr:"", text:"" },
+            { code:"ES", name:"Spanien",     jahr:"", text:"" },
+            { code:"PT", name:"Portugal",    jahr:"", text:"" },
+            { code:"IT", name:"Italien",     jahr:"", text:"" },
+            { code:"VA", name:"Vatikanstadt", jahr:"", text:"" },
+            { code:"FR", name:"Frankreich",  jahr:"", text:"" },
+            { code:"CH", name:"Schweiz",     jahr:"", text:"" },
+            { code:"AT", name:"Österreich",  jahr:"", text:"" },
+            { code:"CZ", name:"Tschechien",  jahr:"", text:"" }
+          ],
+          /* Besondere Ziele, als Stern auf der Karte */
+          sterne:[
+            { name:"Island",                  lat:64.90, lng:-19.00 },
+            { name:"Färöer",                  lat:62.00, lng: -6.85 },
+            { name:"Lofoten",                 lat:68.20, lng: 13.90 },
+            { name:"Siebenbürgen",            lat:46.50, lng: 24.50 },
+            { name:"Santiago de Compostela",  lat:42.88, lng: -8.54 },
+            { name:"Vatikanstadt",            lat:41.903, lng: 12.453 }
           ] }
       ]
     },
-    /* ═══ STATION 27 · 2016 · Goldene Hochzeit ══════════════════════════════ */
+    /* ═══ STATION 28 · 2016 · Goldene Hochzeit ══════════════════════════════ */
     {
       jahr: "2016",
       titel: "Goldene Hochzeit",
@@ -1663,10 +1701,10 @@ const DATEN = {
       bild: "",                         // bilder/28-2016-goldene-hochzeit.jpg
       bildunterschrift: "Platzhalter",
       bausteine: [
-        { art:"zitat", text:"Wer miteinander alt wird, hat zweimal gelebt.", von:"Altes Sprichwort" }
+        { art:"zitat", text:"Wer miteinander alt wird, hat zweimal gelebt." }
       ]
     },
-    /* ═══ STATION 28 · 2020 · Urgroßeltern ══════════════════════════════════ */
+    /* ═══ STATION 29 · 2020 · Urgroßeltern ══════════════════════════════════ */
     {
       jahr: "2020",
       titel: "Urgroßeltern",
@@ -1677,7 +1715,7 @@ const DATEN = {
       bildunterschrift: "Vier Generationen",
       bausteine: []
     },
-    /* ═══ STATION 29 · 2026 · Sechzig Jahre ═════════════════════════════════ */
+    /* ═══ STATION 30 · 2026 · Sechzig Jahre ═════════════════════════════════ */
     {
       jahr: "2026",
       titel: "Sechzig Jahre",
@@ -1686,9 +1724,7 @@ const DATEN = {
       text: "Platzhalter",              // Was ihr den beiden zum Schluss sagen möchtet
       bild: "",                         // bilder/30-2026-sechzig-jahre.jpg
       bildunterschrift: "Diamantene Hochzeit",
-      bausteine: [
-        { art:"zitat", text:"Es ist besser zu zweit als allein. Fällt einer von ihnen, so hilft ihm sein Gefährte auf. Eine dreifache Schnur reißt nicht leicht.", von:"Prediger 4, 9–12" }
-      ]
+      bausteine: []
     }
   ]
 };
@@ -1817,6 +1853,8 @@ function bausteinHTML(b){
       return '<div class="baustein notiz"><b>' + sicher(b.titel || "Film") + "</b>" + spieler +
              (b.text ? '<p style="margin:10px 0 0">' + sicher(b.text) + "</p>" : "") + "</div>";
     }
+    case "abstand":
+      return abstandHTML(b);
     case "galerie":
       return galerieHTML(b);
     case "europa":
@@ -1838,9 +1876,13 @@ function sprungHTML(s){
            sicher(s.person) + '">Im Stammbaum ansehen</button>';
   }
   if(s.ortId){
-    const o = (DATEN.orte || []).find(x => x.id === s.ortId);
-    return '<button type="button" class="sprung" data-sprung="ort" data-ziel="' + sicher(s.ortId) +
-           '">' + (o ? sicher(o.name) : "Ort") + ' auf der Karte</button>';
+    /* ortId darf eine Kennung sein oder mehrere in eckigen Klammern */
+    const ziele = Array.isArray(s.ortId) ? s.ortId : [s.ortId];
+    return ziele.map(id => {
+      const o = (DATEN.orte || []).find(x => x.id === id);
+      return '<button type="button" class="sprung" data-sprung="ort" data-ziel="' + sicher(id) +
+             '">' + (o ? sicher(o.name) : "Ort") + ' auf der Karte</button>';
+    }).join("");
   }
   return "";
 }
@@ -1923,6 +1965,7 @@ function strahlAufbauen(){
   routenStarten();
   europaStarten();
   galerienStarten();
+  abstaendeStarten();
 }
 
 /* Der Faden wächst mit dem Scrollen mit. */
@@ -2149,6 +2192,31 @@ function baumBauen(){
   const wurzel = { paar:F.paar, kinder:F.kinder || [] };
   let naechstesX = 0;
 
+  /* Lange Namen auf zwei Zeilen brechen, an der ausgewogensten Wortgrenze.
+     Ein Wort, das allein zu lang ist, bleibt stehen und wird kleiner gesetzt. */
+  function namenSatz(name, x, y, klasse){
+    const grenze = 17;                       // Zeichen, die sicher in den Kasten passen
+    if(name.length <= grenze)
+      return `<text class="${klasse}" x="${x}" y="${y}">${sicher(name)}</text>`;
+
+    const worte = name.split(" ");
+    if(worte.length === 1)                   // nichts zu brechen
+      return `<text class="${klasse}" x="${x}" y="${y}" style="font-size:12px">${sicher(name)}</text>`;
+
+    let bester = 1, abstand = Infinity;
+    for(let i = 1; i < worte.length; i++){
+      const oben = worte.slice(0, i).join(" ").length;
+      const unten = worte.slice(i).join(" ").length;
+      const d = Math.abs(oben - unten) + Math.max(0, Math.max(oben, unten) - grenze) * 3;
+      if(d < abstand){ abstand = d; bester = i; }
+    }
+    const oben = worte.slice(0, bester).join(" ");
+    const unten = worte.slice(bester).join(" ");
+    const klein = Math.max(oben.length, unten.length) > grenze ? ' style="font-size:13px"' : "";
+    return `<text class="${klasse}" x="${x}" y="${y - 8}"${klein}>${sicher(oben)}</text>` +
+           `<text class="${klasse}" x="${x}" y="${y + 9}"${klein}>${sicher(unten)}</text>`;
+  }
+
   /* Wie breit ein Knoten baut: allein, als Paar, oder mit angeheiratetem Partner. */
   const knotenBreite = (k) => k.paar ? KB * 2 + 16 : (k.partner ? KB * 2 + 12 : KB);
 
@@ -2209,7 +2277,7 @@ function baumBauen(){
         const px = i === 0 ? links : rechts;
         teile.push(`<g class="baum-person" data-id="${sicher(person.id||"")}" data-name="${sicher(person.name)}" data-jahr="${sicher(person.jahr||"")}" data-rolle="${i===0?"Oma":"Opa"}">
           <rect class="baum-kasten baum-kasten--paar" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-          <text class="baum-name baum-name--hell" x="${px + KB/2}" y="${y + 24}">${sicher(person.name)}</text>
+          ${namenSatz(person.name, px + KB/2, y + 22, "baum-name baum-name--hell")}
           <text class="baum-jahr baum-jahr--hell" x="${px + KB/2}" y="${y + 42}">${sicher(person.jahr||"")}</text>
         </g>`);
       });
@@ -2221,7 +2289,7 @@ function baumBauen(){
 
       teile.push(`<g class="baum-person" data-id="${sicher(k.id||"")}" data-name="${sicher(k.name)}" data-jahr="${sicher(k.jahr||"")}" data-rolle="${sicher(k.rolle || elternRolle)}" data-text="${sicher(k.text||"")}" data-partner="${sicher(k.partner||"")}">
         <rect class="baum-kasten" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-        <text class="baum-name" x="${px + KB/2}" y="${y + 24}">${sicher(k.name)}</text>
+        ${namenSatz(k.name, px + KB/2, y + 22, "baum-name")}
         <text class="baum-jahr" x="${px + KB/2}" y="${y + 42}">${sicher(k.jahr||"")}</text>
       </g>`);
 
@@ -2230,7 +2298,7 @@ function baumBauen(){
         teile.push(`<path class="baum-band" d="M ${x - 6} ${y + KH/2} H ${x + 6}"/>`);
         teile.push(`<g class="baum-person baum-person--partner" data-id="${sicher((k.id||"") + "-partner")}" data-name="${sicher(k.partner)}" data-jahr="" data-rolle="Angeheiratet" data-text="${sicher(k.partnerText||"")}" data-partner="">
           <rect class="baum-kasten baum-kasten--partner" x="${rx}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-          <text class="baum-name baum-name--partner" x="${rx + KB/2}" y="${y + 30}">${sicher(k.partner)}</text>
+          ${namenSatz(k.partner, rx + KB/2, y + 30, "baum-name baum-name--partner")}
         </g>`);
       }
     }
@@ -2350,6 +2418,50 @@ function leafletLaden(){
 }
 
 
+/* ---------- Luftlinie zwischen zwei Orten ------------------------------
+   Rechnet die Entfernung aus den beiden Adressen aus, sobald sie
+   aufgelöst sind. Ohne Internet bleibt der Baustein still.              */
+const abstaende = [];
+function abstandHTML(b){
+  const nr = abstaende.length;
+  abstaende.push(b);
+  return '<div class="baustein abstand" id="abstand-' + nr + '" hidden>' +
+         '<span class="abstand-zahl"></span>' +
+         '<span class="abstand-text">' + sicher(b.text || "Luftlinie") + "</span></div>";
+}
+
+function abstaendeStarten(){
+  abstaende.forEach(async (b, nr) => {
+    const el = document.getElementById("abstand-" + nr);
+    if(!el) return;
+    const orte = DATEN.orte || [];
+    const hole = async (id) => {
+      const o = orte.find(x => x.id === id);
+      if(!o) return null;
+      if(o.lat && o.lng) return o;
+      if(!o.adresse || o.adresse === "Platzhalter") return null;
+      const punkt = await adresseAufloesen(o.adresse);
+      if(punkt){ o.lat = punkt.lat; o.lng = punkt.lng; }
+      return o.lat ? o : null;
+    };
+    const a = await hole(b.von);
+    await new Promise(r => setTimeout(r, 1100));
+    const c = await hole(b.nach);
+    if(!a || !c) return;
+
+    /* Haversine */
+    const R = 6371000, g = Math.PI / 180;
+    const dp = (c.lat - a.lat) * g, dl = (c.lng - a.lng) * g;
+    const x = Math.sin(dp/2)**2 + Math.cos(a.lat*g) * Math.cos(c.lat*g) * Math.sin(dl/2)**2;
+    const m = 2 * R * Math.asin(Math.sqrt(x));
+
+    el.querySelector(".abstand-zahl").textContent =
+      m < 950 ? Math.round(m / 10) * 10 + " Meter"
+              : (m / 1000).toFixed(1).replace(".", ",") + " Kilometer";
+    el.hidden = false;
+  });
+}
+
 /* ---------- Fotogalerie innerhalb einer Station ------------------------- */
 const galerien = [];
 function galerieHTML(b){
@@ -2457,8 +2569,9 @@ function europaStarten(){
 }
 
 /* Umrisse Europas, fest in der Datei – die Karte braucht kein Internet.
-   Quelle: Natural Earth (gemeinfrei), vereinfacht auf das Kartenformat 640×894. */
-const EUROPA_UMRISSE = {"NO":"M626.6 34.8L601.3 44.5L589.3 46.8L595.6 29.8L576.5 20.2L553.4 28.4L546.1 46.1L531.9 56.8L515.9 51.0L496.5 52.1L479.9 39.4L471.0 45.8L461.8 46.8L459.6 62.6L431.5 58.8L427.6 72.2L413.3 72.1L388.6 116.1L365.5 150.1L370.9 158.4L365.7 167.9L351.0 167.5L341.3 190.2L342.2 222.3L351.7 234.5L346.8 262.9L334.4 279.5L327.8 293.4L317.9 278.6L288.5 306.5L268.6 312.2L248.0 299.9L242.7 273.9L238.0 218.2L251.7 202.6L291.0 182.3L320.4 157.4L383.4 77.1L449.3 28.6L481.9 18.0L506.4 19.3L529.1 -0.7L556.2 0.3L582.9 -4.5L629.5 13.2L610.3 19.7L626.6 34.8Z","FR":"M255.8 520.4L262.8 526.7L284.3 531.1L276.7 547.7L274.9 564.9L270.8 569.0L264.0 566.8L264.5 572.9L253.6 586.5L253.4 597.5L260.5 593.7L265.6 604.3L265.0 611.1L269.3 620.2L264.2 627.5L268.0 646.2L276.1 649.3L274.4 659.8L260.9 673.4L231.5 666.9L209.9 674.7L208.2 689.3L190.9 692.4L174.2 681.5L168.8 686.7L141.4 675.7L135.4 666.3L143.1 651.8L146.0 603.7L130.6 578.3L119.6 566.1L96.9 556.8L95.4 539.2L114.7 533.9L139.7 540.2L134.9 512.8L149.0 523.2L183.6 504.3L188.1 484.5L201.1 479.7L203.3 488.2L210.2 488.6L217.1 498.2L227.5 509.6L235.2 507.8L251.5 520.9L255.8 520.4ZM293.9 685.5L303.5 676.3L306.0 697.0L301.1 715.7L294.3 710.8L290.9 694.5L293.9 685.5Z","SE":"M327.8 293.4L334.4 279.5L346.8 262.9L351.7 234.5L342.2 222.3L341.3 190.2L351.0 167.5L365.7 167.9L370.9 158.4L365.5 150.1L388.6 116.1L413.3 72.1L427.6 72.2L431.5 58.8L459.6 62.6L461.8 46.8L471.0 45.8L490.8 57.6L514.1 74.0L514.5 111.2L519.5 120.6L493.9 127.5L479.5 144.3L481.8 159.1L458.1 178.6L429.4 199.4L418.5 233.4L429.1 250.4L443.4 263.8L429.7 291.1L414.2 296.7L408.5 337.3L400.1 359.9L382.0 357.6L373.6 376.7L356.4 377.9L351.6 355.0L339.2 327.6L327.8 293.4Z","BY":"M583.1 358.3L598.8 364.4L600.9 370.4L608.7 367.5L623.2 373.3L624.7 384.6L621.5 391.1L630.8 407.0L636.9 411.4L636.0 415.7L646.0 420.0L650.3 426.4L644.5 431.7L632.5 430.9L629.7 433.1L633.2 441.2L636.8 456.6L624.0 458.1L619.5 463.4L618.5 475.5L612.6 473.2L599.1 474.3L595.2 468.7L589.7 472.9L584.1 469.4L572.3 468.9L555.7 463.1L540.7 461.2L529.2 461.8L521.0 468.3L513.9 469.3L513.6 458.5L509.0 447.3L517.9 442.4L518.0 432.8L513.9 423.6L513.3 412.9L527.6 413.0L543.8 403.9L547.3 390.3L559.5 382.6L558.1 371.7L583.1 358.3Z","UA":"M636.8 456.6L642.4 457.6L646.1 452.1L650.7 453.3L666.1 451.0L675.6 464.7L671.9 469.6L673.1 477.1L685.0 478.2L690.3 488.7L690.0 493.5L708.9 502.0L720.3 498.1L729.5 509.4L738.2 509.2L760.1 517.0L760.3 524.1L754.2 536.8L757.5 550.1L755.2 558.2L740.8 559.9L733.1 566.7L732.6 577.4L720.7 579.4L710.8 587.2L696.9 588.4L684.1 597.5L684.8 610.4L682.6 609.7L680.7 604.9L675.9 603.9L665.3 598.7L661.4 604.7L659.3 602.1L636.2 596.0L635.2 587.0L621.4 590.0L615.9 603.3L604.3 621.1L597.6 617.0L590.6 620.9L583.9 616.4L587.7 613.8L594.4 597.8L593.3 593.5L596.4 591.5L597.9 594.9L606.7 595.6L610.6 593.8L607.8 591.4L608.9 587.8L603.7 581.6L601.5 571.5L596.1 567.6L597.2 559.4L590.5 552.9L584.3 552.0L573.4 544.4L563.5 546.8L559.9 550.4L553.6 550.4L549.9 556.0L538.9 558.4L533.8 562.1L526.9 556.2L517.4 556.1L508.2 553.4L501.7 558.6L500.7 552.1L492.4 545.5L495.3 535.8L499.5 529.5L502.7 530.9L498.9 520.0L512.4 500.0L519.8 497.1L521.4 490.4L513.9 469.3L521.0 468.3L529.2 461.8L540.7 461.2L555.7 463.1L572.3 468.9L584.1 469.4L589.7 472.9L595.2 468.7L599.1 474.3L612.6 473.2L618.5 475.5L619.5 463.4L624.0 458.1L636.8 456.6Z","PL":"M513.3 412.9L513.9 423.6L518.0 432.8L517.9 442.4L509.0 447.3L513.6 458.5L513.9 469.3L521.4 490.4L519.8 497.1L512.4 500.0L498.9 520.0L502.7 530.9L485.3 520.2L474.6 523.6L467.6 521.1L458.8 526.3L451.3 517.8L445.2 521.0L437.5 507.7L426.4 506.2L425.0 498.7L414.8 496.0L412.6 502.2L404.5 497.2L405.4 490.5L394.3 488.4L387.2 480.7L381.1 465.2L382.3 456.9L378.6 444.0L373.2 435.4L377.4 428.9L373.9 416.6L384.0 409.5L426.0 390.2L440.9 394.3L442.0 400.2L456.3 400.5L474.7 403.2L502.0 402.8L509.7 405.4L513.3 412.9Z","AT":"M416.4 552.7L415.3 562.6L406.9 562.7L409.8 567.9L404.9 583.5L402.0 587.5L389.0 588.1L381.5 593.6L369.2 591.7L347.9 585.5L344.6 577.1L329.9 581.3L328.2 585.9L319.1 582.5L311.6 581.8L304.8 577.4L307.1 571.5L306.5 567.2L311.0 565.9L318.5 572.6L320.7 566.2L333.8 567.2L344.4 562.9L351.6 563.6L356.2 568.6L357.6 564.5L355.5 548.7L360.8 545.7L366.1 534.5L377.1 542.3L385.5 532.4L390.7 530.6L402.3 538.0L409.3 536.7L416.2 541.3L415.0 544.4L416.4 552.7Z","HU":"M492.4 545.5L500.7 552.1L501.7 558.6L492.6 563.6L485.6 580.0L476.6 596.4L464.7 601.0L455.4 599.9L438.4 609.9L426.1 605.2L410.3 591.9L407.4 583.7L404.9 583.5L409.8 567.9L406.9 562.7L415.3 562.6L416.4 552.7L424.0 558.9L429.5 561.6L442.0 558.6L443.2 553.8L449.1 553.0L456.4 549.3L458.0 550.8L465.0 547.8L468.4 542.1L473.3 540.7L489.3 548.0L492.4 545.5Z","MD":"M559.9 550.4L563.5 546.8L573.4 544.4L584.3 552.0L590.5 552.9L597.2 559.4L596.1 567.6L601.5 571.5L603.7 581.6L608.9 587.8L607.8 591.4L610.6 593.8L606.7 595.6L597.9 594.9L596.4 591.5L593.3 593.5L594.4 597.8L587.7 613.8L583.9 616.4L581.3 605.4L582.8 595.1L582.4 584.5L564.5 552.8L559.9 550.4Z","RO":"M583.9 616.4L590.6 620.9L597.6 617.0L604.3 621.1L604.7 627.4L597.5 632.6L592.9 630.3L588.8 659.4L580.0 656.9L569.2 648.1L551.7 653.7L544.3 659.9L522.4 658.6L511.0 654.9L505.2 656.6L498.2 642.5L501.7 638.4L498.0 635.4L493.3 640.8L484.6 633.8L483.5 623.8L474.4 618.2L472.7 610.5L464.7 601.0L476.6 596.4L485.6 580.0L492.6 563.6L508.2 553.4L517.4 556.1L526.9 556.2L533.8 562.1L538.9 558.4L549.9 556.0L553.6 550.4L559.9 550.4L564.5 552.8L582.4 584.5L582.8 595.1L581.3 605.4L583.9 616.4Z","LT":"M558.1 371.7L559.5 382.6L547.3 390.3L543.8 403.9L527.6 413.0L513.3 412.9L509.7 405.4L502.0 402.8L500.9 396.7L502.4 390.1L495.9 386.2L480.3 382.0L477.1 361.7L494.2 354.3L519.1 355.8L533.7 353.4L535.8 358.5L543.7 360.0L558.1 371.7Z","LV":"M569.9 326.8L577.0 332.4L578.3 344.1L583.1 358.3L558.1 371.7L543.7 360.0L535.8 358.5L533.7 353.4L519.1 355.8L494.2 354.3L477.1 361.7L477.6 343.5L484.9 328.3L499.0 320.1L510.8 338.1L522.7 337.6L525.6 319.1L538.3 314.8L544.8 317.8L557.6 326.8L569.9 326.8Z","EE":"M580.2 278.5L582.4 282.7L571.8 296.6L576.2 319.1L569.9 326.8L557.6 326.8L544.8 317.8L538.3 314.8L525.6 319.1L527.3 304.8L521.8 307.9L512.4 299.3L511.1 285.4L529.9 278.7L548.7 275.2L564.8 279.2L580.2 278.5Z","DE":"M373.9 416.6L377.4 428.9L373.2 435.4L378.6 444.0L382.3 456.9L381.1 465.2L387.2 480.7L380.6 483.2L376.7 480.4L372.9 485.0L362.2 489.7L356.7 495.7L345.9 501.0L348.5 508.2L350.1 518.3L357.7 524.1L366.1 534.5L360.8 545.7L355.5 548.7L357.6 564.5L356.2 568.6L351.6 563.6L344.4 562.9L333.8 567.2L320.7 566.2L318.5 572.6L311.0 565.9L306.5 567.2L290.6 559.8L287.5 565.1L274.9 564.9L276.7 547.7L284.3 531.1L262.8 526.7L255.8 520.4L256.6 509.8L253.7 504.3L255.4 488.0L252.9 462.7L261.8 462.7L265.6 453.6L269.3 431.4L266.5 423.3L269.4 418.2L281.8 416.8L284.6 422.2L294.7 410.3L291.3 401.2L290.6 387.5L301.9 390.7L311.4 387.0L311.7 396.3L326.7 402.0L326.5 410.5L341.7 406.0L350.0 399.4L366.8 408.9L373.9 416.6Z","BG":"M500.9 646.7L505.2 656.6L511.0 654.9L522.4 658.6L544.3 659.9L551.7 653.7L569.2 648.1L580.0 656.9L588.8 659.4L581.0 669.5L575.6 686.7L580.4 700.5L567.6 697.3L552.4 704.9L552.3 716.9L538.7 719.2L528.3 710.8L516.3 717.4L505.3 716.7L504.3 700.7L496.8 693.0L499.3 689.6L497.7 686.7L500.2 679.0L505.8 671.4L498.6 661.0L497.3 652.2L500.9 646.7Z","GR":"M555.0 862.6L553.2 869.7L531.7 871.8L531.9 867.8L513.7 863.1L516.5 852.8L524.6 860.9L536.2 859.6L547.3 861.3L546.9 865.5L555.0 862.6ZM505.3 716.7L516.3 717.4L528.3 710.8L538.7 719.2L552.3 716.9L552.4 704.9L559.7 711.3L555.1 726.4L551.5 729.1L542.5 728.4L534.7 726.1L516.7 732.4L527.0 746.0L519.4 749.9L511.2 750.0L503.3 737.5L500.5 742.8L503.8 757.3L511.3 768.6L505.6 773.9L513.9 785.0L521.3 792.0L521.5 805.7L507.8 799.3L512.1 811.6L502.7 814.1L508.3 835.5L498.5 835.8L486.3 825.3L480.7 805.9L478.1 789.9L464.6 765.0L463.6 758.1L470.5 746.4L471.4 738.5L476.3 735.0L476.6 728.7L486.3 726.5L492.0 721.2L500.1 721.7L502.5 717.5L505.3 716.7Z","TR":"M830.1 817.4L823.0 821.5L817.7 815.3L800.4 812.2L794.0 816.0L777.1 819.7L769.1 819.3L752.0 828.4L739.7 828.4L731.8 823.9L715.4 830.6L710.5 825.9L709.7 839.4L701.8 850.0L696.3 839.0L701.9 830.0L692.9 832.0L680.4 826.5L670.2 840.4L647.6 843.1L635.5 830.1L619.5 829.3L616.1 839.3L605.8 842.2L591.4 829.3L575.1 829.8L566.3 805.7L555.4 792.3L562.7 773.5L553.2 762.0L569.7 738.9L592.7 737.9L598.9 719.5L627.3 722.7L645.2 707.1L662.5 700.2L687.1 699.7L713.1 716.8L734.5 726.1L751.8 722.4L764.6 724.5L782.2 711.9L798.1 710.8L812.4 722.6L814.9 731.1L813.5 742.9L824.6 748.9L830.4 756.0L820.2 762.8L824.9 790.6L822.0 798.0L830.1 817.4ZM552.4 704.9L567.6 697.3L580.4 700.5L582.2 709.8L595.2 717.6L592.5 723.5L574.8 724.9L556.0 745.4L551.3 734.1L551.5 729.1L555.1 726.4L559.7 711.3L552.4 704.9Z","AL":"M476.6 728.7L476.3 735.0L471.4 738.5L470.5 746.4L463.6 758.1L461.1 756.4L460.8 751.1L452.6 743.0L451.3 731.5L452.5 715.0L454.5 707.5L452.0 703.7L451.0 696.0L457.5 684.1L458.4 688.6L462.4 686.5L465.6 693.0L469.2 695.4L470.2 704.2L468.3 712.4L470.4 722.8L476.6 728.7Z","HR":"M410.3 591.9L426.1 605.2L438.4 609.9L444.0 606.3L447.6 615.6L452.3 622.5L446.6 631.6L439.9 626.2L429.6 626.6L416.8 622.6L409.8 623.1L406.6 628.1L401.3 622.6L398.1 632.6L405.4 643.9L408.7 651.4L421.2 665.8L426.8 675.9L440.0 685.0L438.3 689.1L424.3 680.2L415.7 671.5L402.1 664.3L389.6 646.5L392.6 644.7L385.8 634.5L385.5 626.4L375.9 622.6L371.4 633.0L367.0 624.9L367.9 616.1L378.2 617.0L381.0 612.9L386.0 616.8L391.9 617.3L391.8 610.5L397.0 608.1L398.4 598.3L410.3 591.9Z","CH":"M306.5 567.2L307.1 571.5L304.8 577.4L311.6 581.8L319.1 582.5L318.0 592.4L311.4 596.4L300.4 593.4L297.2 603.2L290.1 603.9L287.5 600.1L279.2 608.3L272.0 609.4L265.6 604.3L260.5 593.7L253.4 597.5L253.6 586.5L264.5 572.9L264.0 566.8L270.8 569.0L274.9 564.9L287.5 565.1L290.6 559.8L306.5 567.2Z","LU":"M253.7 504.3L256.6 509.8L255.8 520.4L251.5 520.9L248.2 518.8L249.8 505.2L253.7 504.3Z","BE":"M255.4 488.0L253.7 504.3L249.8 505.2L248.2 518.8L235.2 507.8L227.5 509.6L217.1 498.2L210.2 488.6L203.3 488.2L201.1 479.7L213.1 474.9L224.0 476.8L237.8 471.8L247.2 482.3L255.4 488.0Z","NL":"M266.5 423.3L269.3 431.4L265.6 453.6L261.8 462.7L252.9 462.7L255.4 488.0L247.2 482.3L237.8 471.8L224.0 476.8L213.1 474.9L220.7 468.2L233.8 432.7L254.1 422.6L266.5 423.3Z","PT":"M29.2 703.6L34.7 697.4L40.7 693.9L44.5 705.8L53.2 705.7L55.8 702.7L64.5 703.5L68.6 715.6L61.8 722.2L61.6 741.0L59.1 744.6L58.5 756.0L52.1 758.0L58.1 772.5L54.0 788.3L59.1 795.5L57.1 802.1L51.5 811.2L52.8 819.2L46.8 825.4L39.0 822.0L31.3 824.7L33.5 805.8L32.1 790.9L25.5 788.7L21.9 779.5L23.1 763.7L29.0 754.9L33.2 730.6L32.9 720.4L29.9 711.7L29.2 703.6Z","ES":"M52.8 819.2L51.5 811.2L57.1 802.1L59.1 795.5L54.0 788.3L58.1 772.5L52.1 758.0L58.5 756.0L59.1 744.6L61.6 741.0L61.8 722.2L68.6 715.6L64.5 703.5L55.8 702.7L53.2 705.7L44.5 705.8L40.7 693.9L34.7 697.4L29.2 703.6L30.0 686.4L23.9 675.9L45.0 658.5L63.2 662.8L83.2 662.7L99.0 666.8L111.4 665.5L135.4 666.3L141.4 675.7L168.8 686.7L174.2 681.5L190.9 692.4L208.2 689.3L209.0 703.3L194.9 719.4L175.8 724.5L174.5 732.6L165.3 746.0L159.6 765.7L165.4 779.5L156.8 790.3L153.5 806.0L142.3 810.8L131.8 829.4L98.7 829.3L89.4 837.8L83.7 847.0L76.4 845.0L70.9 836.8L66.7 822.9L52.8 819.2Z","IE":"M71.5 414.0L73.9 431.2L62.7 452.8L36.3 467.1L15.2 463.4L27.3 438.2L19.5 413.6L51.0 383.4L54.1 396.4L51.0 409.3L60.2 409.0L71.5 414.0Z","IT":"M319.1 582.5L328.2 585.9L329.9 581.3L344.6 577.1L347.9 585.5L369.2 591.7L367.6 603.6L371.2 613.9L359.3 610.4L347.2 619.0L348.0 631.0L346.2 637.9L351.1 650.2L365.1 662.3L372.5 682.3L389.1 701.8L400.8 701.6L404.4 707.0L400.2 711.8L424.5 727.8L437.2 740.4L438.8 744.9L436.0 753.6L427.7 742.3L414.8 738.3L408.5 754.0L419.3 762.9L417.5 775.5L411.3 777.0L403.4 797.7L397.2 799.6L397.2 792.2L400.3 779.2L403.5 774.0L393.1 747.9L387.0 744.8L382.6 734.4L373.0 730.0L366.6 720.3L355.5 718.7L343.9 707.8L330.3 692.1L320.2 678.2L315.5 654.3L308.1 651.5L296.0 643.5L289.2 646.8L280.6 658.0L274.4 659.8L276.1 649.3L268.0 646.2L264.2 627.5L269.3 620.2L265.0 611.1L265.6 604.3L272.0 609.4L279.2 608.3L287.5 600.1L290.1 603.9L297.2 603.2L300.4 593.4L311.4 596.4L318.0 592.4L319.1 582.5ZM383.4 793.9L394.7 791.8L389.4 810.8L391.6 818.3L388.5 830.7L377.1 821.6L369.5 819.0L348.7 806.7L350.8 794.3L368.2 796.5L383.4 793.9ZM293.4 727.3L300.8 719.8L309.7 736.9L307.6 768.9L300.9 767.4L294.8 775.4L289.2 769.0L288.6 739.9L285.2 726.1L293.4 727.3Z","DK":"M311.4 387.0L301.9 390.7L290.6 387.5L284.6 374.1L284.1 349.4L290.9 335.6L304.0 334.1L309.2 327.4L321.2 320.6L320.7 333.1L316.3 340.9L318.1 347.7L326.1 351.4L322.5 360.5L318.1 357.8L307.3 375.2L311.4 387.0ZM347.8 359.7L352.6 371.9L343.7 391.4L328.1 377.8L326.0 367.7L347.8 359.7Z","GB":"M71.5 414.0L60.2 409.0L51.0 409.3L54.1 396.4L51.0 383.4L63.5 382.4L79.5 397.4L71.5 414.0ZM117.7 425.1L119.9 411.1L109.7 395.9L91.6 391.6L88.1 385.1L93.5 374.3L88.6 367.7L80.6 379.1L79.7 355.8L72.2 343.5L77.6 318.5L89.2 298.9L101.0 300.8L119.0 298.8L103.1 324.9L118.3 321.6L134.6 321.7L130.7 341.4L117.3 363.1L132.7 364.6L147.1 395.7L157.3 399.5L170.7 436.6L188.7 441.2L186.9 456.7L179.4 463.8L185.3 476.3L171.9 488.9L152.0 488.7L126.7 495.3L119.7 490.6L109.9 501.9L96.1 499.1L85.7 508.4L77.7 503.5L99.6 478.2L112.9 472.9L89.5 468.9L85.3 459.3L100.9 451.8L92.7 438.8L95.6 423.0L117.7 425.1Z","IS":"M-52.2 109.8L-55.7 125.4L-38.8 141.9L-58.2 160.3L-114.0 181.3L-175.1 170.1L-160.4 159.4L-192.8 147.6L-166.5 142.9L-167.1 135.8L-198.3 130.2L-188.3 114.5L-165.7 110.9L-142.5 127.3L-119.9 114.1L-101.2 121.0L-76.9 108.1L-52.2 109.8Z","SI":"M369.2 591.7L381.5 593.6L389.0 588.1L402.0 587.5L404.9 583.5L407.4 583.7L410.3 591.9L398.4 598.3L397.0 608.1L391.8 610.5L391.9 617.3L386.0 616.8L381.0 612.9L378.2 617.0L367.9 616.1L371.2 613.9L367.6 603.6L369.2 591.7Z","FI":"M589.3 46.8L587.1 63.7L609.9 79.8L596.2 98.0L613.5 125.5L603.5 146.2L616.9 164.2L610.8 179.9L632.8 196.5L627.2 208.8L581.5 253.6L554.5 255.5L528.3 264.4L504.1 269.5L495.5 256.3L481.1 248.4L484.4 224.6L477.2 202.8L484.3 188.7L497.8 173.5L531.8 147.3L541.7 142.3L540.2 132.1L519.5 120.6L514.5 111.2L514.1 74.0L490.8 57.6L471.0 45.8L479.9 39.4L496.5 52.1L515.9 51.0L531.9 56.8L546.1 46.1L553.4 28.4L576.5 20.2L595.6 29.8L589.3 46.8Z","SK":"M499.5 529.5L495.3 535.8L492.4 545.5L489.3 548.0L473.3 540.7L468.4 542.1L465.0 547.8L458.0 550.8L456.4 549.3L449.1 553.0L443.2 553.8L442.0 558.6L429.5 561.6L424.0 558.9L416.4 552.7L415.0 544.4L418.3 536.0L424.9 536.4L429.9 533.9L430.3 531.7L433.2 530.5L434.2 525.0L437.6 524.0L439.9 519.6L444.3 519.6L445.2 521.0L451.3 517.8L458.8 526.3L467.6 521.1L474.6 523.6L485.3 520.2L499.5 529.5Z","CZ":"M387.2 480.7L394.3 488.4L405.4 490.5L404.5 497.2L412.6 502.2L414.8 496.0L425.0 498.7L426.4 506.2L437.5 507.7L444.3 519.6L439.9 519.6L437.6 524.0L434.2 525.0L433.2 530.5L430.3 531.7L429.9 533.9L424.9 536.4L418.3 536.0L416.2 541.3L409.3 536.7L402.3 538.0L390.7 530.6L385.5 532.4L377.1 542.3L366.1 534.5L357.7 524.1L350.1 518.3L348.5 508.2L345.9 501.0L356.7 495.7L362.2 489.7L372.9 485.0L376.7 480.4L380.6 483.2L387.2 480.7Z","CY":"M650.9 866.5L653.7 867.7L657.7 865.7L660.6 865.9L662.0 869.8L667.8 867.6L669.8 870.4L654.6 880.2L647.3 877.0L643.8 867.3L650.9 866.5Z","BA":"M440.0 685.0L426.8 675.9L421.2 665.8L408.7 651.4L405.4 643.9L398.1 632.6L401.3 622.6L406.6 628.1L409.8 623.1L416.8 622.6L429.6 626.6L439.9 626.2L446.6 631.6L452.0 631.5L448.3 642.2L455.4 651.4L453.3 662.8L447.0 666.1L442.1 671.7L440.0 685.0Z","MK":"M496.8 693.0L504.3 700.7L505.3 716.7L502.5 717.5L500.1 721.7L492.0 721.2L486.3 726.5L476.6 728.7L470.4 722.8L468.3 712.4L470.2 704.2L472.1 704.4L472.7 699.4L489.9 693.4L496.8 693.0Z","RS":"M444.0 606.3L455.4 599.9L464.7 601.0L472.7 610.5L474.4 618.2L483.5 623.8L484.6 633.8L493.3 640.8L498.0 635.4L501.7 638.4L498.2 642.5L500.9 646.7L497.3 652.2L498.6 661.0L505.8 671.4L500.2 679.0L497.7 686.7L499.3 689.6L496.8 693.0L484.9 694.8L484.4 693.0L487.8 684.2L485.7 684.3L473.5 670.0L470.8 671.3L468.8 679.3L465.2 681.1L466.5 679.0L455.9 671.4L449.8 663.9L453.3 662.8L455.4 651.4L448.3 642.2L452.0 631.5L446.6 631.6L452.3 622.5L447.6 615.6L444.0 606.3Z","ME":"M462.4 686.5L458.4 688.6L457.5 684.1L451.0 696.0L452.0 703.7L448.9 701.8L444.8 693.9L438.3 689.1L442.1 671.7L449.8 663.9L455.9 671.4L466.5 679.0L462.4 686.5Z","XK":"M470.2 704.2L469.2 695.4L465.6 693.0L462.4 686.5L465.2 681.1L468.8 679.3L470.8 671.3L473.5 670.0L485.7 684.3L487.8 684.2L484.4 693.0L484.9 694.8L472.7 699.4L472.1 704.4L470.2 704.2Z","MT":"M374.3 848.1a4.5 4.5 0 1 0 9.0 0a4.5 4.5 0 1 0 -9.0 0Z","AD":"M183.1 688.4a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z","LI":"M303.1 576.0a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0Z","MC":"M271.6 658.9a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z","SM":"M346.6 653.8a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z","VA":"M346.8 703.1a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z"};
+   Quelle: Natural Earth (gemeinfrei), vereinfacht auf das Kartenformat 700×748.
+   Der Ausschnitt reicht von Island bis zum Schwarzen Meer. */
+const EUROPA_UMRISSE = {"NO":"M689.0 38.7L668.1 46.7L658.1 48.6L663.3 34.6L647.6 26.6L628.5 33.4L622.5 48.0L610.8 56.9L597.6 52.0L581.6 53.0L567.9 42.5L560.6 47.7L552.9 48.6L551.1 61.7L528.0 58.5L524.7 69.6L513.0 69.5L492.6 105.8L473.5 133.9L478.0 140.7L473.7 148.6L461.5 148.3L453.5 167.0L454.3 193.5L462.1 203.6L458.1 227.0L447.9 240.7L442.4 252.2L434.2 240.0L410.0 263.0L393.6 267.7L376.6 257.5L372.2 236.1L368.3 190.1L379.6 177.2L412.1 160.5L436.3 139.9L488.3 73.6L542.6 33.6L569.6 24.8L589.8 25.9L608.5 9.4L630.9 10.2L652.9 6.3L691.3 20.9L675.5 26.2L689.0 38.7Z","FR":"M383.0 439.5L388.8 444.8L406.5 448.4L400.3 462.1L398.7 476.3L395.3 479.7L389.7 477.9L390.1 483.0L381.2 494.2L381.0 503.2L386.8 500.1L391.1 508.8L390.6 514.5L394.2 521.9L389.9 528.0L393.1 543.5L399.7 546.0L398.3 554.6L387.2 565.9L363.0 560.5L345.1 567.0L343.7 579.0L329.5 581.6L315.6 572.6L311.2 576.9L288.6 567.8L283.7 560.0L290.0 548.1L292.4 508.3L279.7 487.4L270.6 477.3L251.9 469.6L250.6 455.1L266.5 450.8L287.2 455.9L283.3 433.3L294.9 441.9L323.5 426.3L327.1 410.0L337.9 405.9L339.7 413.0L345.4 413.3L359.7 430.7L366.0 429.1L379.4 440.0L383.0 439.5ZM414.4 575.9L422.3 568.3L424.4 585.4L420.4 600.8L414.8 596.7L411.9 583.3L414.4 575.9Z","SE":"M442.4 252.2L447.9 240.7L458.1 227.0L462.1 203.6L454.3 193.5L453.5 167.0L461.5 148.3L473.7 148.6L478.0 140.7L473.5 133.9L492.6 105.8L513.0 69.5L524.7 69.6L528.0 58.5L551.1 61.7L552.9 48.6L560.6 47.7L576.9 57.5L596.1 71.1L596.4 101.8L600.6 109.6L579.4 115.2L567.5 129.1L569.5 141.4L549.9 157.4L526.2 174.5L517.3 202.6L526.0 216.7L537.7 227.8L526.5 250.3L513.7 254.9L509.0 288.4L502.0 307.1L487.1 305.2L480.2 321.0L466.0 321.9L462.1 303.0L451.8 280.4L442.4 252.2Z","BY":"M653.0 305.8L666.0 310.8L667.7 315.8L674.2 313.4L686.2 318.1L687.4 327.5L684.7 332.9L692.4 345.9L697.4 349.6L696.7 353.2L705.0 356.7L708.5 362.0L703.7 366.4L693.8 365.7L691.5 367.5L694.4 374.2L697.4 386.9L686.8 388.1L683.0 392.5L682.3 402.5L677.4 400.6L666.3 401.6L663.1 396.9L658.5 400.4L653.8 397.5L644.2 397.1L630.5 392.3L618.1 390.7L608.5 391.2L601.8 396.6L595.9 397.4L595.7 388.5L591.9 379.2L599.3 375.2L599.4 367.2L596.0 359.6L595.4 350.8L607.3 350.9L620.6 343.4L623.5 332.2L633.5 325.8L632.4 316.9L653.0 305.8Z","UA":"M697.4 386.9L702.0 387.7L705.1 383.2L708.8 384.2L721.5 382.3L729.4 393.6L726.3 397.6L727.3 403.8L737.1 404.8L741.5 413.4L741.2 417.3L756.8 424.4L766.2 421.2L773.8 430.5L781.0 430.3L799.1 436.8L799.2 442.7L794.3 453.1L797.0 464.1L795.0 470.8L783.1 472.2L776.8 477.8L776.4 486.7L766.6 488.3L758.5 494.7L747.0 495.8L736.4 503.2L737.0 513.9L735.1 513.3L733.6 509.3L729.6 508.5L720.9 504.3L717.6 509.2L715.9 507.0L696.9 502.0L696.0 494.6L684.6 497.0L680.1 508.0L670.6 522.7L665.0 519.3L659.2 522.5L653.7 518.8L656.8 516.7L662.3 503.5L661.5 499.9L664.0 498.3L665.3 501.1L672.5 501.7L675.7 500.2L673.5 498.2L674.3 495.2L670.0 490.1L668.3 481.8L663.8 478.5L664.7 471.8L659.1 466.4L654.1 465.6L645.0 459.4L636.9 461.4L633.9 464.3L628.7 464.3L625.7 469.0L616.6 470.9L612.4 474.0L606.7 469.1L598.8 469.0L591.2 466.8L585.9 471.1L585.1 465.7L578.2 460.3L580.6 452.3L584.0 447.1L586.7 448.3L583.6 439.3L594.7 422.7L600.8 420.4L602.1 414.8L595.9 397.4L601.8 396.6L608.5 391.2L618.1 390.7L630.5 392.3L644.2 397.1L653.8 397.5L658.5 400.4L663.1 396.9L666.3 401.6L677.4 400.6L682.3 402.5L683.0 392.5L686.8 388.1L697.4 386.9Z","PL":"M595.4 350.8L596.0 359.6L599.4 367.2L599.3 375.2L591.9 379.2L595.7 388.5L595.9 397.4L602.1 414.8L600.8 420.4L594.7 422.7L583.6 439.3L586.7 448.3L572.4 439.4L563.5 442.2L557.7 440.2L550.5 444.5L544.3 437.4L539.2 440.1L532.9 429.1L523.8 427.9L522.6 421.6L514.2 419.4L512.3 424.5L505.7 420.4L506.4 414.9L497.3 413.2L491.4 406.8L486.4 394.0L487.4 387.2L484.3 376.5L479.9 369.4L483.3 364.1L480.4 353.9L488.8 348.1L523.4 332.1L535.7 335.5L536.6 340.3L548.5 340.6L563.6 342.8L586.2 342.5L592.5 344.7L595.4 350.8Z","AT":"M515.5 466.3L514.6 474.4L507.7 474.5L510.1 478.8L506.0 491.6L503.7 495.0L492.9 495.5L486.7 500.0L476.6 498.5L459.0 493.3L456.3 486.4L444.1 489.9L442.7 493.7L435.3 490.8L429.0 490.3L423.4 486.6L425.3 481.8L424.8 478.2L428.5 477.1L434.8 482.7L436.5 477.4L447.3 478.2L456.1 474.7L462.0 475.3L465.8 479.4L467.0 476.0L465.2 463.0L469.7 460.4L474.0 451.3L483.1 457.7L490.0 449.5L494.3 448.0L503.9 454.1L509.6 453.1L515.3 456.8L514.3 459.4L515.5 466.3Z","HU":"M578.2 460.3L585.1 465.7L585.9 471.1L578.4 475.3L572.6 488.8L565.2 502.3L555.3 506.1L547.7 505.2L533.7 513.4L523.5 509.6L510.4 498.6L508.1 491.9L506.0 491.6L510.1 478.8L507.7 474.5L514.6 474.4L515.5 466.3L521.8 471.4L526.3 473.6L536.6 471.1L537.6 467.1L542.5 466.5L548.5 463.4L549.8 464.7L555.6 462.2L558.4 457.5L562.5 456.3L575.6 462.4L578.2 460.3Z","MD":"M633.9 464.3L636.9 461.4L645.0 459.4L654.1 465.6L659.1 466.4L664.7 471.8L663.8 478.5L668.3 481.8L670.0 490.1L674.3 495.2L673.5 498.2L675.7 500.2L672.5 501.7L665.3 501.1L664.0 498.3L661.5 499.9L662.3 503.5L656.8 516.7L653.7 518.8L651.5 509.7L652.8 501.2L652.4 492.5L637.7 466.3L633.9 464.3Z","RO":"M653.7 518.8L659.2 522.5L665.0 519.3L670.6 522.7L670.9 527.9L664.9 532.2L661.2 530.3L657.7 554.4L650.5 552.3L641.6 545.0L627.1 549.7L621.0 554.7L603.0 553.7L593.6 550.6L588.8 552.0L583.0 540.4L585.9 537.0L582.8 534.5L579.0 539.0L571.8 533.2L570.9 525.0L563.4 520.3L562.0 513.9L555.3 506.1L565.2 502.3L572.6 488.8L578.4 475.3L591.2 466.8L598.8 469.0L606.7 469.1L612.4 474.0L616.6 470.9L625.7 469.0L628.7 464.3L633.9 464.3L637.7 466.3L652.4 492.5L652.8 501.2L651.5 509.7L653.7 518.8Z","LT":"M632.4 316.9L633.5 325.8L623.5 332.2L620.6 343.4L607.3 350.9L595.4 350.8L592.5 344.7L586.2 342.5L585.2 337.4L586.5 332.0L581.1 328.8L568.2 325.3L565.6 308.6L579.7 302.4L600.3 303.7L612.3 301.7L614.0 305.9L620.6 307.2L632.4 316.9Z","LV":"M642.1 279.8L648.1 284.4L649.1 294.0L653.0 305.8L632.4 316.9L620.6 307.2L614.0 305.9L612.3 301.7L600.3 303.7L579.7 302.4L565.6 308.6L566.0 293.5L572.1 281.0L583.6 274.2L593.4 289.1L603.2 288.7L605.6 273.4L616.1 269.9L621.4 272.3L632.0 279.7L642.1 279.8Z","EE":"M650.6 239.9L652.5 243.3L643.8 254.8L647.4 273.4L642.1 279.8L632.0 279.7L621.4 272.3L616.1 269.9L605.6 273.4L607.0 261.6L602.5 264.1L594.7 257.1L593.6 245.6L609.2 240.0L624.6 237.1L638.0 240.4L650.6 239.9Z","DE":"M480.4 353.9L483.3 364.1L479.9 369.4L484.3 376.5L487.4 387.2L486.4 394.0L491.4 406.8L486.0 408.9L482.7 406.6L479.6 410.4L470.8 414.2L466.3 419.2L457.3 423.5L459.5 429.5L460.8 437.9L467.1 442.7L474.0 451.3L469.7 460.4L465.2 463.0L467.0 476.0L465.8 479.4L462.0 475.3L456.1 474.7L447.3 478.2L436.5 477.4L434.8 482.7L428.5 477.1L424.8 478.2L411.7 472.1L409.2 476.5L398.7 476.3L400.3 462.1L406.5 448.4L388.8 444.8L383.0 439.5L383.7 430.8L381.2 426.3L382.6 412.8L380.6 391.9L387.9 391.9L391.1 384.4L394.1 366.1L391.8 359.4L394.2 355.2L404.5 354.1L406.8 358.5L415.1 348.7L412.3 341.2L411.7 329.9L421.0 332.5L428.9 329.5L429.1 337.2L441.5 341.8L441.4 348.9L453.8 345.1L460.8 339.7L474.6 347.6L480.4 353.9Z","BG":"M585.3 543.8L588.8 552.0L593.6 550.6L603.0 553.7L621.0 554.7L627.1 549.7L641.6 545.0L650.5 552.3L657.7 554.4L651.4 562.6L646.9 576.9L650.8 588.3L640.3 585.6L627.8 591.9L627.6 601.8L616.5 603.7L607.8 596.7L598.0 602.2L588.9 601.6L588.0 588.4L581.9 582.0L583.9 579.2L582.6 576.9L584.6 570.5L589.3 564.3L583.3 555.7L582.2 548.4L585.3 543.8Z","GR":"M629.9 722.1L628.3 728.0L610.7 729.6L610.8 726.4L595.8 722.5L598.1 714.0L604.8 720.7L614.3 719.6L623.5 721.0L623.2 724.5L629.9 722.1ZM588.9 601.6L598.0 602.2L607.8 596.7L616.5 603.7L627.6 601.8L627.8 591.9L633.7 597.2L629.9 609.6L627.0 611.9L619.5 611.3L613.1 609.4L598.3 614.6L606.8 625.8L600.5 629.1L593.7 629.1L587.2 618.8L584.9 623.2L587.6 635.1L593.8 644.5L589.1 648.8L596.0 658.0L602.1 663.8L602.2 675.1L590.9 669.8L594.5 680.0L586.7 682.1L591.4 699.7L583.2 699.9L573.1 691.3L568.5 675.3L566.4 662.0L555.3 641.5L554.5 635.8L560.2 626.1L560.9 619.6L564.9 616.8L565.2 611.5L573.2 609.7L577.9 605.4L584.5 605.8L586.5 602.3L588.9 601.6Z","TR":"M856.9 684.8L851.0 688.1L846.7 683.0L832.4 680.5L827.1 683.6L813.1 686.7L806.5 686.3L792.4 693.8L782.3 693.9L775.7 690.1L762.2 695.7L758.2 691.8L757.5 702.9L751.0 711.7L746.4 702.6L751.1 695.1L743.6 696.8L733.3 692.2L724.9 703.7L706.3 706.0L696.3 695.3L683.1 694.6L680.2 702.9L671.8 705.2L659.9 694.6L646.5 695.0L639.2 675.1L630.2 664.1L636.2 648.6L628.4 639.0L642.0 619.9L660.9 619.1L666.1 604.0L689.5 606.6L704.3 593.7L718.6 588.0L738.9 587.6L760.3 601.7L778.0 609.4L792.3 606.3L802.8 608.1L817.3 597.7L830.4 596.7L842.2 606.5L844.3 613.6L843.1 623.3L852.3 628.2L857.1 634.0L848.7 639.7L852.5 662.6L850.1 668.8L856.9 684.8ZM627.8 591.9L640.3 585.6L650.8 588.3L652.3 595.9L663.0 602.4L660.8 607.3L646.2 608.4L630.7 625.3L626.8 616.0L627.0 611.9L629.9 609.6L633.7 597.2L627.8 591.9Z","AL":"M565.2 611.5L564.9 616.8L560.9 619.6L560.2 626.1L554.5 635.8L552.4 634.4L552.1 630.0L545.3 623.3L544.3 613.8L545.3 600.2L547.0 594.0L544.9 590.9L544.1 584.5L549.4 574.7L550.2 578.5L553.5 576.7L556.1 582.0L559.1 584.1L559.9 591.3L558.3 598.1L560.1 606.7L565.2 611.5Z","HR":"M510.4 498.6L523.5 509.6L533.7 513.4L538.3 510.5L541.2 518.2L545.1 523.9L540.4 531.4L534.9 527.0L526.4 527.2L515.8 523.9L510.1 524.4L507.4 528.5L503.0 523.9L500.4 532.2L509.1 547.7L519.4 559.6L524.1 567.9L534.9 575.5L533.6 578.9L522.1 571.5L514.9 564.3L503.7 558.4L493.4 543.7L495.8 542.2L490.2 533.8L490.0 527.1L482.1 523.9L478.4 532.5L474.7 525.9L475.4 518.6L484.0 519.3L486.3 515.9L490.4 519.2L495.3 519.6L495.2 514.0L499.5 511.9L500.7 503.9L510.4 498.6Z","CH":"M424.8 478.2L425.3 481.8L423.4 486.6L429.0 490.3L435.3 490.8L434.3 499.0L428.9 502.4L419.8 499.9L417.1 507.9L411.3 508.5L409.2 505.4L402.3 512.1L396.3 513.1L391.1 508.8L386.8 500.1L381.0 503.2L381.2 494.2L390.1 483.0L389.7 477.9L395.3 479.7L398.7 476.3L409.2 476.5L411.7 472.1L424.8 478.2Z","LU":"M381.2 426.3L383.7 430.8L383.0 439.5L379.4 440.0L376.7 438.2L378.0 427.1L381.2 426.3Z","BE":"M382.6 412.8L381.2 426.3L378.0 427.1L376.7 438.2L366.0 429.1L359.7 430.7L345.4 413.3L339.7 413.0L337.9 405.9L347.7 402.0L356.7 403.6L368.1 399.4L375.9 408.2L382.6 412.8Z","NL":"M391.8 359.4L394.1 366.1L391.1 384.4L387.9 391.9L380.6 391.9L382.6 412.8L375.9 408.2L368.1 399.4L356.7 403.6L347.7 402.0L354.1 396.5L364.8 367.2L381.6 358.8L391.8 359.4Z","PT":"M196.1 590.8L200.5 585.7L205.5 582.8L208.6 592.6L215.9 592.6L218.0 590.1L225.1 590.8L228.6 600.8L222.9 606.2L222.7 621.7L220.7 624.6L220.2 634.1L214.9 635.7L219.8 647.7L216.5 660.8L220.7 666.7L219.0 672.1L214.5 679.6L215.5 686.2L210.5 691.4L204.1 688.6L197.7 690.8L199.6 675.2L198.5 662.9L193.0 661.1L190.0 653.5L191.0 640.4L195.9 633.2L199.3 613.1L199.1 604.7L196.6 597.5L196.1 590.8Z","ES":"M215.5 686.2L214.5 679.6L219.0 672.1L220.7 666.7L216.5 660.8L219.8 647.7L214.9 635.7L220.2 634.1L220.7 624.6L222.7 621.7L222.9 606.2L228.6 600.8L225.1 590.8L218.0 590.1L215.9 592.6L208.6 592.6L205.5 582.8L200.5 585.7L196.1 590.8L196.7 576.6L191.7 567.9L209.0 553.6L224.1 557.2L240.6 557.0L253.6 560.4L263.8 559.4L283.7 560.0L288.6 567.8L311.2 576.9L315.6 572.6L329.5 581.6L343.7 579.0L344.3 590.6L332.7 603.9L317.0 608.1L315.9 614.8L308.3 625.8L303.6 642.1L308.4 653.5L301.3 662.4L298.6 675.3L289.4 679.3L280.7 694.7L253.4 694.6L245.7 701.6L241.0 709.2L235.0 707.5L230.4 700.8L226.9 689.3L215.5 686.2Z","IE":"M230.9 351.7L232.9 366.0L223.6 383.8L201.9 395.6L184.5 392.5L194.4 371.7L188.0 351.4L214.0 326.5L216.6 337.2L214.0 347.9L221.6 347.6L230.9 351.7Z","IT":"M435.3 490.8L442.7 493.7L444.1 489.9L456.3 486.4L459.0 493.3L476.6 498.5L475.2 508.3L478.2 516.8L468.4 513.9L458.4 521.0L459.1 530.9L457.6 536.6L461.6 546.7L473.1 556.8L479.3 573.2L493.0 589.3L502.6 589.2L505.6 593.6L502.1 597.6L522.2 610.8L532.7 621.2L534.0 625.0L531.7 632.1L524.9 622.8L514.2 619.5L509.0 632.4L517.9 639.8L516.4 650.2L511.3 651.4L504.7 668.5L499.6 670.0L499.7 663.9L502.2 653.2L504.9 649.0L496.3 627.4L491.2 624.9L487.6 616.3L479.7 612.6L474.4 604.6L465.3 603.3L455.7 594.3L444.5 581.3L436.1 569.8L432.3 550.1L426.2 547.8L416.2 541.2L410.5 543.9L403.4 553.2L398.3 554.6L399.7 546.0L393.1 543.5L389.9 528.0L394.2 521.9L390.6 514.5L391.1 508.8L396.3 513.1L402.3 512.1L409.2 505.4L411.3 508.5L417.1 507.9L419.8 499.9L428.9 502.4L434.3 499.0L435.3 490.8ZM488.3 665.3L497.6 663.6L493.2 679.3L495.0 685.5L492.5 695.7L483.1 688.2L476.8 686.1L459.7 675.9L461.4 665.7L475.8 667.5L488.3 665.3ZM414.0 610.4L420.1 604.2L427.5 618.3L425.8 644.7L420.2 643.5L415.2 650.1L410.5 644.8L410.0 620.8L407.2 609.4L414.0 610.4Z","DK":"M428.9 329.5L421.0 332.5L411.7 329.9L406.7 318.8L406.4 298.4L411.9 287.0L422.8 285.8L427.1 280.3L436.9 274.7L436.5 284.9L432.9 291.4L434.4 297.0L441.0 300.0L438.0 307.6L434.4 305.4L425.5 319.7L428.9 329.5ZM458.9 307.0L462.9 317.0L455.5 333.1L442.6 321.8L440.9 313.6L458.9 307.0Z","GB":"M230.9 351.7L221.6 347.6L214.0 347.9L216.6 337.2L214.0 326.5L224.3 325.7L237.5 338.0L230.9 351.7ZM269.0 360.9L270.9 349.4L262.4 336.8L247.5 333.3L244.6 327.9L249.1 319.0L245.0 313.5L238.4 322.9L237.7 303.7L231.5 293.5L236.0 272.9L245.5 256.7L255.3 258.3L270.1 256.6L257.0 278.2L269.5 275.5L283.0 275.6L279.8 291.8L268.7 309.7L281.4 311.0L293.3 336.6L301.7 339.8L312.8 370.4L327.7 374.2L326.2 387.0L319.9 392.8L324.8 403.1L313.8 413.6L297.3 413.4L276.4 418.9L270.7 415.0L262.6 424.3L251.2 422.0L242.6 429.7L236.1 425.7L254.1 404.7L265.1 400.4L245.8 397.1L242.3 389.1L255.2 382.9L248.4 372.2L250.8 359.1L269.0 360.9Z","IS":"M128.8 100.6L126.0 113.5L139.9 127.1L123.9 142.3L77.9 159.6L27.5 150.4L39.6 141.6L12.8 131.8L34.6 128.0L34.0 122.1L8.3 117.5L16.6 104.5L35.2 101.5L54.3 115.1L73.0 104.2L88.4 109.8L108.5 99.2L128.8 100.6Z","SI":"M476.6 498.5L486.7 500.0L492.9 495.5L503.7 495.0L506.0 491.6L508.1 491.9L510.4 498.6L500.7 503.9L499.5 511.9L495.2 514.0L495.3 519.6L490.4 519.2L486.3 515.9L484.0 519.3L475.4 518.6L478.2 516.8L475.2 508.3L476.6 498.5Z","FI":"M658.1 48.6L656.4 62.5L675.2 75.8L663.8 90.9L678.1 113.6L669.8 130.7L680.9 145.5L675.9 158.5L694.1 172.2L689.4 182.4L651.7 219.3L629.4 220.9L607.9 228.2L587.9 232.5L580.8 221.6L568.9 215.0L571.6 195.4L565.6 177.4L571.5 165.8L582.6 153.2L610.7 131.6L618.9 127.4L617.6 119.0L600.6 109.6L596.4 101.8L596.1 71.1L576.9 57.5L560.6 47.7L567.9 42.5L581.6 53.0L597.6 52.0L610.8 56.9L622.5 48.0L628.5 33.4L647.6 26.6L663.3 34.6L658.1 48.6Z","SK":"M584.0 447.1L580.6 452.3L578.2 460.3L575.6 462.4L562.5 456.3L558.4 457.5L555.6 462.2L549.8 464.7L548.5 463.4L542.5 466.5L537.6 467.1L536.6 471.1L526.3 473.6L521.8 471.4L515.5 466.3L514.3 459.4L517.0 452.5L522.5 452.8L526.7 450.7L527.0 448.9L529.4 447.9L530.2 443.4L533.0 442.5L534.9 438.9L538.5 438.9L539.2 440.1L544.3 437.4L550.5 444.5L557.7 440.2L563.5 442.2L572.4 439.4L584.0 447.1Z","CZ":"M491.4 406.8L497.3 413.2L506.4 414.9L505.7 420.4L512.3 424.5L514.2 419.4L522.6 421.6L523.8 427.9L532.9 429.1L538.5 438.9L534.9 438.9L533.0 442.5L530.2 443.4L529.4 447.9L527.0 448.9L526.7 450.7L522.5 452.8L517.0 452.5L515.3 456.8L509.6 453.1L503.9 454.1L494.3 448.0L490.0 449.5L483.1 457.7L474.0 451.3L467.1 442.7L460.8 437.9L459.5 429.5L457.3 423.5L466.3 419.2L470.8 414.2L479.6 410.4L482.7 406.6L486.0 408.9L491.4 406.8Z","CY":"M709.0 725.3L711.3 726.3L714.6 724.6L717.0 724.8L718.1 728.0L722.9 726.2L724.6 728.5L712.0 736.6L706.0 734.0L703.2 726.0L709.0 725.3Z","BA":"M534.9 575.5L524.1 567.9L519.4 559.6L509.1 547.7L500.4 532.2L503.0 523.9L507.4 528.5L510.1 524.4L515.8 523.9L526.4 527.2L534.9 527.0L540.4 531.4L544.9 531.3L541.8 540.1L547.7 547.8L545.9 557.1L540.7 559.9L536.7 564.5L534.9 575.5Z","MK":"M581.9 582.0L588.0 588.4L588.9 601.6L586.5 602.3L584.5 605.8L577.9 605.4L573.2 609.7L565.2 611.5L560.1 606.7L558.3 598.1L559.9 591.3L561.4 591.5L562.0 587.4L576.2 582.4L581.9 582.0Z","RS":"M538.3 510.5L547.7 505.2L555.3 506.1L562.0 513.9L563.4 520.3L570.9 525.0L571.8 533.2L579.0 539.0L582.8 534.5L585.9 537.0L583.0 540.4L585.3 543.8L582.2 548.4L583.3 555.7L589.3 564.3L584.6 570.5L582.6 576.9L583.9 579.2L581.9 582.0L572.0 583.5L571.6 582.0L574.4 574.8L572.7 574.9L562.6 563.1L560.4 564.2L558.7 570.8L555.8 572.2L556.8 570.5L548.1 564.2L543.0 558.0L545.9 557.1L547.7 547.8L541.8 540.1L544.9 531.3L540.4 531.4L545.1 523.9L541.2 518.2L538.3 510.5Z","ME":"M553.5 576.7L550.2 578.5L549.4 574.7L544.1 584.5L544.9 590.9L542.3 589.3L538.9 582.8L533.6 578.9L536.7 564.5L543.0 558.0L548.1 564.2L556.8 570.5L553.5 576.7Z","XK":"M559.9 591.3L559.1 584.1L556.1 582.0L553.5 576.7L555.8 572.2L558.7 570.8L560.4 564.2L562.6 563.1L572.7 574.9L574.4 574.8L571.6 582.0L572.0 583.5L562.0 587.4L561.4 591.5L559.9 591.3Z","FO":"M215.9 189.5a7.0 7.0 0 1 0 14.0 0a7.0 7.0 0 1 0 -14.0 0Z","MT":"M480.9 710.1a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z","AD":"M323.1 578.3a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z","LI":"M422.0 485.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z","MC":"M395.9 553.9a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z","SM":"M457.8 549.7a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z","VA":"M455.9 590.4a4.0 4.0 0 1 0 8.0 0a4.0 4.0 0 1 0 -8.0 0Z"};
 
 function europaZeichnen(nr, b){
   const ziel  = document.getElementById("europa-" + nr);
@@ -2470,7 +2583,11 @@ function europaZeichnen(nr, b){
   liste.innerHTML = laender.map(l =>
     '<li data-code="' + sicher(l.code.toUpperCase()) + '"><b>' + sicher(l.name || l.code) + "</b>" +
     (l.jahr && l.jahr !== "Platzhalter" ? '<span class="wann">' + sicher(l.jahr) + "</span>" : "") +
-    (l.text ? '<span class="was">' + sicher(l.text) + "</span>" : "") + "</li>").join("");
+    (l.text ? '<span class="was">' + sicher(l.text) + "</span>" : "") + "</li>").join("") +
+    ((b.sterne || []).length
+      ? '<li class="sterne-zeile"><b>Besondere Ziele</b><span class="was">' +
+        b.sterne.map(o => sicher(o.name)).join(" · ") + "</span></li>"
+      : "");
 
   /* Karte: erst die nicht besuchten, dann die besuchten darüber */
   const formen = Object.keys(EUROPA_UMRISSE).sort((x, y) =>
@@ -2485,9 +2602,30 @@ function europaZeichnen(nr, b){
              : "></path>");
     }).join("");
 
-  ziel.innerHTML = '<svg viewBox="0 0 640 894" xmlns="http://www.w3.org/2000/svg" ' +
+  /* Besondere Ziele als Stern. Koordinaten in Grad, die Umrechnung
+     entspricht dem Kartenausschnitt (West -25, Ost 32, Süd 34, Nord 71,5). */
+  const nachXY = (lng, lat) => [
+    (lng + 25) / 57 * 700,
+    748 - (lat - 34) / 37.5 * 748
+  ];
+  const sternPfad = (x, y, r) => {
+    let d = "";
+    for(let i = 0; i < 10; i++){
+      const w = Math.PI / 5 * i - Math.PI / 2;
+      const rr = i % 2 ? r * .42 : r;
+      d += (i ? "L" : "M") + (x + Math.cos(w) * rr).toFixed(1) + " " + (y + Math.sin(w) * rr).toFixed(1);
+    }
+    return d + "Z";
+  };
+  const sterne = (b.sterne || []).map(o => {
+    const [x, y] = nachXY(o.lng, o.lat);
+    return '<g class="stern"><path d="' + sternPfad(x, y, 7.5) + '"></path>' +
+           "<title>" + sicher(o.name) + "</title></g>";
+  }).join("");
+
+  ziel.innerHTML = '<svg viewBox="0 0 700 748" xmlns="http://www.w3.org/2000/svg" ' +
     'preserveAspectRatio="xMidYMid meet" role="img" aria-label="Karte von Europa, ' +
-    besucht.size + ' Länder hervorgehoben">' + formen + "</svg>";
+    besucht.size + ' Länder hervorgehoben">' + formen + sterne + "</svg>";
 
   /* Karte und Liste zeigen aufeinander */
   const hervorheben = (code) => {
@@ -2542,11 +2680,13 @@ function routenStarten(){
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         { maxZoom:16, attribution:"© OpenStreetMap" }).addTo(k);
       const linie = punkte.map(pp => [pp.lat, pp.lng]);
-      L.polyline(linie, { color:"#4a6338", weight:3.5, opacity:.85 }).addTo(k);
+      L.polyline(linie, { color:"#4a6338", weight:4, opacity:.9, lineJoin:"round" }).addTo(k);
       punkte.forEach((pp, i) => {
+        const rand = (i === 0 || i === punkte.length - 1);
+        const gr = rand ? 15 : 9;
         L.marker([pp.lat, pp.lng], { icon: L.divIcon({
-          className:"", iconSize:[14,14], iconAnchor:[7,7],
-          html:'<div class="karten-nadel nadel--route"></div>' }) })
+          className:"", iconSize:[gr,gr], iconAnchor:[gr/2,gr/2],
+          html:'<div class="karten-nadel nadel--route' + (rand ? " nadel--rand" : "") + '"></div>' }) })
          .addTo(k).bindPopup("<b>" + sicher(pp.name) + "</b>" +
            (i === 0 ? "<br>Start" : i === punkte.length-1 ? "<br>Ziel" : ""));
       });
@@ -2564,24 +2704,10 @@ function karteBauen(){
 
   /* Liste immer aufbauen – sie funktioniert auch ohne Kartendienst */
   $("#orte-liste").innerHTML = orte.map((o, i) =>
-    '<li data-nr="' + i + '"><b>' + sicher(o.name) + "</b>" +
+    '<li data-nr="' + i + '"' + (o.art === "fern" ? ' class="ist-fern"' : "") +
+    '><b>' + sicher(o.name) + "</b>" +
     '<span class="wann">' + sicher(o.jahr || "") + "</span>" +
     '<span class="was">' + sicher(o.text || "") + "</span></li>").join("");
-
-  /* Weit entfernte Orte als Hinweisfeld am Kartenrand */
-  const pfeile = { "Südosten":"↘", "Nordosten":"↗", "Südwesten":"↙", "Nordwesten":"↖",
-                   "Norden":"↑", "Süden":"↓", "Osten":"→", "Westen":"←" };
-  const fern = orte.filter(o => o.art === "fern");
-  if(fern.length){
-    const f = $("#fern-feld");
-    f.hidden = false;
-    f.innerHTML = fern.map(o =>
-      '<span class="pfeil">' + (pfeile[o.richtung] || "↗") + "</span>" +
-      '<span class="weite">' + sicher(o.entfernung || "") +
-      (o.richtung ? " " + sicher(o.richtung) : "") + "</span>" +
-      "<b>" + sicher(o.name) + "</b>" +
-      "<p>" + sicher(o.text || "") + "</p>").join("<hr>");
-  }
 
   leafletLaden().then(async () => {
 

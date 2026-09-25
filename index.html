@@ -168,9 +168,9 @@ img{max-width:100%;display:block}
   padding:64px 24px;position:relative;
 }
 .oberzeile{
-  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.22em;
+  font-family:var(--stempel);font-weight:500;font-size:clamp(13px,1.15vw,15px);letter-spacing:.22em;
   text-transform:uppercase;color:var(--label);margin-bottom:22px;
-  max-width:34ch;line-height:1.7;
+  max-width:min(100%,52ch);line-height:1.7;
 }
 .namen{
   font-family:var(--serif-display);
@@ -182,7 +182,7 @@ img{max-width:100%;display:block}
   color:var(--sepia);margin:.18em 0;
 }
 .datum{
-  font-family:var(--stempel);font-size:14px;letter-spacing:.04em;
+  font-family:var(--stempel);font-size:clamp(14px,1.35vw,18px);letter-spacing:.04em;
   color:var(--tinte-leise);margin-top:44px;position:relative;padding-top:34px;
 }
 .datum::before{
@@ -191,7 +191,7 @@ img{max-width:100%;display:block}
 }
 .zaehler{
   margin-top:26px;font-family:var(--serif-display);font-weight:300;
-  font-size:clamp(15px,2.4vw,19px);color:var(--tinte-leise);
+  font-size:clamp(17px,2.1vw,26px);color:var(--tinte-leise);
 }
 .zaehler b{
   font-weight:500;color:var(--tinte);
@@ -200,7 +200,7 @@ img{max-width:100%;display:block}
 }
 .hinweis-runter{
   position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
-  font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.08em;
+  font-family:var(--stempel);font-weight:500;font-size:clamp(13px,1.2vw,16px);letter-spacing:.08em;
   color:var(--label);text-decoration:none;
 }
 .hinweis-runter span{display:block;margin-top:8px;animation:sinken 2.4s ease-in-out infinite}
@@ -552,6 +552,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .nadel--ort{background:var(--sepia)}
 .nadel--enkel{background:var(--diamant)}
 .nadel--elternhaus{background:#9a7b9c}
+.nadel--garten{background:#8ab13f}
 .karte-legende{
   display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-bottom:16px;
   font-family:var(--stempel);font-size:13px;color:var(--tinte-leise);
@@ -563,6 +564,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .punkt--ort{background:var(--sepia)}
 .punkt--enkel{background:var(--diamant)}
 .punkt--elternhaus{background:#9a7b9c}
+.punkt--garten{background:#8ab13f}
 .weg-nummer{
   width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   background:rgba(247,244,237,.95);border:1px solid rgba(42,39,34,.55);
@@ -667,9 +669,6 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .land--besucht.ist-gewaehlt{fill:var(--sepia)}
 .stern path{fill:#c9a227;stroke:#f3f1e8;stroke-width:1.2;stroke-linejoin:round;
   filter:drop-shadow(0 1px 2px rgba(20,18,15,.4))}
-.sterne-zeile{grid-column:1/-1;cursor:default;background:rgba(201,162,39,.09);border-color:rgba(201,162,39,.4)}
-.sterne-zeile:hover{background:rgba(201,162,39,.09)}
-.sterne-zeile b::before{content:"★ ";color:#c9a227}
 .land--besucht:focus{outline:none}                       /* Maus: kein Rahmen */
 .land--besucht:focus-visible{stroke:var(--tinte);stroke-width:2.5}   /* Tastatur: dicker Rand */
 
@@ -871,11 +870,11 @@ textarea.gb-feld{min-height:110px;resize:vertical}
      sonst passt der Kopf nicht mehr auf einen Blick.                       */
   .namen{font-size:clamp(26px,7.5vh,64px)}
   .geist60{font-size:min(52vw,46vh)}
-  .datum{margin-top:24px;padding-top:20px;font-size:13px}
+  .datum{margin-top:24px;padding-top:20px;font-size:14px}
   .zaehler{margin-top:18px}
-  .oberzeile{margin-bottom:12px;font-size:12px;letter-spacing:.14em;max-width:none}
+  .oberzeile{margin-bottom:12px;font-size:12px;letter-spacing:.14em}
   .funke{margin-bottom:12px;width:10px;height:10px}
-  .zaehler{font-size:15px}
+  .zaehler{font-size:17px}
 }
 
 /* ============================================================
@@ -900,7 +899,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .datum{font-size:13px}
   .zaehler{margin-top:30px}
   .hinweis-runter{bottom:22px}
-  .oberzeile{max-width:26ch}
+
   .zaehler{margin-top:22px;font-size:15px}
   .kopf{min-height:92svh}
 
@@ -1081,6 +1080,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
       <span><i class="punkt punkt--wohnort"></i>Wohnorte</span>
       <span><i class="punkt punkt--kind"></i>Die Töchter heute</span>
       <span><i class="punkt punkt--enkel"></i>Die Enkel heute</span>
+      <span><i class="punkt punkt--garten"></i>Der Garten</span>
       <span><i class="punkt punkt--ort"></i>Weitere Orte</span>
       <span><i class="strich-legende"></i>Der Weg der Umzüge</span>
     </div>
@@ -1279,9 +1279,9 @@ const DATEN = {
       lat:50.12300, lng:8.68992 },     // Koselstraße 11–13, Nordend
 
     /* ── Weitere Orte ── */
-    { id:"garten",  name:"Der Garten", art:"ort", jahr:"Ende der 1990er",
+    { id:"garten",  name:"Der Garten im Maasgrund", art:"garten", jahr:"Ende der 1990er",
       text:"Platzhalter",
-      adresse:"Platzhalter" },         // ← Adresse oder Straße des Gartens
+      lat:50.2014746, lng:8.5685400 },   // am Maasgrundweiher
 
 
     /* ── Wo die Töchter heute wohnen ── */
@@ -1364,17 +1364,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 03 · Ende der 1950er · Die Hauswirtschaftsschule ══════════ */
-    {
-      jahr: "1958",                     // nach der Volksschule, mit etwa 14 – Jahr prüfen
-      titel: "Die Hauswirtschaftsschule",
-      ort: "Platzhalter",               // Name und Ort der Schule
-      text: "Platzhalter",              // Was sie dort gelernt hat, wie lange, mit wem
-      bild: "",                         // bilder/02-1958-die-hauswirtschaftsschule.jpg
-      bildunterschrift: "Platzhalter",
-      bausteine: []
-    },
-    /* ═══ STATION 04 · 1961 · Hildegards erster Arbeitstag ═════ */
+    /* ═══ STATION 03 · 1961 · Hildegards erster Arbeitstag ══════════════════ */
     {
       jahr: "1961",                     // mit 18, im November geboren
       titel: "Hildegards erster Arbeitstag",
@@ -1384,7 +1374,7 @@ const DATEN = {
       bildunterschrift: "Hildegard mit ihrer ersten Gruppe",
       bausteine: []
     },
-    /* ═══ STATION 05 · 1966 · Der 23. Oktober ═══════════════════════════════ */
+    /* ═══ STATION 04 · 1966 · Der 23. Oktober ═══════════════════════════════ */
     {
       jahr: "1966",
       titel: "Der 23. Oktober",
@@ -1395,7 +1385,7 @@ const DATEN = {
       bildunterschrift: "Hochzeitstag, 23.10.1966",
       bausteine: []
     },
-    /* ═══ STATION 06 · 1966 · Die erste eigene Wohnung ══════════════════════ */
+    /* ═══ STATION 05 · 1966 · Die erste eigene Wohnung ══════════════════════ */
     {
       jahr: "1966",                     // direkt nach der Hochzeit – prüfen
       titel: "Die erste eigene Wohnung",
@@ -1406,7 +1396,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 07 · 1967 · Die erste Tochter ═════════════════════════════ */
+    /* ═══ STATION 06 · 1967 · Die erste Tochter ═════════════════════════════ */
     {
       jahr: "1967",
       titel: "Die erste Tochter",
@@ -1417,7 +1407,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 08 · 1968 · Peters erster Arbeitstag ══════════════════════ */
+    /* ═══ STATION 07 · 1968 · Peters erster Arbeitstag ══════════════════════ */
     {
       jahr: "1968",
       titel: "Peters erster Arbeitstag",
@@ -1427,7 +1417,7 @@ const DATEN = {
       bildunterschrift: "Peter, frisch im Beruf",
       bausteine: []
     },
-    /* ═══ STATION 09 · 1969 · Die zweite Tochter ════════════════════════════ */
+    /* ═══ STATION 08 · 1969 · Die zweite Tochter ════════════════════════════ */
     {
       jahr: "1969",
       titel: "Die zweite Tochter",
@@ -1438,7 +1428,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 10 · 1969 · Der erste Umzug ═══════════════════════════════ */
+    /* ═══ STATION 09 · 1969 · Der erste Umzug ═══════════════════════════════ */
     {
       jahr: "1969",
       titel: "Der erste Umzug",
@@ -1449,7 +1439,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 11 · 1972 · Der zweite Umzug ══════════════════════════════ */
+    /* ═══ STATION 10 · 1972 · Der zweite Umzug ══════════════════════════════ */
     {
       jahr: "1972",
       titel: "Der zweite Umzug",
@@ -1460,7 +1450,7 @@ const DATEN = {
       bildunterschrift: "Das neue Zuhause",
       bausteine: []
     },
-    /* ═══ STATION 12 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
+    /* ═══ STATION 11 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
     {
       jahr: "In den 1970ern",           // genaues Jahr nachtragen
       titel: "Der erste gemeinsame Urlaub",
@@ -1480,7 +1470,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 13 · In den 1970ern · Das erste Haustier ══════════════════ */
+    /* ═══ STATION 12 · In den 1970ern · Das erste Haustier ══════════════════ */
     {
       jahr: "In den 1970ern",           // genaues Jahr fehlt
       titel: "Das erste Haustier",
@@ -1493,7 +1483,7 @@ const DATEN = {
         { art:"frage", text:"Platzhalter", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 14 · 1976 · Die dritte Tochter ════════════════════════════ */
+    /* ═══ STATION 13 · 1976 · Die dritte Tochter ════════════════════════════ */
     {
       jahr: "1976",
       titel: "Die dritte Tochter",
@@ -1504,7 +1494,7 @@ const DATEN = {
       bildunterschrift: "Zu fünft",
       bausteine: []
     },
-    /* ═══ STATION 15 · 1991 · Silberne Hochzeit ═════════════════════════════ */
+    /* ═══ STATION 14 · 1991 · Silberne Hochzeit ═════════════════════════════ */
     {
       jahr: "1991",
       titel: "Silberne Hochzeit",
@@ -1517,7 +1507,7 @@ const DATEN = {
         { art:"zitat", text:"Glück ist das Einzige, was sich verdoppelt, wenn man es teilt." }
       ]
     },
-    /* ═══ STATION 16 · Mitte der 1990er · Der Mann im blauen Skianzug ═══════ */
+    /* ═══ STATION 15 · Mitte der 1990er · Der Mann im blauen Skianzug ═══════ */
     {
       jahr: "Mitte der 1990er",         // Jahr eingrenzbar, siehe Kasten unten
       titel: "Der Mann im blauen Skianzug",
@@ -1529,7 +1519,7 @@ const DATEN = {
         { art:"frage", text:"Wen haben sie hier getroffen?", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 17 · 1995 · Zweisamkeit ═══════════════════════════════════ */
+    /* ═══ STATION 16 · 1995 · Zweisamkeit ═══════════════════════════════════ */
     {
       jahr: "1995",                     // dritte Tochter wird 19
       titel: "Zweisamkeit",
@@ -1539,7 +1529,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 18 · 1996 · Perlenhochzeit ════════════════════════════════ */
+    /* ═══ STATION 17 · 1996 · Perlenhochzeit ════════════════════════════════ */
     {
       jahr: "1996",
       titel: "Perlenhochzeit",
@@ -1550,7 +1540,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 19 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
+    /* ═══ STATION 18 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
     {
       jahr: "1996",                     // prüfen
       titel: "Zum ersten Mal über den Ozean",
@@ -1592,7 +1582,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 20 · 1997 · Das erste Enkelkind ═══════════════════════════ */
+    /* ═══ STATION 19 · 1997 · Das erste Enkelkind ═══════════════════════════ */
     {
       jahr: "1997",
       titel: "Das erste Enkelkind",
@@ -1603,7 +1593,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 21 · Ende der 1990er · Der Garten ═════════════════════════ */
+    /* ═══ STATION 20 · Ende der 1990er · Der Garten ═════════════════════════ */
     {
       jahr: "Ende der 1990er",
       titel: "Der Garten",
@@ -1614,7 +1604,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 22 · 2001 · Das zweite Enkelkind ══════════════════════════ */
+    /* ═══ STATION 21 · 2001 · Das zweite Enkelkind ══════════════════════════ */
     {
       jahr: "2001",
       titel: "Das zweite Enkelkind",
@@ -1625,7 +1615,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 23 · 2002 · Das dritte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 22 · 2002 · Das dritte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das dritte Enkelkind",
@@ -1636,7 +1626,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 24 · 2002 · Das vierte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 23 · 2002 · Das vierte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das vierte Enkelkind",
@@ -1647,7 +1637,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 25 · 2004 · Und dann waren es fünf ════════════════════════ */
+    /* ═══ STATION 24 · 2004 · Und dann waren es fünf ════════════════════════ */
     {
       jahr: "2004",
       titel: "Und dann waren es fünf",
@@ -1658,7 +1648,7 @@ const DATEN = {
       bildunterschrift: "Alle fünf zusammen",
       bausteine: []
     },
-    /* ═══ STATION 26 · 2006 · Rubinhochzeit ═════════════════════════════════ */
+    /* ═══ STATION 25 · 2006 · Rubinhochzeit ═════════════════════════════════ */
     {
       jahr: "2006",
       titel: "Rubinhochzeit",
@@ -1669,7 +1659,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 27 · 2008 · Der dritte Umzug ══════════════════════════════ */
+    /* ═══ STATION 26 · 2008 · Der dritte Umzug ══════════════════════════════ */
     {
       jahr: "2008",
       titel: "Der dritte Umzug",
@@ -1680,7 +1670,7 @@ const DATEN = {
       bildunterschrift: "Kupferhammerweg",
       bausteine: []
     },
-    /* ═══ STATION 28 · 2008 · Beide im Ruhestand ════════════════════════════ */
+    /* ═══ STATION 27 · 2008 · Beide im Ruhestand ════════════════════════════ */
     {
       jahr: "2008",                     // Jahrgang 1943, mit 65 in den Ruhestand
       titel: "Beide im Ruhestand",
@@ -1696,6 +1686,7 @@ const DATEN = {
         { art:"europa", titel:"Wo sie überall waren",
           text:"Platzhalter",           // ← ein, zwei Sätze zum Reisen
           laender:[
+            { code:"DE", name:"Deutschland", jahr:"", text:"" },
             { code:"HU", name:"Ungarn",      jahr:"", text:"" },
             { code:"RO", name:"Rumänien",    jahr:"", text:"" },
             { code:"NL", name:"Niederlande", jahr:"", text:"" },
@@ -1711,7 +1702,9 @@ const DATEN = {
             { code:"FR", name:"Frankreich",  jahr:"", text:"" },
             { code:"CH", name:"Schweiz",     jahr:"", text:"" },
             { code:"AT", name:"Österreich",  jahr:"", text:"" },
-            { code:"CZ", name:"Tschechien",  jahr:"", text:"" }
+            { code:"CZ", name:"Tschechien",  jahr:"", text:"" },
+            { code:"SI", name:"Slowenien",   jahr:"damals Jugoslawien", text:"" },
+            { code:"HR", name:"Kroatien",    jahr:"damals Jugoslawien", text:"" }
           ],
           /* Besondere Ziele, als Stern auf der Karte */
           sterne:[
@@ -1724,7 +1717,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 29 · 2016 · Goldene Hochzeit ══════════════════════════════ */
+    /* ═══ STATION 28 · 2016 · Goldene Hochzeit ══════════════════════════════ */
     {
       jahr: "2016",
       titel: "Goldene Hochzeit",
@@ -1737,7 +1730,7 @@ const DATEN = {
         { art:"zitat", text:"Wer miteinander alt wird, hat zweimal gelebt." }
       ]
     },
-    /* ═══ STATION 30 · 2020 · Urgroßeltern ══════════════════════════════════ */
+    /* ═══ STATION 29 · 2020 · Urgroßeltern ══════════════════════════════════ */
     {
       jahr: "2020",
       titel: "Urgroßeltern",
@@ -1748,7 +1741,7 @@ const DATEN = {
       bildunterschrift: "Vier Generationen",
       bausteine: []
     },
-    /* ═══ STATION 31 · 2026 · Sechzig Jahre ═════════════════════════════════ */
+    /* ═══ STATION 30 · 2026 · Sechzig Jahre ═════════════════════════════════ */
     {
       jahr: "2026",
       titel: "Sechzig Jahre",
@@ -2616,11 +2609,7 @@ function europaZeichnen(nr, b){
   liste.innerHTML = laender.map(l =>
     '<li data-code="' + sicher(l.code.toUpperCase()) + '"><b>' + sicher(l.name || l.code) + "</b>" +
     (l.jahr && l.jahr !== "Platzhalter" ? '<span class="wann">' + sicher(l.jahr) + "</span>" : "") +
-    (l.text ? '<span class="was">' + sicher(l.text) + "</span>" : "") + "</li>").join("") +
-    ((b.sterne || []).length
-      ? '<li class="sterne-zeile"><b>Besondere Ziele</b><span class="was">' +
-        b.sterne.map(o => sicher(o.name)).join(" · ") + "</span></li>"
-      : "");
+    (l.text ? '<span class="was">' + sicher(l.text) + "</span>" : "") + "</li>").join("");
 
   /* Karte: erst die nicht besuchten, dann die besuchten darüber */
   const formen = Object.keys(EUROPA_UMRISSE).sort((x, y) =>

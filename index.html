@@ -1258,12 +1258,12 @@ const DATEN = {
       adresse:"Weberstraße 57, 60318 Frankfurt am Main" },
 
     { id:"muehlberg",    name:"Steinhausenstraße", art:"wohnort", jahr:"1966",
-      text:"Die erste eigene Wohnung, am Mühlberg.",
+      text:"Die erste eigene Wohnung, in Sachsenhausen am Mühlberg.",
       adresse:"Steinhausenstraße, 60599 Frankfurt am Main" },
 
-    { id:"heusenstamm",  name:"Heusenstamm",       art:"wohnort", jahr:"1969",
+    { id:"heusenstamm",  name:"Leipziger Ring 10",  art:"wohnort", jahr:"1969",
       text:"Der Umzug kurz nach der Geburt der zweiten Tochter.",
-      adresse:"Heusenstamm" },         // ← genaue Adresse fehlt, vorerst die Ortsmitte
+      adresse:"Leipziger Ring 10, 63150 Heusenstamm" },
 
     { id:"altkoenig",    name:"Altkönigstraße 19", art:"wohnort", jahr:"1972",
       text:"Platzhalter",
@@ -1276,16 +1276,13 @@ const DATEN = {
     /* ── Wo die beiden herkommen ── */
     { id:"stbernhard",   name:"St. Bernhard", art:"ort", jahr:"1956 · 1966",
       text:"Hier haben sie sich kennengelernt – und hier wurden sie getraut.",
-      adresse:"St. Bernhard, Eschersheimer Landstraße, Frankfurt am Main" },
+      lat:50.12300, lng:8.68992 },     // Koselstraße 11–13, Nordend
 
     /* ── Weitere Orte ── */
     { id:"garten",  name:"Der Garten", art:"ort", jahr:"Ende der 1990er",
       text:"Platzhalter",
       adresse:"Platzhalter" },         // ← Adresse oder Straße des Gartens
 
-    { id:"schule",  name:"Ernst-Reuter-Schule", art:"ort", jahr:"1968",
-      text:"Peters erste Schule.",
-      adresse:"Ernst-Reuter-Schule, Frankfurt am Main" },
 
     /* ── Wo die Töchter heute wohnen ── */
     { id:"kind1", name:"Camp-King-Allee 3", art:"kind", jahr:"heute",
@@ -1309,9 +1306,9 @@ const DATEN = {
       text:"Hier wohnen Enkelin 4 und der Urenkel.",
       adresse:"Hans-Thoma-Straße 8, 61440 Oberursel" },
 
-    { id:"enkel5", name:"Am Borkenberg", art:"enkel", jahr:"heute",
+    { id:"enkel5", name:"Am Borkenberg 11", art:"enkel", jahr:"heute",
       text:"Platzhalter",              // ← Enkel 5
-      adresse:"Am Borkenberg, 61440 Oberursel" },
+      adresse:"Am Borkenberg 11, 61440 Oberursel" },
 
     /* ── Weit weg: steht nur in der Liste unter der Karte,
           nicht als Nadel – sonst müsste die Karte bis Bayern herauszoomen. ── */
@@ -1367,9 +1364,19 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 03 · Anfang der 1960er · Hildegards erster Arbeitstag ═══════════ */
+    /* ═══ STATION 03 · Ende der 1950er · Die Hauswirtschaftsschule ══════════ */
     {
-      jahr: "Anfang der 1960er",        // ab 18, genaues Jahr fehlt
+      jahr: "1958",                     // nach der Volksschule, mit etwa 14 – Jahr prüfen
+      titel: "Die Hauswirtschaftsschule",
+      ort: "Platzhalter",               // Name und Ort der Schule
+      text: "Platzhalter",              // Was sie dort gelernt hat, wie lange, mit wem
+      bild: "",                         // bilder/02-1958-die-hauswirtschaftsschule.jpg
+      bildunterschrift: "Platzhalter",
+      bausteine: []
+    },
+    /* ═══ STATION 04 · 1961 · Hildegards erster Arbeitstag ═════ */
+    {
+      jahr: "1961",                     // mit 18, im November geboren
       titel: "Hildegards erster Arbeitstag",
       ort: "Platzhalter",               // Ort des Kindergartens
       text: "Platzhalter",              // Welcher Kindergarten, wie lange, was am liebsten
@@ -1377,7 +1384,7 @@ const DATEN = {
       bildunterschrift: "Hildegard mit ihrer ersten Gruppe",
       bausteine: []
     },
-    /* ═══ STATION 04 · 1966 · Der 23. Oktober ═══════════════════════════════ */
+    /* ═══ STATION 05 · 1966 · Der 23. Oktober ═══════════════════════════════ */
     {
       jahr: "1966",
       titel: "Der 23. Oktober",
@@ -1388,18 +1395,18 @@ const DATEN = {
       bildunterschrift: "Hochzeitstag, 23.10.1966",
       bausteine: []
     },
-    /* ═══ STATION 05 · 1966 · Die erste eigene Wohnung ══════════════════════ */
+    /* ═══ STATION 06 · 1966 · Die erste eigene Wohnung ══════════════════════ */
     {
       jahr: "1966",                     // direkt nach der Hochzeit – prüfen
       titel: "Die erste eigene Wohnung",
       ortId: "muehlberg",
-      ort: "Heusenstamm",               // prüfen
+      ort: "Steinhausenstraße, Frankfurt-Sachsenhausen",
       text: "Platzhalter",              // Wie groß, was hat sie gekostet, wie lange gewohnt
       bild: "",                         // bilder/05-1966-die-erste-eigene.jpg
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 06 · 1967 · Die erste Tochter ═════════════════════════════ */
+    /* ═══ STATION 07 · 1967 · Die erste Tochter ═════════════════════════════ */
     {
       jahr: "1967",
       titel: "Die erste Tochter",
@@ -1410,18 +1417,17 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 07 · 1968 · Peters erster Arbeitstag ════════════════════════ */
+    /* ═══ STATION 08 · 1968 · Peters erster Arbeitstag ══════════════════════ */
     {
       jahr: "1968",
       titel: "Peters erster Arbeitstag",
-      ortId: "schule",
       ort: "Ernst-Reuter-Schule, Frankfurt",
       text: "Platzhalter",              // Studium abgeschlossen, welche Fächer, erste Klasse vor sich
       bild: "",                         // bilder/07-1968-peters-erster-arbeitstag.jpg
       bildunterschrift: "Peter, frisch im Beruf",
       bausteine: []
     },
-    /* ═══ STATION 08 · 1969 · Die zweite Tochter ════════════════════════════ */
+    /* ═══ STATION 09 · 1969 · Die zweite Tochter ════════════════════════════ */
     {
       jahr: "1969",
       titel: "Die zweite Tochter",
@@ -1432,18 +1438,18 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 09 · 1969 · Der erste Umzug ═══════════════════════════════ */
+    /* ═══ STATION 10 · 1969 · Der erste Umzug ═══════════════════════════════ */
     {
       jahr: "1969",
       titel: "Der erste Umzug",
       ortId: "heusenstamm",
-      ort: "Heusenstamm",
+      ort: "Leipziger Ring 10, Heusenstamm",
       text: "Platzhalter",              // Kurz nach der zweiten Tochter – warum Heusenstamm, wie war das Haus
       bild: "",                         // bilder/09-1969-der-erste-umzug.jpg
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 10 · 1972 · Der zweite Umzug ══════════════════════════════ */
+    /* ═══ STATION 11 · 1972 · Der zweite Umzug ══════════════════════════════ */
     {
       jahr: "1972",
       titel: "Der zweite Umzug",
@@ -1454,7 +1460,7 @@ const DATEN = {
       bildunterschrift: "Das neue Zuhause",
       bausteine: []
     },
-    /* ═══ STATION 11 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
+    /* ═══ STATION 12 · In den 1970ern · Der erste gemeinsame Urlaub ═════════ */
     {
       jahr: "In den 1970ern",           // genaues Jahr nachtragen
       titel: "Der erste gemeinsame Urlaub",
@@ -1474,7 +1480,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 12 · In den 1970ern · Das erste Haustier ═════════════════════ */
+    /* ═══ STATION 13 · In den 1970ern · Das erste Haustier ══════════════════ */
     {
       jahr: "In den 1970ern",           // genaues Jahr fehlt
       titel: "Das erste Haustier",
@@ -1487,7 +1493,7 @@ const DATEN = {
         { art:"frage", text:"Platzhalter", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 13 · 1976 · Die dritte Tochter ════════════════════════════ */
+    /* ═══ STATION 14 · 1976 · Die dritte Tochter ════════════════════════════ */
     {
       jahr: "1976",
       titel: "Die dritte Tochter",
@@ -1498,7 +1504,7 @@ const DATEN = {
       bildunterschrift: "Zu fünft",
       bausteine: []
     },
-    /* ═══ STATION 14 · 1991 · Silberne Hochzeit ═════════════════════════════ */
+    /* ═══ STATION 15 · 1991 · Silberne Hochzeit ═════════════════════════════ */
     {
       jahr: "1991",
       titel: "Silberne Hochzeit",
@@ -1511,7 +1517,7 @@ const DATEN = {
         { art:"zitat", text:"Glück ist das Einzige, was sich verdoppelt, wenn man es teilt." }
       ]
     },
-    /* ═══ STATION 15 · Mitte der 1990er · Der Mann im blauen Skianzug ═══════ */
+    /* ═══ STATION 16 · Mitte der 1990er · Der Mann im blauen Skianzug ═══════ */
     {
       jahr: "Mitte der 1990er",         // Jahr eingrenzbar, siehe Kasten unten
       titel: "Der Mann im blauen Skianzug",
@@ -1523,7 +1529,7 @@ const DATEN = {
         { art:"frage", text:"Wen haben sie hier getroffen?", antwort:"Platzhalter" }
       ]
     },
-    /* ═══ STATION 16 · 1995 · Zweisamkeit ═══════════════════════════════════ */
+    /* ═══ STATION 17 · 1995 · Zweisamkeit ═══════════════════════════════════ */
     {
       jahr: "1995",                     // dritte Tochter wird 19
       titel: "Zweisamkeit",
@@ -1533,7 +1539,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 17 · 1996 · Perlenhochzeit ════════════════════════════════ */
+    /* ═══ STATION 18 · 1996 · Perlenhochzeit ════════════════════════════════ */
     {
       jahr: "1996",
       titel: "Perlenhochzeit",
@@ -1544,7 +1550,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 18 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
+    /* ═══ STATION 19 · 1996 · Zum ersten Mal über den Ozean ═════════════════ */
     {
       jahr: "1996",                     // prüfen
       titel: "Zum ersten Mal über den Ozean",
@@ -1586,7 +1592,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 19 · 1997 · Das erste Enkelkind ═══════════════════════════ */
+    /* ═══ STATION 20 · 1997 · Das erste Enkelkind ═══════════════════════════ */
     {
       jahr: "1997",
       titel: "Das erste Enkelkind",
@@ -1597,7 +1603,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 20 · Ende der 1990er · Der Garten ═════════════════════════ */
+    /* ═══ STATION 21 · Ende der 1990er · Der Garten ═════════════════════════ */
     {
       jahr: "Ende der 1990er",
       titel: "Der Garten",
@@ -1608,7 +1614,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 21 · 2001 · Das zweite Enkelkind ══════════════════════════ */
+    /* ═══ STATION 22 · 2001 · Das zweite Enkelkind ══════════════════════════ */
     {
       jahr: "2001",
       titel: "Das zweite Enkelkind",
@@ -1619,7 +1625,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 22 · 2002 · Das dritte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 23 · 2002 · Das dritte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das dritte Enkelkind",
@@ -1630,7 +1636,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 23 · 2002 · Das vierte Enkelkind ══════════════════════════ */
+    /* ═══ STATION 24 · 2002 · Das vierte Enkelkind ══════════════════════════ */
     {
       jahr: "2002",
       titel: "Das vierte Enkelkind",
@@ -1641,7 +1647,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 24 · 2004 · Und dann waren es fünf ════════════════════════ */
+    /* ═══ STATION 25 · 2004 · Und dann waren es fünf ════════════════════════ */
     {
       jahr: "2004",
       titel: "Und dann waren es fünf",
@@ -1652,7 +1658,7 @@ const DATEN = {
       bildunterschrift: "Alle fünf zusammen",
       bausteine: []
     },
-    /* ═══ STATION 25 · 2006 · Rubinhochzeit ═════════════════════════════════ */
+    /* ═══ STATION 26 · 2006 · Rubinhochzeit ═════════════════════════════════ */
     {
       jahr: "2006",
       titel: "Rubinhochzeit",
@@ -1663,7 +1669,7 @@ const DATEN = {
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
-    /* ═══ STATION 26 · 2008 · Der dritte Umzug ══════════════════════════════ */
+    /* ═══ STATION 27 · 2008 · Der dritte Umzug ══════════════════════════════ */
     {
       jahr: "2008",
       titel: "Der dritte Umzug",
@@ -1674,7 +1680,7 @@ const DATEN = {
       bildunterschrift: "Kupferhammerweg",
       bausteine: []
     },
-    /* ═══ STATION 27 · 2008 · Beide im Ruhestand ════════════════════════════ */
+    /* ═══ STATION 28 · 2008 · Beide im Ruhestand ════════════════════════════ */
     {
       jahr: "2008",                     // Jahrgang 1943, mit 65 in den Ruhestand
       titel: "Beide im Ruhestand",
@@ -1718,7 +1724,7 @@ const DATEN = {
           ] }
       ]
     },
-    /* ═══ STATION 28 · 2016 · Goldene Hochzeit ══════════════════════════════ */
+    /* ═══ STATION 29 · 2016 · Goldene Hochzeit ══════════════════════════════ */
     {
       jahr: "2016",
       titel: "Goldene Hochzeit",
@@ -1731,7 +1737,7 @@ const DATEN = {
         { art:"zitat", text:"Wer miteinander alt wird, hat zweimal gelebt." }
       ]
     },
-    /* ═══ STATION 29 · 2020 · Urgroßeltern ══════════════════════════════════ */
+    /* ═══ STATION 30 · 2020 · Urgroßeltern ══════════════════════════════════ */
     {
       jahr: "2020",
       titel: "Urgroßeltern",
@@ -1742,7 +1748,7 @@ const DATEN = {
       bildunterschrift: "Vier Generationen",
       bausteine: []
     },
-    /* ═══ STATION 30 · 2026 · Sechzig Jahre ═════════════════════════════════ */
+    /* ═══ STATION 31 · 2026 · Sechzig Jahre ═════════════════════════════════ */
     {
       jahr: "2026",
       titel: "Sechzig Jahre",
@@ -2400,7 +2406,7 @@ async function adresseAufloesen(adresse){
   const schluessel = "geo:" + adresse;
   try{
     const gemerkt = localStorage.getItem(schluessel);
-    if(gemerkt) return JSON.parse(gemerkt);
+    if(gemerkt){ const p = JSON.parse(gemerkt); p.gemerkt = true; return p; }
   }catch(e){ /* Speicher nicht verfügbar – dann eben jedes Mal neu */ }
 
   try{
@@ -2743,10 +2749,17 @@ function karteBauen(){
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom:18, attribution:"© OpenStreetMap"
     }).addTo(karte);
-
     karte.setView([50.17, 8.64], 11);          // erst einmal die Gegend zeigen
-    const gesetzt = await orteVorbereiten(orte);
-    const nadeln = karteNadeln = gesetzt.map(o => {
+
+    /* Nadeln erscheinen, sobald ein Ort seine Koordinaten hat – die mit
+       festen Werten sofort, die übrigen nach und nach. So starrt niemand
+       auf eine leere Karte, während die Adressen gesucht werden.          */
+    karteNadeln = [];
+    const nadelZu = new Map();               // Ort → Nadel
+    let wegLinie = null, wegNummern = [];
+
+    const nadelSetzen = (o) => {
+      if(nadelZu.has(o)) return;
       const nadel = L.marker([o.lat, o.lng], {
         icon: L.divIcon({
           className:"", iconSize:[16,16], iconAnchor:[8,8],
@@ -2755,37 +2768,62 @@ function karteBauen(){
       }).addTo(karte);
       nadel.bindPopup("<b>" + sicher(o.name) + "</b><br>" +
                       (o.jahr ? sicher(o.jahr) + "<br>" : "") + sicher(o.text || ""));
-      return nadel;
-    });
-    /* Der Weg durch die Wohnorte, in zeitlicher Reihenfolge */
-    const weg = gesetzt.filter(o => o.art === "wohnort");
-    if(weg.length > 1){
-      const punkte = weg.map(o => [o.lat, o.lng]);
-      L.polyline(punkte, {
+      nadelZu.set(o, nadel);
+      karteNadeln.push(nadel);
+    };
+
+    /* Der Weg durch die Wohnorte, in der Reihenfolge der Liste */
+    const wegZeichnen = () => {
+      const weg = orte.filter(o => o.art === "wohnort" && o.lat && o.lng);
+      if(wegLinie) karte.removeLayer(wegLinie);
+      wegNummern.forEach(n => karte.removeLayer(n));
+      wegNummern = [];
+      if(weg.length < 2) return;
+      wegLinie = L.polyline(weg.map(o => [o.lat, o.lng]), {
         color:"#2a2722", weight:2.5, opacity:.75, dashArray:"1 9", lineCap:"round"
       }).addTo(karte);
-      /* kleine Nummern an den Stationen des Wegs */
       weg.forEach((o, i) => {
-        L.marker([o.lat, o.lng], {
+        wegNummern.push(L.marker([o.lat, o.lng], {
           icon: L.divIcon({
             className:"", iconSize:[22,22], iconAnchor:[-6,20],
             html:'<div class="weg-nummer">' + (i + 1) + "</div>"
-          }),
-          interactive:false
-        }).addTo(karte);
+          }), interactive:false
+        }).addTo(karte));
       });
-    }
+    };
 
-    if(nadeln.length) karte.fitBounds(L.latLngBounds(gesetzt.map(o => [o.lat, o.lng])).pad(.18));
+    const einpassen = () => {
+      const alle = orte.filter(o => o.art !== "fern" && o.lat && o.lng);
+      if(alle.length) karte.fitBounds(L.latLngBounds(alle.map(o => [o.lat, o.lng])).pad(.18));
+    };
+
+    /* Erste Runde: alles, was schon Koordinaten mitbringt */
+    orte.filter(o => o.art !== "fern" && o.lat && o.lng).forEach(nadelSetzen);
+    wegZeichnen();
+    einpassen();
+
+    /* Zweite Runde: Adressen auflösen, eine nach der anderen */
+    for(const o of orte){
+      if(o.art === "fern" || (o.lat && o.lng)) continue;
+      if(!o.adresse || o.adresse === "Platzhalter") continue;
+      const frisch = await adresseAufloesen(o.adresse);
+      if(frisch){
+        o.lat = frisch.lat; o.lng = frisch.lng;
+        nadelSetzen(o);
+        wegZeichnen();
+        einpassen();
+      }
+      if(frisch && !frisch.gemerkt) await new Promise(r => setTimeout(r, 1100));
+    }
 
     $("#orte-liste").addEventListener("click", e => {
       const li = e.target.closest("li");
       if(!li) return;
       const o = orte[+li.dataset.nr];
       if(!o.lat) return;
-      const treffer = gesetzt.indexOf(o);
       karte.setView([o.lat, o.lng], 15, { animate:true });
-      if(treffer >= 0 && nadeln[treffer]) nadeln[treffer].openPopup();
+      const nadel = nadelZu.get(o);
+      if(nadel) nadel.openPopup();
       document.getElementById("karte").scrollIntoView({ behavior:"smooth", block:"center" });
     });
   }).catch(() => {

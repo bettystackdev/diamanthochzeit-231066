@@ -170,7 +170,7 @@ img{max-width:100%;display:block}
 .oberzeile{
   font-family:var(--stempel);font-weight:500;font-size:13px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--label);margin-bottom:22px;
-  max-width:22ch;line-height:1.7;
+  max-width:34ch;line-height:1.7;
 }
 .namen{
   font-family:var(--serif-display);
@@ -214,11 +214,11 @@ img{max-width:100%;display:block}
 }
 /* der Faden */
 .strahl::before{
-  content:"";position:absolute;top:0;bottom:120px;left:50%;width:1px;
+  content:"";position:absolute;top:0;bottom:120px;left:18px;width:1px;
   background:repeating-linear-gradient(to bottom,var(--sepia) 0 7px,transparent 7px 15px);
   opacity:.5;
 }
-@media (max-width:700px){.strahl::before{left:26px}}
+
 
 .station{
   position:relative;margin:0 0 var(--s6);
@@ -473,14 +473,18 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .uebersicht-knopf:hover{background:#fff;transform:translateY(-2px)}
 
 .sprung{
-  display:inline-flex;align-items:center;gap:7px;margin:18px 8px 0 0;cursor:pointer;
-  font-family:var(--stempel);font-size:13px;font-weight:500;
-  color:var(--patina);background:transparent;
-  border:1px solid rgba(74,90,72,.45);border-radius:999px;padding:8px 16px;
-  transition:background .2s,color .2s;
+  display:inline-flex;align-items:center;gap:8px;margin:18px 8px 0 0;cursor:pointer;
+  font-family:var(--stempel);font-size:14px;font-weight:600;
+  color:var(--tinte);background:rgba(250,248,242,.94);
+  border:1px solid rgba(74,99,56,.55);border-radius:999px;padding:10px 18px;
+  box-shadow:0 3px 10px -4px rgba(20,18,15,.35);
+  transition:background .2s,color .2s,border-color .2s,transform .2s;
 }
-.sprung::after{content:"→"}
-.sprung:hover{background:var(--patina);color:#f2eee5}
+.sprung::after{content:"→";color:var(--patina);font-weight:400}
+.sprung:hover{
+  background:var(--patina);color:#f2eee5;border-color:var(--patina);transform:translateY(-1px);
+}
+.sprung:hover::after{color:#f2eee5}
 .station:nth-child(even) .sprung{align-self:flex-end}
 
 .baum-person.ist-ziel .baum-kasten{
@@ -590,8 +594,8 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 }
 .abstand[hidden]{display:none}
 .abstand-zahl{
-  font-family:var(--serif-display);font-size:clamp(26px,5vw,34px);
-  font-weight:500;color:var(--tinte);line-height:1;
+  font-family:var(--serif-display);font-size:clamp(20px,3vw,25px);
+  font-weight:500;color:var(--tinte);line-height:1.2;
 }
 .abstand-text{font-family:var(--stempel);font-size:14px;color:var(--tinte-leise)}
 
@@ -725,11 +729,11 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 
 /* Der Faden füllt sich beim Scrollen */
 #faden-fuellung{
-  position:absolute;top:0;left:50%;width:2px;height:0;
+  position:absolute;top:0;left:18px;width:2px;height:0;
   background:linear-gradient(to bottom,var(--sepia),var(--patina) 70%,var(--diamant));
   opacity:.85;z-index:1;transition:height .12s linear;
 }
-@media (max-width:820px){#faden-fuellung{left:26px}}
+
 
 /* Jahreszahl als Stempel */
 .jahr{
@@ -751,29 +755,30 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .bild-flaeche{box-shadow:inset 0 0 44px rgba(51,38,29,.28)}
 
 
-/* Zweispaltiges Album ab Tablet */
+/* Ein Album in einer Spalte – der Faden läuft am linken Rand mit */
+.station{padding-left:46px}
 @media (min-width:820px){
-  .strahl{max-width:1140px;padding-bottom:120px}
-  .station{width:var(--breite,45%);margin-bottom:var(--luft,110px)}
-  .station:nth-child(odd){margin-right:auto}
-  .station:nth-child(even){margin-left:auto;margin-top:var(--hoch,-90px)}
-  .jahr{margin-bottom:20px}
-  .station:nth-child(even){display:flex;flex-direction:column;align-items:flex-end;text-align:right}
-  .station:nth-child(even) .bild-rahmen,
-  .station:nth-child(even) .station-text{width:100%}
-  .diamant-punkt{width:100%!important;margin-left:0!important;margin-right:0!important;margin-top:40px!important}
+  .strahl{max-width:900px;padding:40px 28px 120px}
+  .station{
+    width:var(--breite,100%);
+    margin-bottom:var(--luft,110px);
+    margin-left:var(--einzug,0);
+  }
+  .jahr{margin-bottom:22px}
+  .diamant-punkt{width:100%!important;margin-left:0!important;margin-top:40px!important}
 }
 
-/* Auf schmalen Schirmen kein seitlicher Versatz – sonst rutscht es aus dem Bild */
+/* Auf schmalen Schirmen ohne seitlichen Versatz */
 @media (max-width:819px){
-  .station{--schub:0px!important;--breite:auto!important;--hoch:0!important;width:auto!important}
+  .station{--schub:0px!important;--breite:auto!important;--einzug:0!important;width:auto!important}
   .station.sichtbar{transform:none}
   .bild-rahmen{--rahmen-dreh:-1deg}
 }
 
 /* Jubiläen quer über die Seite */
 .station--jubel{
-  width:100%!important;margin:30px 0 90px!important;--schub:0px;
+  width:100%!important;margin:30px 0 90px!important;--schub:0px;--einzug:0!important;
+  padding-left:0!important;
   display:flex;justify-content:center;position:relative;z-index:3;
 }
 .jubel-karte{
@@ -849,6 +854,30 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .fuss{border-top:1px solid rgba(154,115,80,.25)}
 
 
+/* Flache Fenster – Handy quer, kleines Browserfenster.
+   Dort steht der Hinweis nach unten im Textfluss statt am Rand,
+   sonst schiebt er sich über den Zähler.                                  */
+@media (max-height:700px){
+  .kopf{
+    min-height:auto;
+    padding:clamp(24px,5vh,56px) 24px clamp(22px,4vh,44px);
+    justify-content:flex-start;
+  }
+  .hinweis-runter{
+    position:static;transform:none;margin-top:26px;
+  }
+  .hinweis-runter span{margin-top:5px}
+  /* In flachen Fenstern richtet sich die Schrift nach der Höhe,
+     sonst passt der Kopf nicht mehr auf einen Blick.                       */
+  .namen{font-size:clamp(26px,7.5vh,64px)}
+  .geist60{font-size:min(52vw,46vh)}
+  .datum{margin-top:24px;padding-top:20px;font-size:13px}
+  .zaehler{margin-top:18px}
+  .oberzeile{margin-bottom:12px;font-size:12px;letter-spacing:.14em;max-width:none}
+  .funke{margin-bottom:12px;width:10px;height:10px}
+  .zaehler{font-size:15px}
+}
+
 /* ============================================================
    FEINSCHLIFF FÜR SCHMALE BILDSCHIRME
    ============================================================ */
@@ -871,14 +900,14 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .datum{font-size:13px}
   .zaehler{margin-top:30px}
   .hinweis-runter{bottom:22px}
-  .oberzeile{max-width:18ch}
+  .oberzeile{max-width:26ch}
   .zaehler{margin-top:22px;font-size:15px}
   .kopf{min-height:92svh}
 
   /* Zeitleiste: Faden näher an den Rand, mehr Platz für die Karten */
   .strahl{padding:28px 16px 70px}
-  .strahl::before,#faden-fuellung{left:16px}
-  .station{padding-left:38px;margin-bottom:64px}
+  .strahl::before,#faden-fuellung{left:10px}
+  .station{padding-left:36px;margin-bottom:64px}
   .station-titel{font-size:clamp(23px,6.4vw,30px)}
   .jahr{padding:5px 12px;font-size:12px}
   .bild-rahmen{--rand:10px}
@@ -1354,12 +1383,10 @@ const DATEN = {
       titel: "Der 23. Oktober",
       ortId: ["stbernhard", "frankfurt"],   // Kirche und Empfang
       ort: "St. Bernhard · Haus der Volksarbeit",
-      text: "Platzhalter",              // Wo gefeiert, wer dabei, was passiert
+      text: "Und jedem Anfang wohnt ein Zauber inne.",
       bild: "",                         // bilder/04-1966-der-23-oktober.jpg
       bildunterschrift: "Hochzeitstag, 23.10.1966",
-      bausteine: [
-        { art:"zitat", text:"Und jedem Anfang wohnt ein Zauber inne." }
-      ]
+      bausteine: []
     },
     /* ═══ STATION 05 · 1966 · Die erste eigene Wohnung ══════════════════════ */
     {
@@ -1881,7 +1908,7 @@ function sprungHTML(s){
     return ziele.map(id => {
       const o = (DATEN.orte || []).find(x => x.id === id);
       return '<button type="button" class="sprung" data-sprung="ort" data-ziel="' + sicher(id) +
-             '">' + (o ? sicher(o.name) : "Ort") + ' auf der Karte</button>';
+             '">' + (o ? sicher(o.name) : "Ort") + "</button>";
     }).join("");
   }
   return "";
@@ -1893,15 +1920,15 @@ function strahlAufbauen(){
   /* Immer dieselbe "Unordnung": Werte aus dem Index berechnet, nicht zufällig. */
   const streuung = (i) => {
     const w = (n, a, b) => a + (Math.abs(Math.sin((i + 1) * n)) * (b - a));
-    const gross = (i % 7 === 3);          // ab und zu ein Foto zum Blickfang
+    const schmal = (i % 5 === 2);         // ab und zu eine schmalere Station
     return "--rahmen-dreh:" + w(12.9898, -4.6, 4.6).toFixed(2) + "deg;" +
            "--stempel-dreh:" + w(78.233, -7, 7).toFixed(2) + "deg;" +
            "--band-l:" + w(4.898, -44, -8).toFixed(1) + "deg;" +
            "--band-r:" + w(9.11, 7, 43).toFixed(1) + "deg;" +
-           "--schub:" + w(3.77, -34, 34).toFixed(0) + "px;" +
-           "--breite:" + (gross ? "56" : w(6.41, 36, 48).toFixed(1)) + "%;" +
-           "--luft:" + w(2.13, 90, 170).toFixed(0) + "px;" +
-           "--hoch:" + w(7.53, -90, -10).toFixed(0) + "px;" +
+           "--schub:" + w(3.77, -10, 10).toFixed(0) + "px;" +
+           "--breite:" + (schmal ? "78" : w(6.41, 88, 100).toFixed(1)) + "%;" +
+           "--luft:" + w(2.13, 96, 150).toFixed(0) + "px;" +
+           "--einzug:" + w(7.53, 0, 26).toFixed(0) + "px;" +
            "--rand:" + w(5.19, 9, 22).toFixed(0) + "px;" +
            "--alterung:" + w(8.31, .06, .28).toFixed(2) + ";" +
            "--schild-dreh:" + w(1.77, -1.6, 1.6).toFixed(2) + "deg;" +
@@ -1937,7 +1964,7 @@ function strahlAufbauen(){
       '<div class="station-text">' +
         '<h2 class="station-titel">' + sicher(s.titel) + "</h2>" +
         (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
-        "<p>" + sicher(s.text) + "</p>" +
+        (s.text ? "<p>" + sicher(s.text) + "</p>" : "") +
         (s.bausteine || []).map(bausteinHTML).join("") +
         sprungHTML(s) +
       "</div></article>";

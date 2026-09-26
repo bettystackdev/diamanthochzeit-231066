@@ -174,7 +174,10 @@ img{max-width:100%;display:block}
 }
 .namen{
   font-family:var(--serif-display);
-  font-weight:300;font-size:clamp(46px,12vw,104px);
+  font-weight:300;
+  /* Die Namen richten sich nach Breite UND Höhe des Fensters. Das "min"
+     verhindert, dass sie in flachen Fenstern über den Rand wachsen.   */
+  font-size:clamp(46px, min(12vw, 12.5vh), 124px);
   line-height:.98;margin:0;letter-spacing:-.02em;
 }
 .und{
@@ -199,7 +202,7 @@ img{max-width:100%;display:block}
   border-bottom:1px solid var(--diamant);
 }
 .hinweis-runter{
-  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
   font-family:var(--stempel);font-weight:500;font-size:clamp(13px,1.2vw,16px);letter-spacing:.08em;
   color:var(--label);text-decoration:none;
 }
@@ -747,7 +750,55 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .land--besucht:focus{outline:none}                       /* Maus: kein Rahmen */
 .land--besucht:focus-visible{stroke:var(--tinte);stroke-width:2.5}   /* Tastatur: dicker Rand */
 
-/* ---------- Klapplisten (Tiere, Flussabschnitte …) ---------- */
+/* ---------- Raten: Fragezeichen, das beim Antippen umschlägt ---------- */
+.nur-vorlesen{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.raten-vorspann{margin:0 0 14px;color:var(--tinte-leise)}
+/* Festes Raster statt auto-fit: sonst bleibt bei acht Tieren das letzte
+   Feld allein in einer Reihe stehen.                                   */
+.raten-gitter{
+  display:grid;gap:10px;max-width:520px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+@media (max-width:430px){ .raten-gitter{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.raten-feld, .raten-balken{
+  position:relative;cursor:pointer;padding:0;
+  background:rgba(247,244,237,.75);border:1px solid rgba(213,205,189,.9);
+  border-radius:12px;transition:background .2s,border-color .2s,transform .15s;
+}
+.raten-feld{aspect-ratio:1/1}
+.raten-balken{width:100%;min-height:58px;margin-top:10px;display:block}
+.raten-feld:hover, .raten-balken:hover{background:#fff;border-color:var(--sepia)}
+.raten-feld:active{transform:scale(.96)}
+.raten-feld.ist-auf, .raten-balken.ist-auf{background:#fff;border-color:var(--patina)}
+/* Fragezeichen und Lösung liegen übereinander */
+.raten-feld > span:not(.nur-vorlesen), .raten-balken > span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  transition:opacity .28s ease;padding:8px;
+}
+.raten-frage{
+  font-family:var(--serif-display);font-weight:300;color:var(--tinte-leise);
+  font-size:clamp(26px,5vw,34px);
+}
+.raten-balken .raten-frage{font-size:26px}
+.raten-loesung{opacity:0;flex-direction:column;gap:5px}
+.raten-emoji{font-size:clamp(26px,5.5vw,34px);line-height:1}
+.raten-name{
+  font-family:var(--stempel);font-size:11px;letter-spacing:.02em;
+  color:var(--tinte-leise);line-height:1.25;text-align:center;
+  overflow-wrap:anywhere;hyphens:auto;
+}
+.raten-balken .raten-loesung{
+  font-family:var(--serif-display);font-size:clamp(17px,2.4vw,21px);
+  font-weight:500;color:var(--tinte);line-height:1.35;text-align:center;
+}
+.ist-auf .raten-frage{opacity:0}
+.ist-auf .raten-loesung{opacity:1}
+@media print{
+  .raten-frage{display:none!important}
+  .raten-loesung{opacity:1!important}
+}
+
+/* ---------- Klapplisten (Flussabschnitte …) ---------- */
 .klapp-vorspann{margin:0 0 14px;color:var(--tinte-leise)}
 .klapp-liste{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .klapp-liste details{
@@ -1041,8 +1092,19 @@ textarea.gb-feld{min-height:110px;resize:vertical}
    Sicht. Gilt bewusst nicht für flache Fenster – dort greift die
    Regel darüber, sonst schöbe sich der Hinweis über den Zähler.      */
 @media (max-width:560px) and (min-height:560px){
-  .kopf{min-height:100svh;padding:56px 20px 76px;justify-content:center}
-  .hinweis-runter{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);margin-top:0}
+  .kopf{min-height:100svh;padding:40px 20px 64px;justify-content:center}
+  .hinweis-runter{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);margin-top:0}
+  /* Auf dem Handy ist der Bildschirm hoch und schmal. Die Namen dürfen
+     sich deshalb nach der Höhe richten, sonst bleibt der Titel klein
+     und verliert sich in der leeren Fläche.                          */
+  .namen{font-size:clamp(46px, max(13vw, 9vh), 100px)}
+  /* Die Geisterzahl darf auf hohen Handys mitwachsen – sie füllt die
+     Fläche, ohne dem Text Platz wegzunehmen.                        */
+  .geist60{font-size:min(82vw,44vh)}
+  .oberzeile{margin-bottom:clamp(22px,5vh,52px)}
+  .datum{margin-top:clamp(30px,8vh,86px);padding-top:clamp(22px,4.5vh,46px)}
+  .zaehler{margin-top:clamp(20px,5vh,52px)}
+  .funke{margin-bottom:clamp(20px,4.5vh,46px)}
 }
 
 /* ============================================================
@@ -1704,34 +1766,24 @@ const DATEN = {
         /* Tiere zum Aufklappen. Jedes X ist ein Name, den du noch einsetzt.
            "unsicher: true" hängt einen kleinen Vermerk "nachfragen" an –
            einfach löschen, sobald die Geschichte bestätigt ist.            */
+        /* Ratefelder: jedes zeigt erst ein Fragezeichen, beim Antippen
+           kommt das Emoji zum Vorschein. Der "balken" darunter ist das
+           breite Feld, das einen ganzen Text freigibt.               */
         { art:"tiere", titel:"Der ganze Zoo",
-          text:"Erst raten, dann aufklappen – wer war alles dabei?",
+          text:"Erst raten, dann antippen – wer war alles dabei?",
+          /* "name" erscheint klein unter dem Emoji, sobald aufgedeckt ist.
+             Kurz halten – die Felder sind quadratisch.                 */
           tiere:[
-            { emoji:"🐹", name:"Die Hamster",
-              text:"Platzhalter" },
-
-            { emoji:"🦆", name:"Die Enten",
-              text:"Platzhalter"},   // chinesische Enten? Rasse noch unklar
-
-            { emoji:"🐴", name:"Kioma, das Pferd",
-              text:"Platzhalter" },
-
-            { emoji:"🐦", name:"Die Nachtigallen",
-              text:"Platzhalter"},   // Vogelart und Hergang bestätigen
-
-            { emoji:"🐱", name:"Die Katze",
-              text:"Platzhalter" },
-
-            { emoji:"🐢", name:"Die Schildkröte",
-              text:"Platzhalter" },
-
-            { emoji:"🐰", name:"Der Hase",
-              text:"Platzhalter"},   // gab es den Hasen wirklich?
-
-            { emoji:"🐾", name:"Muckel, das Meerschweinchen",
-              text:"Platzhalter"}    // Meerschweinchen oder doch der Hund?
+            { emoji:"🐹", name:"Hamster" },
+            { emoji:"🦆", name:"Enten" },
+            { emoji:"🐴", name:"Kioma" },
+            { emoji:"🐦", name:"Nachtigallen" },
+            { emoji:"🐱", name:"Katze" },
+            { emoji:"🐢", name:"Schildkröte" },
+            { emoji:"🐰", name:"Hase" },
+            { emoji:"🐾", name:"Muckel" }
           ],
-          nachsatz:"Fische gab es nie, Sittiche auch nicht." }
+          balken:"Platzhalter" }
         /* Die Quizfrage ist hier weg – die Tiere zum Aufklappen sind
            das Ratespiel. Wieder einschalten mit:
            , { art:"frage", text:"Platzhalter", antwort:"Platzhalter" } */
@@ -1761,7 +1813,7 @@ const DATEN = {
       titel: "Silberne Hochzeit",
       typ: "jubilaeum", stein: "silber",
       ort: "25 Jahre Ehe",
-      text: "Der helle Glanz des Silbers steht für eine Verbindung, die nach 25 Jahren nichts von ihrem Schimmer verloren hat.",
+      text: "Platzhalter",
       bild: "bilder/14-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Silberhochzeit, 23.10.1991",
       bausteine: [
@@ -1885,15 +1937,15 @@ const DATEN = {
             /* Schluss in Mannheim, wo der Neckar in den Rhein mündet. */
           ] },
 
-        /* Die vier Flüsse zum Aufklappen – je ein Abschnitt der Tour.
-           Titel und Text beliebig ändern, Einträge dürfen weg oder dazu.  */
-        { art:"klapp", titel:"Die Route, Fluss für Fluss",
-          text:"Welche Strecke genau – vier Abschnitte zum Aufklappen.",
-          punkte:[
-            { name:"Der Main – von Frankfurt bis Bamberg",      text:"Platzhalter" },
-            { name:"Der Regen – hinauf in den Bayerischen Wald", text:"Platzhalter" },
-            { name:"Die Donau – aufwärts bis zur Quelle",        text:"Platzhalter" },
-            { name:"Der Neckar – hinunter bis Mannheim",         text:"Platzhalter" }
+        /* Die vier Flüsse zum Raten: erst nur ein Fragezeichen, beim
+           Antippen kommt der Abschnitt zum Vorschein.                 */
+        { art:"raten", titel:"Die Route, Fluss für Fluss",
+          text:"Vier Abschnitte – welcher war es? Zum Aufdecken antippen.",
+          balken:[
+            "Der Main – von Frankfurt bis Bamberg",
+            "Der Regen – hinauf in den Bayerischen Wald",
+            "Die Donau – aufwärts bis zur Quelle",
+            "Der Neckar – hinunter bis Mannheim"
           ] }
       ]
     },
@@ -2250,7 +2302,34 @@ function bausteinHTML(b){
        kommt erst beim Antippen. "unsicher" setzt einen kleinen Vermerk. */
     /* "tiere" und "klapp" bauen dieselbe Klappliste. Der Unterschied ist
        nur das Feld, in dem die Einträge stehen: "tiere" oder "punkte".  */
+    /* Raten: lauter Felder mit einem Fragezeichen. Erst beim Antippen
+       kommt das Emoji zum Vorschein. Darunter ein breiter Balken, der
+       einen ganzen Text freigibt.                                     */
     case "tiere":
+    case "raten": {
+      const felder = b.tiere || b.felder || [];
+      const balken = [].concat(b.balken || []);
+      return '<div class="baustein notiz raten"><b>' + sicher(b.titel || "Raten") + "</b>" +
+             (b.text ? '<p class="raten-vorspann">' + sicher(b.text) + "</p>" : "") +
+             (felder.length
+               ? '<div class="raten-gitter">' +
+                 felder.map(t =>
+                   '<button type="button" class="raten-feld" data-raten>' +
+                     '<span class="raten-frage" aria-hidden="true">?</span>' +
+                     '<span class="raten-loesung">' +
+                       '<span class="raten-emoji" aria-hidden="true">' + sicher(t.emoji || "🐾") + "</span>" +
+                       '<span class="raten-name">' + sicher(t.name) + "</span>" +
+                     "</span>" +
+                   "</button>").join("") +
+                 "</div>"
+               : "") +
+             balken.map(txt =>
+               '<button type="button" class="raten-balken" data-raten>' +
+                 '<span class="raten-frage" aria-hidden="true">?</span>' +
+                 '<span class="raten-loesung">' + sicher(txt) + "</span>" +
+               "</button>").join("") +
+             "</div>";
+    }
     case "klapp": {
       const eintraege = b.tiere || b.punkte || [];
       return '<div class="baustein notiz klapp"><b>' + sicher(b.titel || "Zum Aufklappen") + "</b>" +
@@ -2395,17 +2474,9 @@ function strahlAufbauen(){
           '<h2 class="jubel-titel">' + sicher(s.titel) + "</h2>" +
           (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
           "<p>" + sicher(s.text) + "</p>" +
-          /* Auch die Hochzeitstage bekommen eine Bildfläche. Fehlt die Datei
-             noch, steht dort der Platzhalter statt eines leeren Kastens.  */
-          '<figure class="jubel-rahmen">' +
-            (s.bild
-              ? '<img class="jubel-bild" src="' + sicher(s.bild) + '" alt="' + sicher(s.titel) +
-                '" loading="lazy" onerror="bildFehlt(this)">'
-              : '<div class="bild-flaeche bild-platzhalter jubel-bild">Hier kommt ein Foto hin</div>') +
-            (s.bildunterschrift
-              ? '<figcaption class="jubel-unterschrift">' + sicher(s.bildunterschrift) + "</figcaption>"
-              : "") +
-          "</figure>" +
+          /* Die Hochzeitstage kommen bewusst ohne Foto aus – sie sind
+             reine Wortkarten. Ein Bild einblenden ginge so:
+             (s.bild ? '<img class="jubel-bild" src="…">' : "") +        */
           (s.bausteine || []).map(bausteinHTML).join("") +
           sprungHTML(s) +
         "</div></article>";
@@ -2490,6 +2561,12 @@ function strahlAufbauen(){
     if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5)
       karussellSchritt(wischKar, dx < 0 ? 1 : -1);
     wischKar = null; wischX = wischY = null;
+  });
+
+  // Ratefelder umschlagen lassen – nochmal antippen deckt sie wieder zu
+  ziel.addEventListener("click", e => {
+    const feld = e.target.closest("[data-raten]");
+    if(feld) feld.classList.toggle("ist-auf");
   });
 
   // Antworten aufklappen

@@ -165,11 +165,11 @@ img{max-width:100%;display:block}
 .kopf{
   min-height:100svh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;text-align:center;
-  padding:64px 24px;position:relative;
+  padding:clamp(28px,5vh,64px) 24px clamp(64px,9vh,88px);position:relative;
 }
 .oberzeile{
   font-family:var(--stempel);font-weight:500;font-size:clamp(13px,1.15vw,15px);letter-spacing:.22em;
-  text-transform:uppercase;color:var(--label);margin-bottom:22px;
+  text-transform:uppercase;color:var(--label);margin-bottom:clamp(14px,2.6vh,26px);
   max-width:min(100%,52ch);line-height:1.7;
 }
 .namen{
@@ -177,7 +177,7 @@ img{max-width:100%;display:block}
   font-weight:300;
   /* Die Namen richten sich nach Breite UND Höhe des Fensters. Das "min"
      verhindert, dass sie in flachen Fenstern über den Rand wachsen.   */
-  font-size:clamp(46px, min(12vw, 12.5vh), 124px);
+  font-size:clamp(40px, min(12vw, 11.5vh), 124px);
   line-height:.98;margin:0;letter-spacing:-.02em;
 }
 .und{
@@ -186,14 +186,15 @@ img{max-width:100%;display:block}
 }
 .datum{
   font-family:var(--stempel);font-size:clamp(14px,1.35vw,18px);letter-spacing:.04em;
-  color:var(--tinte-leise);margin-top:44px;position:relative;padding-top:34px;
+  color:var(--tinte-leise);margin-top:clamp(22px,4.8vh,50px);position:relative;
+  padding-top:clamp(18px,3.6vh,38px);
 }
 .datum::before{
   content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
   width:52px;height:1px;background:var(--sepia);opacity:.55;
 }
 .zaehler{
-  margin-top:26px;font-family:var(--serif-display);font-weight:300;
+  margin-top:clamp(16px,3vh,30px);font-family:var(--serif-display);font-weight:300;
   font-size:clamp(17px,2.1vw,26px);color:var(--tinte-leise);
 }
 .zaehler b{
@@ -250,7 +251,12 @@ img{max-width:100%;display:block}
 .bild-rahmen:hover{transform:rotate(0deg) scale(1.012)}
 .bild-flaeche{
   border-radius:8px;
-  aspect-ratio:var(--verhaeltnis,4/3);width:100%;object-fit:cover;
+  /* Die Höhe ist gedeckelt, damit Jahreszahl, Titel und der erste Satz
+     einer Station zusammen auf den Bildschirm passen. Alles Weitere –
+     Karten, Ratefelder, Zitate – darf ruhig ein Stück tiefer liegen. */
+  aspect-ratio:var(--verhaeltnis,4/3);width:100%;
+  max-height:var(--bildhoehe, min(52svh, calc(100svh - 300px)));
+  object-fit:cover;
   background:
     repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 11px),
     linear-gradient(150deg,#c8ccb6,#8f9578 55%,#63684f);
@@ -478,6 +484,20 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .navi-knopf.ist-aktiv{background:var(--tinte);color:#f2eee5}
 
 .ansicht{max-width:1000px;margin:0 auto;padding:var(--s4) 20px var(--s5)}
+
+/* Am Rechner soll der Stammbaum samt Personenkarte auf einen Bildschirm
+   passen, ganz ohne Scrollen. Die Bühne nimmt sich dafür genau den Platz,
+   der zwischen Überschrift und Karte übrig bleibt.
+   Auf dem Handy bleibt alles wie gehabt – dort ist Scrollen normal.   */
+@media (min-width:700px) and (min-height:520px){
+  #ansicht-stammbaum:not([hidden]){
+    display:flex;flex-direction:column;height:100svh;
+    padding-top:clamp(16px,3vh,34px);padding-bottom:clamp(16px,3vh,34px);
+  }
+  #ansicht-stammbaum .ansicht-kopf{margin-bottom:clamp(10px,2vh,22px)}
+  #ansicht-stammbaum .buehne{flex:1 1 auto;min-height:0;height:auto}
+  #ansicht-stammbaum .person-karte{flex:none}
+}
 .ansicht-kopf{text-align:center;margin-bottom:28px}
 .ansicht-kopf h2{
   font-family:var(--serif-display);font-weight:300;
@@ -565,7 +585,9 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .baum-foto-ring{fill:none;stroke:rgba(213,205,189,.95);stroke-width:2;transition:stroke .2s}
 .baum-person:hover .baum-foto-ring{stroke:var(--sepia)}
 .baum-person.ist-gewaehlt .baum-foto-ring{stroke:var(--patina);stroke-width:2.6}
-.baum-foto image{filter:sepia(.18)}
+/* Alle Fotos im Stammbaum laufen in Schwarzweiß – das hält den
+   Baum ruhig, egal wie bunt die einzelnen Bilder sind. */
+.baum-foto image{filter:grayscale(1) contrast(1.04)}
 .baum-person:hover .baum-kasten{fill:#fff;stroke:var(--sepia)}
 .baum-person.ist-gewaehlt .baum-kasten{fill:#fff;stroke:var(--patina);stroke-width:2}
 .baum-kasten--paar{fill:var(--tinte);stroke:var(--tinte)}
@@ -588,21 +610,38 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .baum-linie{stroke:rgba(141,117,72,.5);stroke-width:1.4;fill:none}
 .baum-herz{fill:var(--sepia);opacity:.65}
 
+/* Kein Kasten: nur Name und rundes Foto, das sanft einblendet.
+   Am Rechner steht der Text links und das Foto rechts daneben, auf dem
+   Handy sitzt das Foto darunter in der Mitte. Die Größe hängt an der
+   Fensterhöhe, damit im Web nichts gescrollt werden muss.            */
 .person-karte{
-  margin-top:22px;padding:22px 24px;border-radius:16px;
-  max-height:46svh;overflow-y:auto;
-  background:rgba(247,244,237,.92);border:1px solid rgba(213,205,189,.9);
+  margin-top:18px;display:flex;align-items:center;justify-content:center;gap:26px;
+  background:none;border:0;padding:0;
+  animation:person-auf .42s ease both;
+}
+@keyframes person-auf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){ .person-karte{animation:none} }
+.person-rund{
+  margin:0;flex:none;order:2;
+  width:min(26svh,230px);aspect-ratio:1/1;border-radius:50%;
+  background:#d9d5c7;border:2px solid rgba(213,205,189,.95);overflow:hidden;
+}
+.person-rund img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1) contrast(1.04);
+}
+/* Der Text schmiegt sich rechtsbündig an das Foto, beide zusammen
+   mittig unter dem Baum.                                          */
+.person-wer{min-width:0;order:1;flex:0 1 auto;text-align:right}
+@media (max-width:699px){
+  .person-karte{flex-direction:column;align-items:center;text-align:center;gap:16px}
+  .person-rund{order:2;width:min(46vw,220px)}
+  .person-wer{order:1;flex:none}
 }
 .person-karte h3{font-family:var(--serif-display);font-weight:500;font-size:24px;margin:0 0 4px}
 .person-karte .rolle{font-family:var(--stempel);font-size:13px;color:var(--patina);margin:0 0 10px}
 .person-karte p{margin:0;color:var(--tinte-leise);max-width:62ch;line-height:1.6}
-/* Foto in der Personenkarte */
-.person-bild{margin:12px 0 0;max-width:340px}
-.person-bild img,
-.person-bild .bild-flaeche{
-  width:100%;display:block;border-radius:8px;aspect-ratio:4/3;object-fit:cover;
-  border:1px solid var(--papier-tief);
-}
+
 
 /* Karte */
 #karte{
@@ -782,6 +821,10 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .raten-balken .raten-frage{font-size:26px}
 .raten-loesung{opacity:0;flex-direction:column;gap:5px}
 .raten-emoji{font-size:clamp(26px,5.5vw,34px);line-height:1}
+.raten-spezies{
+  font-family:var(--stempel);font-size:9.5px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--sepia);line-height:1.2;text-align:center;
+}
 .raten-name{
   font-family:var(--stempel);font-size:11px;letter-spacing:.02em;
   color:var(--tinte-leise);line-height:1.25;text-align:center;
@@ -918,7 +961,7 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 
 /* Funkeln neben den Namen */
 .funke{
-  display:block;width:13px;height:13px;margin:0 auto 26px;
+  display:block;width:13px;height:13px;margin:0 auto clamp(14px,2.8vh,30px);
   transform:rotate(45deg);
   background:linear-gradient(135deg,#fff,var(--diamant) 50%,#7fa3b4);
   box-shadow:0 0 14px rgba(169,198,212,.9);
@@ -1059,14 +1102,16 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .fuss{border-top:1px solid rgba(154,115,80,.25)}
 
 
-/* Wirklich flache Fenster – Handy quer, kleines Browserfenster.
-   Dort steht der Hinweis nach unten im Textfluss statt am Rand,
-   sonst schiebt er sich über den Zähler.
-   Achtung: Die Grenze liegt bewusst bei 560 und nicht bei 700 Pixeln.
-   Ein Handy hochkant ist mit eingeblendeter Adressleiste schnell nur
-   noch 640 Pixel hoch – das ist kein flaches Fenster, sondern der
-   Normalfall, und dort soll der Kopf den Bildschirm füllen.           */
-@media (max-height:559px){
+/* Nur noch für richtig flache Fenster – Handy quer.
+   Dort steht der Hinweis im Textfluss statt am Rand, sonst schiebt er
+   sich über den Zähler.
+   Die Grenze lag vorher bei 559 Pixeln. Das war zu hoch: Ein normales
+   Browserfenster am Rechner ist mit Taskleiste und Adresszeile oft nur
+   noch rund 555 Pixel hoch – und wurde dann wie ein Handy im Querformat
+   behandelt, wodurch der Kopf zusammenklappte und die erste Station
+   schon beim Laden zu sehen war. Alles darüber regelt jetzt die
+   höhenabhängige Schriftgröße, die in jedes Fenster passt.           */
+@media (max-height:440px){
   .kopf{
     min-height:auto;
     padding:clamp(24px,5vh,56px) 24px clamp(22px,4vh,44px);
@@ -1608,8 +1653,8 @@ const DATEN = {
       /* Der Umzug an die Eschenheimer Anlage fällt in genau diese Zeit – er
          steht bewusst nur bei den Orten und nicht hier im Text. */
       text: "Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht. Erst einmal sind sie Freunde. Irgendwann wird mehr daraus.",
-      bild: "bilder/02-01.jpg",           // Datei genau so benennen
-      bildunterschrift: "Platzhalter",
+      bild: "",                         // Das Kennenlernen bekommt bewusst kein Foto
+      bildunterschrift: "",
       bausteine: []
     },
     /* ═══ STATION 03 · 1961 · Hildegards erster Arbeitstag ══════════════════ */
@@ -1776,12 +1821,12 @@ const DATEN = {
           tiere:[
             { emoji:"🐹", name:"Hamster" },
             { emoji:"🦆", name:"Enten" },
-            { emoji:"🐴", name:"Kioma" },
+            { emoji:"🐴", name:"Kioma", spezies:"Pferd" },
             { emoji:"🐦", name:"Nachtigallen" },
             { emoji:"🐱", name:"Katze" },
             { emoji:"🐢", name:"Schildkröte" },
             { emoji:"🐰", name:"Hase" },
-            { emoji:"🐾", name:"Muckel" }
+            { emoji:"🐾", name:"Muckel", spezies:"Meerschweinchen" }
           ],
           balken:"Platzhalter" }
         /* Die Quizfrage ist hier weg – die Tiere zum Aufklappen sind
@@ -1814,7 +1859,7 @@ const DATEN = {
       typ: "jubilaeum", stein: "silber",
       ort: "25 Jahre Ehe",
       text: "Platzhalter",
-      bild: "bilder/14-01.jpg",           // Datei genau so benennen
+      bild: "",                         // dieser Hochzeitstag zeigt kein Foto
       bildunterschrift: "Silberhochzeit, 23.10.1991",
       bausteine: [
         { art:"zitat", text:"Glück ist das Einzige, was sich verdoppelt, wenn man es teilt." }
@@ -1849,7 +1894,7 @@ const DATEN = {
       typ: "jubilaeum", stein: "perle",
       ort: "30 Jahre Ehe",
       text: "Die Perle wächst Schicht um Schicht über viele Jahre – so wie alles, was in 30 Jahren miteinander entstanden ist.",
-      bild: "bilder/17-01.jpg",           // Datei genau so benennen
+      bild: "",                         // dieser Hochzeitstag zeigt kein Foto
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
@@ -2057,7 +2102,7 @@ const DATEN = {
       typ: "jubilaeum", stein: "rubin",
       ort: "40 Jahre Ehe",
       text: "Die tiefrote Farbe symbolisiert die Liebe, die auch nach 40 Jahren noch brennt.",
-      bild: "bilder/25-01.jpg",           // Datei genau so benennen
+      bild: "",                         // dieser Hochzeitstag zeigt kein Foto
       bildunterschrift: "Platzhalter",
       bausteine: []
     },
@@ -2147,7 +2192,7 @@ const DATEN = {
       typ: "jubilaeum", stein: "gold",
       ort: "50 Jahre Ehe",
       text: "Gold rostet nicht und läuft nicht an – nach 50 Jahren ist es so kostbar wie am ersten Tag.",
-      bild: "bilder/28-01.jpg",           // Datei genau so benennen
+      bild: "",                         // dieser Hochzeitstag zeigt kein Foto
       bildunterschrift: "Platzhalter",
       bausteine: [
         { art:"zitat", text:"Wer miteinander alt wird, hat zweimal gelebt." }
@@ -2319,6 +2364,7 @@ function bausteinHTML(b){
                      '<span class="raten-loesung">' +
                        '<span class="raten-emoji" aria-hidden="true">' + sicher(t.emoji || "🐾") + "</span>" +
                        '<span class="raten-name">' + sicher(t.name) + "</span>" +
+                       (t.spezies ? '<span class="raten-spezies">' + sicher(t.spezies) + "</span>" : "") +
                      "</span>" +
                    "</button>").join("") +
                  "</div>"
@@ -2474,9 +2520,15 @@ function strahlAufbauen(){
           '<h2 class="jubel-titel">' + sicher(s.titel) + "</h2>" +
           (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
           "<p>" + sicher(s.text) + "</p>" +
-          /* Die Hochzeitstage kommen bewusst ohne Foto aus – sie sind
-             reine Wortkarten. Ein Bild einblenden ginge so:
-             (s.bild ? '<img class="jubel-bild" src="…">' : "") +        */
+          /* Die Hochzeitstage sind Wortkarten. Nur wo ein "bild" eingetragen
+             ist, erscheint ein Foto – bei den anderen bleibt das Feld leer. */
+          (s.bild
+            ? '<figure class="jubel-rahmen"><img class="jubel-bild" src="' + sicher(s.bild) +
+              '" alt="' + sicher(s.titel) + '" loading="lazy" onerror="bildFehlt(this)">' +
+              (s.bildunterschrift
+                ? '<figcaption class="jubel-unterschrift">' + sicher(s.bildunterschrift) + "</figcaption>"
+                : "") + "</figure>"
+            : "") +
           (s.bausteine || []).map(bausteinHTML).join("") +
           sprungHTML(s) +
         "</div></article>";
@@ -2698,6 +2750,11 @@ function ansichtZeigen(name){
      einer Station kam oder über die Knöpfe unter der Zeitleiste.        */
   document.querySelectorAll("[data-zurueck]").forEach(k => k.hidden = false);
   if(name === "stammbaum" && !baumGebaut){ baumBauen(); baumGebaut = true; }
+  /* Die Fußzeile gehört zum Album. Unter dem Stammbaum oder der Karte
+     hätte sie nichts zu suchen – und sie würde dort dafür sorgen, dass
+     die Seite doch wieder gescrollt werden muss.                      */
+  const fuss = $("#fuss");
+  if(fuss) fuss.hidden = name !== "album";
   if(name === "orte" && !karteGebaut){ karteBauen(); karteGebaut = true; }
   if(name !== "album") window.scrollTo(0, 0);
 }
@@ -2850,25 +2907,28 @@ function buehneSteuern(buehne, inhalt){
 /* ---------- Stammbaum ---------------------------------------------------- */
 function baumBauen(){
   const F = DATEN.familie;
-  const KB = 150, KH = 56, LUECKE = 22, EBENE = 166;
-  const FOTO = 23;            // Radius der Miniatur über dem Kasten
+  const KB = 186, KH = 56, LUECKE = 22, EBENE = 132;
+  const FOTO = 17;            // Radius der Miniatur im Kasten
+  /* Das Foto sitzt links im Kasten, der Text rückt daneben. */
+  const TEXT_MITTE = 8 + FOTO * 2 + 8 + (KB - 8 - FOTO * 2 - 8 - 10) / 2;
 
-  /* Kleines rundes Foto, das über der Oberkante eines Kastens sitzt.
-     Darunter liegt ein grauer Kreis – fehlt die Bilddatei noch, bleibt
-     einfach der Kreis stehen, ganz ohne kaputtes Bildsymbol.          */
-  function fotoKreis(quelle, id, mx, oben){
-    const cy = oben - FOTO - 6;
+  /* Kleines rundes Foto am linken Rand eines Kastens. Darunter liegt ein
+     grauer Kreis – fehlt die Bilddatei noch, bleibt einfach der Kreis
+     stehen, ganz ohne kaputtes Bildsymbol.                             */
+  function fotoKreis(quelle, id, links, oben){
+    const cx = links + 8 + FOTO, cy = oben + KH / 2;
     const schnitt = "rund-" + String(id).replace(/[^\w-]/g, "");
     return `<g class="baum-foto">
-      <circle class="baum-foto-grund" cx="${mx}" cy="${cy}" r="${FOTO}"/>
-      ${quelle ? `<clipPath id="${schnitt}"><circle cx="${mx}" cy="${cy}" r="${FOTO}"/></clipPath>
-      <image href="${sicher(quelle)}" x="${mx - FOTO}" y="${cy - FOTO}"
+      <circle class="baum-foto-grund" cx="${cx}" cy="${cy}" r="${FOTO}"/>
+      ${quelle ? `<clipPath id="${schnitt}"><circle cx="${cx}" cy="${cy}" r="${FOTO}"/></clipPath>
+      <image href="${sicher(quelle)}" x="${cx - FOTO}" y="${cy - FOTO}"
              width="${FOTO * 2}" height="${FOTO * 2}"
              preserveAspectRatio="xMidYMid slice" clip-path="url(#${schnitt})"
              onerror="this.remove()"/>` : ""}
-      <circle class="baum-foto-ring" cx="${mx}" cy="${cy}" r="${FOTO}"/>
+      <circle class="baum-foto-ring" cx="${cx}" cy="${cy}" r="${FOTO}"/>
     </g>`;
   }
+
 
   /* Wurzel ist das Paar; darunter die Kinder */
   const wurzel = { paar:F.paar, kinder:F.kinder || [] };
@@ -2877,7 +2937,7 @@ function baumBauen(){
   /* Lange Namen auf zwei Zeilen brechen, an der ausgewogensten Wortgrenze.
      Ein Wort, das allein zu lang ist, bleibt stehen und wird kleiner gesetzt. */
   function namenSatz(name, x, y, klasse){
-    const grenze = 17;                       // Zeichen, die sicher in den Kasten passen
+    const grenze = 16;                       // Zeichen, die neben dem Foto in den Kasten passen
     if(name.length <= grenze)
       return `<text class="${klasse}" x="${x}" y="${y}">${sicher(name)}</text>`;
 
@@ -2938,20 +2998,17 @@ function baumBauen(){
     maxY = Math.max(maxY, k._y);
     (k.kinder || []).forEach(messen);
   })(wurzel);
-  /* Oben braucht es zusätzlich Platz für die runden Fotos, die über den
-     Kästen sitzen – sonst wird die oberste Reihe abgeschnitten. */
-  const kopfLuft = FOTO * 2 + 10;
   const rand = 30, verschub = rand - minX;
   const breiteGesamt = (maxX - minX) + rand * 2;
-  const hoeheGesamt = maxY + KH + rand * 2 + kopfLuft;
+  const hoeheGesamt = maxY + KH + rand * 2;
 
   const teile = [];
   (function zeichnen(k, elternRolle){
-    const x = k._x + verschub, y = k._y + rand + kopfLuft;
+    const x = k._x + verschub, y = k._y + rand;
 
     /* Linien zu den Kindern */
     (k.kinder || []).forEach(c => {
-      const cx = c._x + verschub, cy = c._y + rand + kopfLuft;
+      const cx = c._x + verschub, cy = c._y + rand;
       const mitte = y + KH + (EBENE - KH) / 2;
       teile.push(`<path class="baum-linie" d="M ${x} ${y + KH} V ${mitte} H ${cx} V ${cy}"/>`);
     });
@@ -2961,10 +3018,10 @@ function baumBauen(){
       k.paar.forEach((person, i) => {
         const px = i === 0 ? links : rechts;
         teile.push(`<g class="baum-person" data-id="${sicher(person.id||"")}" data-name="${sicher(person.name)}" data-jahr="${sicher(person.jahr||"")}" data-rolle="${i===0?"Oma":"Opa"}" data-bild="${sicher(person.bild||"")}">
-          ${fotoKreis(person.bild, person.id, px + KB/2, y)}
           <rect class="baum-kasten baum-kasten--paar" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-          ${namenSatz(person.name, px + KB/2, y + 22, "baum-name baum-name--hell")}
-          <text class="baum-jahr baum-jahr--hell" x="${px + KB/2}" y="${y + 42}">${sicher(person.jahr||"")}</text>
+          ${fotoKreis(person.bild, person.id, px, y)}
+          ${namenSatz(person.name, px + TEXT_MITTE, y + 22, "baum-name baum-name--hell")}
+          <text class="baum-jahr baum-jahr--hell" x="${px + TEXT_MITTE}" y="${y + 42}">${sicher(person.jahr||"")}</text>
         </g>`);
       });
       teile.push(`<path class="baum-herz" d="M ${x} ${y + KH/2 + 5} l -6 -7 a 4 4 0 0 1 6 -5 a 4 4 0 0 1 6 5 z"/>`);
@@ -2974,19 +3031,19 @@ function baumBauen(){
       const px = hatPartner ? x - KB - 6 : x - KB/2;
 
       teile.push(`<g class="baum-person" data-id="${sicher(k.id||"")}" data-name="${sicher(k.name)}" data-jahr="${sicher(k.jahr||"")}" data-rolle="${sicher(k.rolle || elternRolle)}" data-bild="${sicher(k.bild||"")}" data-partner="${sicher(k.partner||"")}">
-        ${fotoKreis(k.bild, k.id, px + KB/2, y)}
         <rect class="baum-kasten" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-        ${namenSatz(k.name, px + KB/2, y + 22, "baum-name")}
-        <text class="baum-jahr" x="${px + KB/2}" y="${y + 42}">${sicher(k.jahr||"")}</text>
+        ${fotoKreis(k.bild, k.id, px, y)}
+        ${namenSatz(k.name, px + TEXT_MITTE, y + 22, "baum-name")}
+        <text class="baum-jahr" x="${px + TEXT_MITTE}" y="${y + 42}">${sicher(k.jahr||"")}</text>
       </g>`);
 
       if(hatPartner){
         const rx = x + 6;
         teile.push(`<path class="baum-band" d="M ${x - 6} ${y + KH/2} H ${x + 6}"/>`);
         teile.push(`<g class="baum-person baum-person--partner" data-id="${sicher((k.id||"") + "-partner")}" data-name="${sicher(k.partner)}" data-jahr="" data-rolle="Angeheiratet" data-bild="${sicher(k.partnerBild||"")}" data-partner="">
-          ${fotoKreis(k.partnerBild, (k.id||"") + "-partner", rx + KB/2, y)}
           <rect class="baum-kasten baum-kasten--partner" x="${rx}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
-          ${namenSatz(k.partner, rx + KB/2, y + 30, "baum-name baum-name--partner")}
+          ${fotoKreis(k.partnerBild, (k.id||"") + "-partner", rx, y)}
+          ${namenSatz(k.partner, rx + TEXT_MITTE, y + 30, "baum-name baum-name--partner")}
         </g>`);
       }
     }
@@ -3000,8 +3057,8 @@ function baumBauen(){
   /* Positionen merken, damit man einzelne Personen anspringen kann */
   baumPunkte = {};
   (function sammeln(k){
-    if(k.paar){ k.paar.forEach(pp => baumPunkte[pp.id] = { x:k._x + verschub, y:k._y + rand + kopfLuft }); }
-    else if(k.id){ baumPunkte[k.id] = { x:k._x + verschub, y:k._y + rand + kopfLuft }; }
+    if(k.paar){ k.paar.forEach(pp => baumPunkte[pp.id] = { x:k._x + verschub, y:k._y + rand }); }
+    else if(k.id){ baumPunkte[k.id] = { x:k._x + verschub, y:k._y + rand }; }
     (k.kinder || []).forEach(sammeln);
   })(wurzel);
 
@@ -3016,19 +3073,25 @@ function baumBauen(){
     document.querySelectorAll(".baum-person").forEach(p => p.classList.remove("ist-gewaehlt"));
     g.classList.add("ist-gewaehlt");
     const karte = $("#person-karte");
+    /* Am Rechner nimmt die Karte der Bühne Platz weg. Ändert sich deren
+       Höhe dadurch, muss der Baum neu eingepasst werden – sonst wird die
+       unterste Reihe angeschnitten.                                     */
+    const hoeheVorher = $("#baum-buehne").clientHeight;
     karte.hidden = false;
-    /* In der Karte steht ein Foto statt eines Textes. Fehlt die Datei
-       noch, erscheint der Platzhalter.                                */
+    /* In der Karte steht dasselbe Foto wie oben im Stammbaum, nur groß
+       und weiterhin rund. Fehlt die Datei, bleibt der leere Kreis.     */
     const quelle = g.dataset.bild || "";
-    karte.innerHTML = "<h3>" + g.dataset.name + "</h3>" +
-      '<p class="rolle">' + g.dataset.rolle +
-      (g.dataset.jahr ? " · " + g.dataset.jahr : "") + "</p>" +
-      '<figure class="person-bild">' +
-        (quelle
-          ? '<img src="' + quelle + '" alt="' + g.dataset.name +
-            '" loading="lazy" onerror="bildFehlt(this)">'
-          : '<div class="bild-flaeche bild-platzhalter">Hier kommt ein Foto hin</div>') +
-      "</figure>";
+    karte.innerHTML =
+      '<figure class="person-rund">' +
+        (quelle ? '<img src="' + quelle + '" alt="' + g.dataset.name + '" loading="lazy">' : "") +
+      "</figure>" +
+      '<div class="person-wer">' +
+        "<h3>" + g.dataset.name + "</h3>" +
+        '<p class="rolle">' + g.dataset.rolle +
+        (g.dataset.jahr ? " · " + g.dataset.jahr : "") + "</p>" +
+      "</div>";
+    if($("#baum-buehne").clientHeight !== hoeheVorher)
+      requestAnimationFrame(() => steuerung.einpassen());
   });
 
   /* Jede Person auch mit der Tastatur erreichbar machen: mit Tab

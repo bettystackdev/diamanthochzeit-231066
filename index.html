@@ -1023,15 +1023,19 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .feld{font-size:16px}            /* unter 16px zoomt iOS beim Tippen hinein */
 
   /* Kopf: die Geisterzahl nicht über den Text wachsen lassen */
-  .geist60{font-size:min(68vw,330px);opacity:.035;transform:translate(-50%,-58%)}
-  .kopf{padding:72px 20px 96px}
+  .geist60{font-size:min(68vw,330px);opacity:.035;transform:translate(-58%,-58%)}
   .oberzeile{letter-spacing:.16em;font-size:12px}
   .datum{font-size:13px}
-  .zaehler{margin-top:30px}
-  .hinweis-runter{bottom:22px}
-
   .zaehler{margin-top:22px;font-size:15px}
-  .kopf{min-height:92svh}
+
+  /* Auf dem Handy läuft der Hinweis im Textfluss mit, statt unten am
+     Rand zu kleben. Sonst klafft zwischen Zähler und Hinweis ein Loch,
+     das mit der Bildschirmhöhe immer größer wird – auf großen Handys
+     waren das fast 200 Pixel Leere.                                    */
+  .kopf{min-height:auto;padding:56px 20px 40px}
+  .hinweis-runter{
+    position:static;transform:none;bottom:auto;margin-top:34px;
+  }
 
   /* Zeitleiste: Faden näher an den Rand, mehr Platz für die Karten */
   .strahl{padding:28px 16px 35px}
@@ -1293,7 +1297,7 @@ const DATEN = {
         partner:     "Der Künstler",    // ← Spitzname, echten Namen eintragen
         partnerText: "Die Künstlerseele der Familie. Für jeden Geburtstag baut und werkelt er wochenlang, und fehlt dann selbst, weil ausgerechnet an dem Tag ein Kind krank ist oder ein Hund gehütet werden muss. Beschweren tut er sich zuverlässig darüber – allzu unglücklich wirkt er beim Verpassen des Weihnachtsliedersingens aber nie.",
         rolle:   "Die Älteste",
-        text:    "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",     // ← Probetext, später ersetzen
+        text:    "Wo Organisation gebraucht wird, hat sie meist schon angefangen, während die anderen noch überlegen, wer das eigentlich macht. Am liebsten wäre sie dabei draußen und in Bewegung. Ruft aber jemand an und braucht sie, bleibt alles andere liegen und stehen – und hinterher macht sie sich trotzdem noch Gedanken, ob es für alle gepasst hat.",
         kinder:[
 
           /* ── ENKEL 1 · Kind von Tochter 1, geboren 1997 ── */
@@ -1308,8 +1312,8 @@ const DATEN = {
           { id:"e2",
             name:  "Platzhalter",   // ← Vorname Enkel 2
             jahr:  "* 2000",
-            rolle: "Platzhalter",
-            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 2
+            rolle: "Der Zuhörer",
+            text:  "Fragt man ihn, was er möchte, kommt zuverlässig: passt schon. Fragt man ihn, ob er Zeit hat, kommt genauso zuverlässig: klar. Er ist bei allem dabei, hört zu, bis der andere wirklich fertig ist, und hat vermutlich in seinem ganzen Leben noch keinen Streit angefangen. Was er selbst eigentlich will, muss die Familie bis heute erraten." }
       ]},
 
       /* ═══ KIND 2 · die mittlere Tochter, geboren 1969 ══════════════════ */
@@ -1488,7 +1492,7 @@ const DATEN = {
       titel: "Zwei Kinder in Frankfurt",
       ortId: ["weberstrasse", "koselstrasse"],   // wo beide als Kinder wohnten
       ort: "Frankfurt-Nordend",
-      text: "Hildegard wächst in der Weberstraße auf, Peter ein paar Straßen weiter in der Koselstraße. Dieselben Ecken, dieselben Wege – ob sie sich in all den Jahren schon einmal begegnet sind, weiß niemand.",
+      text: "Hildegard wächst in der Weberstraße auf, Peter ein paar Straßen weiter in der Koselstraße.",
       bild: "",                         // bilder/01-1943-zwei-kinder-in.jpg
       /* Bilderreihe: ab zwei Einträgen blättert die Station im Kreis.
          Pfad und Unterschrift eintragen, Zeilen dürfen weg oder dazu.   */
@@ -1512,7 +1516,7 @@ const DATEN = {
       ort: "St. Bernhard, Frankfurt",
       /* Der Umzug an die Eschenheimer Anlage fällt in genau diese Zeit – er
          steht bewusst nur bei den Orten und nicht hier im Text. */
-      text: "Sechste Klasse, beide zwölf: Bei St. Bernhard lernen sich Hildegard und Peter kennen – und sind erst einmal Freunde.",
+      text: "Sechste Klasse, beide zwölf: Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht. Erst einmal sind sie Freunde. Irgendwann wird mehr daraus.",
       bild: "bilder/02-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: []
@@ -1783,8 +1787,14 @@ const DATEN = {
            Rund 740 km auf ausgeschilderten Radwegen.
            Punkte ergänzen oder streichen – die Linie folgt der Reihenfolge.
            Koordinaten bei openstreetmap.org per Rechtsklick → "Adresse anzeigen".  */
+        /* ACHTUNG – die Reihenfolge ist nur rekonstruiert.
+           Bekannt ist vom Großonkel: Main, Regen, Donau und Neckar.
+           Daraus ergibt sich diese Runde, weil Donau- und Neckarquelle
+           nur rund zehn Kilometer auseinanderliegen. Ob Peter wirklich
+           so gefahren ist – oder Teilstrecken mit der Bahn – bitte
+           nachfragen und die Punkte unten entsprechend anpassen.      */
         { art:"route", titel:"Und Peter? Fuhr Rad.",
-          text:"Platzhalter",           // ← Wie lange war er unterwegs, allein oder mit wem, wo übernachtet
+          text:"Vier Flüsse: den Main hinauf, den Regen in den Bayerischen Wald, die Donau bis zur Quelle – und den Neckar wieder hinunter.",
           bild:"",                      // ← Foto von der Radtour, z. B. bilder/radtour.jpg
           bildunterschrift:"Platzhalter",
           punkte:[
@@ -1807,9 +1817,48 @@ const DATEN = {
             { name:"Beilngries",     lat:49.0325, lng:11.4694 },
             { name:"Kelheim",        lat:48.9175, lng:11.8747 },
             { name:"Regensburg",     lat:49.0134, lng:12.1016 },
-            { name:"Straubing",      lat:48.8813, lng:12.5730 },
-            { name:"Deggendorf",     lat:48.8409, lng:12.9611 },
-            { name:"Passau",         lat:48.5667, lng:13.4319 }
+
+            /* ── Den Regen hinauf in den Bayerischen Wald und zurück ── */
+            { name:"Regenstauf",     lat:49.1197, lng:12.1289 },
+            { name:"Nittenau",       lat:49.1972, lng:12.2661 },
+            { name:"Roding",         lat:49.1953, lng:12.5147 },
+            { name:"Cham",           lat:49.2231, lng:12.6622 },
+            { name:"Bad Kötzting",   lat:49.1786, lng:12.8542 },
+            { name:"Zwiesel",        lat:49.0186, lng:13.2381 },
+            { name:"Regensburg",     lat:49.0134, lng:12.1016 },
+
+            /* ── Die Donau aufwärts bis zur Quelle ── */
+            { name:"Ingolstadt",     lat:48.7665, lng:11.4258 },
+            { name:"Neuburg",        lat:48.7325, lng:11.1875 },
+            { name:"Donauwörth",     lat:48.7186, lng:10.7778 },
+            { name:"Dillingen",      lat:48.5800, lng:10.4950 },
+            { name:"Ulm",            lat:48.4011, lng: 9.9876 },
+            { name:"Ehingen",        lat:48.2833, lng: 9.7250 },
+            { name:"Sigmaringen",    lat:48.0876, lng: 9.2167 },
+            { name:"Tuttlingen",     lat:47.9847, lng: 8.8194 },
+            { name:"Donaueschingen", lat:47.9475, lng: 8.5017 },
+
+            /* ── Hinüber zur Neckarquelle, dann den Neckar hinunter ── */
+            { name:"Schwenningen",   lat:48.0603, lng: 8.5386 },
+            { name:"Rottweil",       lat:48.1678, lng: 8.6275 },
+            { name:"Horb",           lat:48.4442, lng: 8.6903 },
+            { name:"Tübingen",       lat:48.5216, lng: 9.0576 },
+            { name:"Nürtingen",      lat:48.6264, lng: 9.3411 },
+            { name:"Esslingen",      lat:48.7394, lng: 9.3089 },
+            { name:"Stuttgart",      lat:48.7758, lng: 9.1829 },
+            { name:"Ludwigsburg",    lat:48.8974, lng: 9.1916 },
+            { name:"Heilbronn",      lat:49.1427, lng: 9.2109 },
+            { name:"Bad Wimpfen",    lat:49.2294, lng: 9.1733 },
+            { name:"Mosbach",        lat:49.3531, lng: 9.1439 },
+            { name:"Eberbach",       lat:49.4650, lng: 8.9900 },
+            { name:"Heidelberg",     lat:49.3988, lng: 8.6724 },
+            { name:"Mannheim",       lat:49.4875, lng: 8.4660 },
+
+            /* ── Am Rhein und am Main wieder nach Hause ── */
+            { name:"Worms",          lat:49.6319, lng: 8.3653 },
+            { name:"Mainz",          lat:49.9929, lng: 8.2473 },
+            { name:"Frankfurt",      lat:50.1109, lng: 8.6821 },
+            { name:"Oberursel",      lat:50.2014, lng: 8.5776 }
           ] }
       ]
     },
@@ -2395,10 +2444,14 @@ function strahlAufbauen(){
     k.textContent = antwort.hidden ? "Antwort zeigen" : "Antwort verbergen";
   });
 
-  // Einblenden beim Scrollen
+  /* Einblenden beim Scrollen.
+     Ausgelöst wird, sobald die Oberkante einer Station eine Linie kurz
+     über dem unteren Bildrand überquert. Früher mussten 18 Prozent der
+     Station zu sehen sein – davon war beim Laden aber zu wenig im Bild,
+     und die erste Station blieb unsichtbar liegen, bis man scrollte.  */
   const beobachter = new IntersectionObserver((eintraege) => {
     eintraege.forEach(e => { if(e.isIntersecting){ e.target.classList.add("sichtbar"); beobachter.unobserve(e.target); }});
-  }, { threshold:.18, rootMargin:"0px 0px -60px 0px" });
+  }, { threshold:0, rootMargin:"0px 0px -12% 0px" });
   ziel.querySelectorAll(".station").forEach(el => beobachter.observe(el));
   fadenVerfolgen(ziel);
   routenStarten();

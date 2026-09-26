@@ -343,6 +343,15 @@ img{max-width:100%;display:block}
   transition:opacity .7s ease .22s, transform .7s cubic-bezier(.2,.7,.3,1) .22s;}
 .station.sichtbar .station-text{opacity:1;transform:none}
 .station-text p{max-width:62ch}
+/* Alles, wo nur "Platzhalter" steht, wird klein und leise gesetzt –
+   damit man auf einen Blick sieht, wo noch Text fehlt, und es sich
+   nicht wie fertiger Inhalt liest. Dort kommen später ruhig zehn
+   Zeilen hin; sobald echter Text drinsteht, greift das nicht mehr. */
+.ist-platzhalter{
+  font-family:var(--stempel)!important;font-size:13px!important;
+  font-weight:400!important;letter-spacing:.05em;
+  color:var(--tinte-leise)!important;opacity:.6;
+}
 .station-titel{
   font-family:var(--serif-display);font-weight:500;
   font-size:clamp(25px,4.4vw,34px);line-height:1.16;margin:0 0 10px;
@@ -842,9 +851,11 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   color:var(--tinte-leise);line-height:1.25;text-align:center;
   overflow-wrap:anywhere;hyphens:auto;
 }
+/* Die Lösung im Balken liest sich wie Fließtext, nicht wie eine
+   Überschrift – nicht fett und in normaler Lesegröße.              */
 .raten-balken .raten-loesung{
-  font-family:var(--serif-display);font-size:clamp(17px,2.4vw,21px);
-  font-weight:500;color:var(--tinte);line-height:1.35;text-align:center;
+  font-family:var(--serif-text);font-size:16px;
+  font-weight:400;color:var(--tinte-leise);line-height:1.4;text-align:center;
 }
 .ist-auf .raten-frage{opacity:0}
 .ist-auf .raten-loesung{opacity:1}
@@ -1664,7 +1675,7 @@ const DATEN = {
       ort: "St. Bernhard, Frankfurt",
       /* Der Umzug an die Eschenheimer Anlage fällt in genau diese Zeit – er
          steht bewusst nur bei den Orten und nicht hier im Text. */
-      text: "Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht. Erst einmal sind sie Freunde. Irgendwann wird mehr daraus.",
+      text: "Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht.",
       bild: "",                         // Das Kennenlernen bekommt bewusst kein Foto
       bildunterschrift: "",
       bausteine: []
@@ -1931,8 +1942,9 @@ const DATEN = {
            nur rund zehn Kilometer auseinanderliegen. Ob Peter wirklich
            so gefahren ist – oder Teilstrecken mit der Bahn – bitte
            nachfragen und die Punkte unten entsprechend anpassen.      */
-        { art:"route", titel:"Und Peter? Fuhr Rad.",
-          text:"Vier Flüsse: den Main hinauf, den Regen in den Bayerischen Wald, die Donau bis zur Quelle – und den Neckar wieder hinunter.",
+        /* Über der Karte steht bewusst nichts. Wer doch eine Überschrift
+           oder einen Satz möchte, trägt ihn hier ein.               */
+        { art:"route", titel:"", text:"",
           bild:"",                      // ← Foto von der Radtour, z. B. bilder/radtour.jpg
           bildunterschrift:"Platzhalter",
           punkte:[
@@ -2251,6 +2263,16 @@ const $ = (s) => document.querySelector(s);
 const sicher = (t) => String(t ?? "").replace(/[&<>"']/g, c => (
   {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]
 ));
+
+/* Überall, wo als Text nur "Platzhalter" steht, wird das klein und leise
+   gesetzt. Sobald du echten Text einträgst, sieht es wieder normal aus. */
+function platzhalterMarkieren(wurzel){
+  if(!wurzel) return;
+  wurzel.querySelectorAll("p, figcaption, span, li, b, cite").forEach(e => {
+    if(e.children.length === 0 && e.textContent.trim() === "Platzhalter")
+      e.classList.add("ist-platzhalter");
+  });
+}
 
 /* Fehlt eine Bilddatei noch, tritt der Platzhalter an ihre Stelle.
    Muss global sein, weil die Bilder sie über onerror aufrufen.      */
@@ -2574,6 +2596,7 @@ function strahlAufbauen(){
   teile.push('<div id="faden-fuellung"></div>');
   teile.push('<div class="diamant-punkt station"><div class="stein"></div><p>… und es geht weiter.</p></div>');
   ziel.innerHTML = teile.join("");
+  platzhalterMarkieren(ziel);
 
   /* ---------- Bilderreihen (Karussell) ---------------------------------
      Blättert im Kreis: nach dem letzten Bild kommt wieder das erste.
@@ -3463,7 +3486,10 @@ function routeHTML(b){
       "</figure>"
     : '<figure class="route-bild fehlt"><figcaption>' +
       sicher(b.bildunterschrift || "Hier kommt ein Foto hin") + "</figcaption></figure>";
-  return '<div class="baustein notiz"><b>' + sicher(b.titel || "Die Route") + "</b>" +
+  /* Titel und Text sind freiwillig. Bleiben beide leer, steht über der
+     Karte nichts – dann spricht die Strecke für sich.                */
+  return '<div class="baustein notiz">' +
+         (b.titel ? "<b>" + sicher(b.titel) + "</b>" : "") +
          (b.text ? '<p style="margin:0 0 12px">' + sicher(b.text) + "</p>" : "") +
          bild +
          '<div class="route-karte" id="route-' + nr + '"></div></div>';

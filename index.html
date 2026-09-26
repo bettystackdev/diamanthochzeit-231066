@@ -254,8 +254,18 @@ img{max-width:100%;display:block}
   /* Die Höhe ist gedeckelt, damit Jahreszahl, Titel und der erste Satz
      einer Station zusammen auf den Bildschirm passen. Alles Weitere –
      Karten, Ratefelder, Zitate – darf ruhig ein Stück tiefer liegen. */
-  aspect-ratio:var(--verhaeltnis,4/3);width:100%;
-  max-height:var(--bildhoehe, min(52svh, calc(100svh - 300px)));
+  /* Die Höhe ist so gedeckelt, dass oben die Jahreszahl mit aufs Bild
+     passt. Titel und Text dürfen darunter liegen und gescrollt werden.
+     Die Breite rechnet sich aus der Höhe, damit das Bild sein Format
+     behält – sonst würde es zum Panoramastreifen beschnitten.        */
+  aspect-ratio:var(--verhaeltnis,4/3);
+  --bildhoehe: min(72svh, calc(100svh - 120px));
+  /* Gedeckelt wird die BREITE, nicht die Höhe: So bleibt das
+     Seitenverhältnis exakt erhalten und nichts wird beschnitten.
+     Die Höhe ergibt sich daraus von selbst und bleibt unter dem Deckel. */
+  width:100%;
+  max-width:calc(var(--bildhoehe) * var(--vzahl,1.3333));
+  margin-inline:auto;
   object-fit:cover;
   background:
     repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 11px),
@@ -280,7 +290,9 @@ img{max-width:100%;display:block}
 .folie{grid-area:1/1;opacity:0;visibility:hidden;transition:opacity .45s ease;
   min-width:0;max-width:100%}
 .folie.ist-da{opacity:1;visibility:visible}
-.folie .bild-flaeche{display:block;max-width:100%}
+/* Den Breitendeckel aus .bild-flaeche hier NICHT überschreiben – sonst
+   wächst das Bild in der Bilderreihe über den Bildschirm hinaus.      */
+.folie .bild-flaeche{display:block}
 .karussell-pfeil{
   position:absolute;top:50%;transform:translateY(-50%);z-index:2;
   width:38px;height:38px;border-radius:50%;cursor:pointer;
@@ -2472,7 +2484,11 @@ function strahlAufbauen(){
            "--rand:" + w(5.19, 9, 22).toFixed(0) + "px;" +
            "--alterung:" + w(8.31, .06, .28).toFixed(2) + ";" +
            "--schild-dreh:" + w(1.77, -1.6, 1.6).toFixed(2) + "deg;" +
-           "--verhaeltnis:" + [ "4/3", "1/1", "5/4", "3/4", "16/10", "4/5", "3/2" ][i % 7] + ";";
+           /* Zusätzlich zum Seitenverhältnis noch als Zahl – damit sich die
+              Breite aus der gedeckelten Höhe ausrechnen lässt und das Bild
+              sein Format behält, statt zum Panoramastreifen zu werden.   */
+           "--verhaeltnis:" + [ "4/3", "1/1", "5/4", "3/4", "16/10", "4/5", "3/2" ][i % 7] + ";" +
+           "--vzahl:" + [ 1.3333, 1, 1.25, 0.75, 1.6, 0.8, 1.5 ][i % 7] + ";";
   };
 
   /* Eine einzelne Bildfläche – entweder ein Foto oder der Platzhalter.

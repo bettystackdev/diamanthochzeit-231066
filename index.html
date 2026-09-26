@@ -345,9 +345,14 @@ img{max-width:100%;display:block}
   font-size:clamp(20px,3.4vw,25px);line-height:1.4;
 }
 .zitat cite{
-  display:block;margin-top:10px;font-family:var(--stempel);font-style:normal;
+  display:block;margin-top:8px;font-family:var(--stempel);font-style:normal;
   font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinte-leise);
 }
+/* Wellenlinie zwischen Zitat und Urheber */
+.zitat-welle{display:block;width:62px;height:8px;margin-top:14px}
+.zitat-welle svg{width:100%;height:100%;display:block;overflow:visible}
+.zitat-welle path{fill:none;stroke:var(--sepia);stroke-width:1.2;
+  stroke-linecap:round;opacity:.75;vector-effect:non-scaling-stroke}
 .notiz{
   background:rgba(247,244,237,.88);border:1px solid rgba(213,205,189,.9);border-radius:16px;padding:18px 20px;
   font-size:17px;
@@ -551,6 +556,13 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   fill:#f7f4ed;stroke:rgba(213,205,189,.95);stroke-width:1;
   transition:fill .2s,stroke .2s;
 }
+/* Runde Miniatur über dem Kasten. Groß wird das Foto erst in der
+   Personenkarte unter dem Baum.                                   */
+.baum-foto-grund{fill:#d9d5c7}
+.baum-foto-ring{fill:none;stroke:rgba(213,205,189,.95);stroke-width:2;transition:stroke .2s}
+.baum-person:hover .baum-foto-ring{stroke:var(--sepia)}
+.baum-person.ist-gewaehlt .baum-foto-ring{stroke:var(--patina);stroke-width:2.6}
+.baum-foto image{filter:sepia(.18)}
 .baum-person:hover .baum-kasten{fill:#fff;stroke:var(--sepia)}
 .baum-person.ist-gewaehlt .baum-kasten{fill:#fff;stroke:var(--patina);stroke-width:2}
 .baum-kasten--paar{fill:var(--tinte);stroke:var(--tinte)}
@@ -581,6 +593,13 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .person-karte h3{font-family:var(--serif-display);font-weight:500;font-size:24px;margin:0 0 4px}
 .person-karte .rolle{font-family:var(--stempel);font-size:13px;color:var(--patina);margin:0 0 10px}
 .person-karte p{margin:0;color:var(--tinte-leise);max-width:62ch;line-height:1.6}
+/* Foto in der Personenkarte */
+.person-bild{margin:12px 0 0;max-width:340px}
+.person-bild img,
+.person-bild .bild-flaeche{
+  width:100%;display:block;border-radius:8px;aspect-ratio:4/3;object-fit:cover;
+  border:1px solid var(--papier-tief);
+}
 
 /* Karte */
 #karte{
@@ -728,45 +747,45 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .land--besucht:focus{outline:none}                       /* Maus: kein Rahmen */
 .land--besucht:focus-visible{stroke:var(--tinte);stroke-width:2.5}   /* Tastatur: dicker Rand */
 
-/* ---------- Tiere zum Aufklappen ---------- */
-.tiere-vorspann{margin:0 0 14px;color:var(--tinte-leise)}
-.tier-liste{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.tier-liste details{
+/* ---------- Klapplisten (Tiere, Flussabschnitte …) ---------- */
+.klapp-vorspann{margin:0 0 14px;color:var(--tinte-leise)}
+.klapp-liste{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.klapp-liste details{
   background:rgba(247,244,237,.7);border:1px solid rgba(213,205,189,.85);
   border-radius:12px;overflow:hidden;transition:border-color .2s,background .2s;
 }
-.tier-liste details[open]{background:#fff;border-color:rgba(141,117,72,.4)}
-.tier-liste summary{
+.klapp-liste details[open]{background:#fff;border-color:rgba(141,117,72,.4)}
+.klapp-liste summary{
   cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;
   padding:12px 14px;font-family:var(--serif-display);font-size:19px;font-weight:500;
 }
-.tier-liste summary::-webkit-details-marker{display:none}
-.tier-liste summary:hover{background:rgba(255,255,255,.6)}
-.tier-emoji{font-size:24px;line-height:1;flex:none}
-.tier-name{flex:1 1 auto;min-width:0;letter-spacing:0;text-transform:none;
+.klapp-liste summary::-webkit-details-marker{display:none}
+.klapp-liste summary:hover{background:rgba(255,255,255,.6)}
+.klapp-emoji{font-size:24px;line-height:1;flex:none}
+.klapp-name{flex:1 1 auto;min-width:0;letter-spacing:0;text-transform:none;
   overflow-wrap:anywhere;hyphens:auto}
-.tier-unsicher{
+.klapp-unsicher{
   flex:none;font-family:var(--stempel);font-size:11px;font-weight:500;
   letter-spacing:.06em;text-transform:uppercase;color:var(--sepia);
   border:1px solid rgba(141,117,72,.35);border-radius:999px;padding:3px 9px;
 }
-.tier-pfeil{flex:none;width:9px;height:9px;border-right:1.6px solid var(--tinte-leise);
+.klapp-pfeil{flex:none;width:9px;height:9px;border-right:1.6px solid var(--tinte-leise);
   border-bottom:1.6px solid var(--tinte-leise);transform:rotate(45deg) translate(-2px,-2px);
   transition:transform .2s}
-.tier-liste details[open] .tier-pfeil{transform:rotate(-135deg) translate(-3px,-3px)}
-.tier-liste details p{
+.klapp-liste details[open] .klapp-pfeil{transform:rotate(-135deg) translate(-3px,-3px)}
+.klapp-liste details p{
   margin:0;padding:0 14px 14px 50px;color:var(--tinte-leise);
   font-size:16px;line-height:1.6;max-width:62ch;
   overflow-wrap:anywhere;hyphens:auto;
 }
 @media (max-width:560px){
-  .tier-liste summary{font-size:17px;gap:10px;padding:11px 12px;flex-wrap:wrap}
-  .tier-liste details p{padding-left:12px}
-  .tier-unsicher{font-size:10px;padding:2px 7px;order:3}
-  .tier-pfeil{order:2}
-  .tier-name{flex:1 1 60%}
+  .klapp-liste summary{font-size:17px;gap:10px;padding:11px 12px;flex-wrap:wrap}
+  .klapp-liste details p{padding-left:12px}
+  .klapp-unsicher{font-size:10px;padding:2px 7px;order:3}
+  .klapp-pfeil{order:2}
+  .klapp-name{flex:1 1 60%}
 }
-.tiere-nachsatz{margin:14px 0 0;font-family:var(--stempel);font-size:13px;color:var(--tinte-leise)}
+.klapp-nachsatz{margin:14px 0 0;font-family:var(--stempel);font-size:13px;color:var(--tinte-leise)}
 
 .laender-liste{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
 @media (min-width:620px){.laender-liste{grid-template-columns:1fr 1fr}}
@@ -937,7 +956,13 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 }
 .jubel-karte p{margin:0 0 12px;max-width:46ch;margin-left:auto;margin-right:auto}
 .jubel-karte .station-ort{margin-bottom:14px}
-.jubel-bild{margin-top:18px;border:1px solid var(--papier-tief)}
+.jubel-rahmen{margin:20px 0 0;max-width:100%}
+.jubel-bild{margin:0;border:1px solid var(--papier-tief);border-radius:8px;
+  width:100%;max-width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+.jubel-unterschrift{
+  margin-top:9px;font-family:var(--stempel);font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--tinte-leise);
+}
 .jubel-karte .zitat{
   border-left:0;padding:0;text-align:center;
   max-width:38ch;margin-left:auto;margin-right:auto;
@@ -983,10 +1008,14 @@ textarea.gb-feld{min-height:110px;resize:vertical}
 .fuss{border-top:1px solid rgba(154,115,80,.25)}
 
 
-/* Flache Fenster – Handy quer, kleines Browserfenster.
+/* Wirklich flache Fenster – Handy quer, kleines Browserfenster.
    Dort steht der Hinweis nach unten im Textfluss statt am Rand,
-   sonst schiebt er sich über den Zähler.                                  */
-@media (max-height:700px){
+   sonst schiebt er sich über den Zähler.
+   Achtung: Die Grenze liegt bewusst bei 560 und nicht bei 700 Pixeln.
+   Ein Handy hochkant ist mit eingeblendeter Adressleiste schnell nur
+   noch 640 Pixel hoch – das ist kein flaches Fenster, sondern der
+   Normalfall, und dort soll der Kopf den Bildschirm füllen.           */
+@media (max-height:559px){
   .kopf{
     min-height:auto;
     padding:clamp(24px,5vh,56px) 24px clamp(22px,4vh,44px);
@@ -1005,6 +1034,15 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .oberzeile{margin-bottom:12px;font-size:12px;letter-spacing:.14em}
   .funke{margin-bottom:12px;width:10px;height:10px}
   .zaehler{font-size:17px}
+}
+
+/* Handy hochkant: Der Kopf füllt den Bildschirm ganz aus, so wie am
+   großen Rechner auch. Die erste Station kommt erst beim Scrollen in
+   Sicht. Gilt bewusst nicht für flache Fenster – dort greift die
+   Regel darüber, sonst schöbe sich der Hinweis über den Zähler.      */
+@media (max-width:560px) and (min-height:560px){
+  .kopf{min-height:100svh;padding:56px 20px 76px;justify-content:center}
+  .hinweis-runter{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);margin-top:0}
 }
 
 /* ============================================================
@@ -1027,15 +1065,6 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   .oberzeile{letter-spacing:.16em;font-size:12px}
   .datum{font-size:13px}
   .zaehler{margin-top:22px;font-size:15px}
-
-  /* Auf dem Handy läuft der Hinweis im Textfluss mit, statt unten am
-     Rand zu kleben. Sonst klafft zwischen Zähler und Hinweis ein Loch,
-     das mit der Bildschirmhöhe immer größer wird – auf großen Handys
-     waren das fast 200 Pixel Leere.                                    */
-  .kopf{min-height:auto;padding:56px 20px 40px}
-  .hinweis-runter{
-    position:static;transform:none;bottom:auto;margin-top:34px;
-  }
 
   /* Zeitleiste: Faden näher an den Rand, mehr Platz für die Karten */
   .strahl{padding:28px 16px 35px}
@@ -1101,8 +1130,8 @@ textarea.gb-feld{min-height:110px;resize:vertical}
   #schleuse, #lupe{display:none!important}
   #seite{display:block!important}
   /* Im Album sollen alle Tiergeschichten aufgeklappt gedruckt werden */
-  .tier-liste details > *{display:block!important}
-  .tier-pfeil, .tier-unsicher{display:none!important}
+  .klapp-liste details > *{display:block!important}
+  .klapp-pfeil, .klapp-unsicher{display:none!important}
   .ansicht{display:block!important}
   .kopf{min-height:auto;padding:0 0 14mm;page-break-after:always}
   .station{
@@ -1276,16 +1305,16 @@ const DATEN = {
         name    – der Vorname
         jahr    – Geburtsjahr, Schreibweise "* 1997"
         rolle   – die kleine Zeile unter dem Namen, z. B. "Die Älteste"
-        text    – die Beschreibung, erscheint beim Antippen. Ruhig frech.
+        bild    – das Foto, erscheint beim Antippen in der Karte
      "partner" nur bei den Töchtern. Die Kennungen (id) bitte NICHT ändern,
      daran hängen die Sprungknöpfe aus der Zeitleiste.
      ---------------------------------------------------------------------- */
   familie: {
 
-    /* Hildegard und Peter – bekommen bewusst keine Beschreibung */
+    /* Hildegard und Peter */
     paar: [
-      { id:"oma", name:"Hildegard", jahr:"* 1943" },
-      { id:"opa", name:"Peter",     jahr:"* 1943" }
+      { id:"oma", name:"Hildegard", jahr:"* 1943", bild:"bilder/oma.jpg" },
+      { id:"opa", name:"Peter",     jahr:"* 1943", bild:"bilder/opa.jpg" }
     ],
 
     kinder: [
@@ -1294,10 +1323,10 @@ const DATEN = {
       { id:"t1",
         name:    "Platzhalter",     // ← Vorname Tochter 1
         jahr:    "* 1967",
-        partner:     "Der Künstler",    // ← Spitzname, echten Namen eintragen
-        partnerText: "Die Künstlerseele der Familie. Für jeden Geburtstag baut und werkelt er wochenlang, und fehlt dann selbst, weil ausgerechnet an dem Tag ein Kind krank ist oder ein Hund gehütet werden muss. Beschweren tut er sich zuverlässig darüber – allzu unglücklich wirkt er beim Verpassen des Weihnachtsliedersingens aber nie.",
+        partner:     "Mann 1",    // ← Name des Mannes von Tochter 1
+        partnerBild: "bilder/p1.jpg",
         rolle:   "Die Älteste",
-        text:    "Wo Organisation gebraucht wird, hat sie meist schon angefangen, während die anderen noch überlegen, wer das eigentlich macht. Am liebsten wäre sie dabei draußen und in Bewegung. Ruft aber jemand an und braucht sie, bleibt alles andere liegen und stehen – und hinterher macht sie sich trotzdem noch Gedanken, ob es für alle gepasst hat.",
+        bild:  "bilder/t1.jpg",
         kinder:[
 
           /* ── ENKEL 1 · Kind von Tochter 1, geboren 1997 ── */
@@ -1305,7 +1334,7 @@ const DATEN = {
             name:  "Platzhalter",   // ← Vorname Enkel 1
             jahr:  "* 1997",
             rolle: "Platzhalter",   // ← kurze Rolle, z. B. "Der Erstgeborene"
-            text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 1
+            bild:  "bilder/e1.jpg" }, // ← HIER die Beschreibung von Enkel 1
 
           /* ── ENKEL 2 · Kind von Tochter 1, geboren 2000.
                 Wohnt in der Alexander-Heß-Straße. ── */
@@ -1313,17 +1342,17 @@ const DATEN = {
             name:  "Platzhalter",   // ← Vorname Enkel 2
             jahr:  "* 2000",
             rolle: "Der Zuhörer",
-            text:  "Fragt man ihn, was er möchte, kommt zuverlässig: passt schon. Fragt man ihn, ob er Zeit hat, kommt genauso zuverlässig: klar. Er ist bei allem dabei, hört zu, bis der andere wirklich fertig ist, und hat vermutlich in seinem ganzen Leben noch keinen Streit angefangen. Was er selbst eigentlich will, muss die Familie bis heute erraten." }
+            bild:  "bilder/e2.jpg" }
       ]},
 
       /* ═══ KIND 2 · die mittlere Tochter, geboren 1969 ══════════════════ */
       { id:"t2",
         name:    "Platzhalter",     // ← Vorname Tochter 2
         jahr:    "* 1969",
-        partner:     "Der HR-Gärtner",  // ← Spitzname, echten Namen eintragen
-        partnerText: "Platzhalter",     // ← HIER seine Beschreibung
+        partner:     "Mann 2",    // ← Name des Mannes von Tochter 2
+        partnerBild: "bilder/p2.jpg",
         rolle:   "Die Mittlere",
-        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 2
+        bild:  "bilder/t2.jpg",
         kinder:[
 
           /* ── ENKEL 3 · Kind von Tochter 2, geboren 2002 ── */
@@ -1331,7 +1360,7 @@ const DATEN = {
             name:  "Platzhalter",   // ← Vorname Enkel 3
             jahr:  "* 2002",
             rolle: "Platzhalter",
-            text:  "Platzhalter" }, // ← HIER die Beschreibung von Enkel 3
+            bild:  "bilder/e3.jpg" }, // ← HIER die Beschreibung von Enkel 3
 
           /* ── ENKEL 5 · Kind von Tochter 2, geboren 2004.
                 Wohnt Am Borkenberg. ── */
@@ -1339,17 +1368,17 @@ const DATEN = {
             name:  "Platzhalter",   // ← Vorname Enkel 5
             jahr:  "* 2004",
             rolle: "Platzhalter",
-            text:  "Platzhalter" }  // ← HIER die Beschreibung von Enkel 5
+            bild:  "bilder/e5.jpg" }  // ← HIER die Beschreibung von Enkel 5
       ]},
 
       /* ═══ KIND 3 · die jüngste Tochter, geboren 1976 ═══════════════════ */
       { id:"t3",
         name:    "Platzhalter",     // ← Vorname Tochter 3
         jahr:    "* 1976",
-        partner:     "Der Mann mit dem Unimog",  // ← Spitzname, echten Namen eintragen
-        partnerText: "Platzhalter",              // ← HIER seine Beschreibung
+        partner:     "Mann 3",    // ← Name des Mannes von Tochter 3
+        partnerBild: "bilder/p3.jpg",
         rolle:   "Die Jüngste",
-        text:    "Platzhalter",     // ← HIER die Beschreibung von Tochter 3
+        bild:  "bilder/t3.jpg",
         kinder:[
 
           /* ── ENKELIN 4 · Kind von Tochter 3, geboren 2002.
@@ -1358,7 +1387,7 @@ const DATEN = {
             name:  "Platzhalter",   // ← Vorname Enkelin 4
             jahr:  "* 2002",
             rolle: "Platzhalter",
-            text:  "Platzhalter",   // ← HIER die Beschreibung von Enkelin 4
+            bild:  "bilder/e4.jpg",
             kinder:[
 
               /* ── URENKEL · Kind von Enkelin 4, geboren 2020 ── */
@@ -1366,7 +1395,7 @@ const DATEN = {
                 name:  "Platzhalter",   // ← Vorname des Urenkels
                 jahr:  "* 2020",
                 rolle: "Der Urenkel",
-                text:  "Platzhalter" }  // ← HIER die Beschreibung des Urenkels
+                bild:  "bilder/u1.jpg" }  // ← HIER die Beschreibung des Urenkels
           ]}
       ]}
     ]
@@ -1402,11 +1431,11 @@ const DATEN = {
       adresse:"Weberstraße 57, 60318 Frankfurt am Main" },
 
     { id:"muehlberg",    name:"Steinhausenstraße", art:"wohnort", jahr:"1966",
-      text:"Die erste eigene Wohnung.",
+      text:"Die erste gemeinsame Wohnung.",
       adresse:"Steinhausenstraße, 60599 Frankfurt am Main" },
 
     { id:"heusenstamm",  name:"Leipziger Ring 10",  art:"wohnort", jahr:"1969",
-      text:"Eine Zwischenstation.",
+      text:"Kurzes Intermezzo in Heusenstamm.",
       adresse:"Leipziger Ring 10, 63150 Heusenstamm" },
 
     { id:"altkoenig",    name:"Altkönigstraße 19", art:"wohnort", jahr:"1972",
@@ -1472,7 +1501,7 @@ const DATEN = {
      „Wer hier vorbeikommt, darf etwas dalassen – einen Glückwunsch, eine
       Erinnerung, einen Satz, der zu den beiden gehört."
      „Hier ist Platz für ein paar Zeilen an Hildegard und Peter."          */
-  gaestebuchText: "Sechzig Jahre – und jeder hat seinen Teil davon miterlebt. Schreib den beiden, was deiner ist.",
+  gaestebuchText: "Sechzig Jahre – und jeder hat seinen Teil davon miterlebt.",
   fusszeile: "Für Oma und Opa",
 
   /* ---- Die Lebensstationen ---------------------------------------------
@@ -1505,18 +1534,18 @@ const DATEN = {
       bausteine: [
         /* rechnet die Luftlinie zwischen den beiden Elternhäusern selbst aus */
         { art:"abstand", von:"weberstrasse", nach:"koselstrasse",
-          text:"Luftlinie zwischen den beiden Kinderzimmern" }
+          text:"Luftlinie zwischen den Elternhäusern" }
       ]
     },
-    /* ═══ STATION 02 · 1956 · Wie alles anfing ══════════════════════════════ */
+    /* ═══ STATION 02 · 1950er Jahre · Wie alles anfing ══════════════════════ */
     {
-      jahr: "1956",                     // sechste Klasse, beide zwölf
+      jahr: "1950er Jahre",             // genaues Jahr unklar, vermutlich 1956
       titel: "Wie alles anfing",
       ortId: "stbernhard",
       ort: "St. Bernhard, Frankfurt",
       /* Der Umzug an die Eschenheimer Anlage fällt in genau diese Zeit – er
          steht bewusst nur bei den Orten und nicht hier im Text. */
-      text: "Sechste Klasse, beide zwölf: Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht. Erst einmal sind sie Freunde. Irgendwann wird mehr daraus.",
+      text: "Bei St. Bernhard lernen sich Hildegard und Peter kennen – noch bevor Peter an die Eschenheimer Anlage zieht. Erst einmal sind sie Freunde. Irgendwann wird mehr daraus.",
       bild: "bilder/02-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: []
@@ -1528,7 +1557,7 @@ const DATEN = {
       ort: "Platzhalter",               // Ort des Kindergartens
       text: "Platzhalter",              // Welcher Kindergarten, wie lange, was am liebsten
       bild: "bilder/03-01.jpg",           // Datei genau so benennen
-      bildunterschrift: "Hildegard mit ihrer ersten Gruppe",
+      bildunterschrift: "Platzhalter",
       bausteine: []
     },
     /* ═══ STATION 04 · 1966 · Der 23. Oktober ═══════════════════════════════ */
@@ -1537,7 +1566,7 @@ const DATEN = {
       titel: "Der 23. Oktober",
       ortId: ["stbernhard", "frankfurt"],   // Kirche und Empfang
       ort: "St. Bernhard · Haus der Volksarbeit",
-      text: "Und jedem Anfang wohnt ein Zauber inne.",
+      text: "Platzhalter",              // ← Wie der Tag ablief, Kirche und Feier
       bild: "",                         // bilder/04-1966-der-23-oktober.jpg
       /* Bilderreihe: ab zwei Einträgen blättert die Station im Kreis.
          Pfad und Unterschrift eintragen, Zeilen dürfen weg oder dazu.   */
@@ -1546,13 +1575,15 @@ const DATEN = {
         { bild:"bilder/04-02.jpg", unterschrift:"Platzhalter" },
         { bild:"bilder/04-03.jpg", unterschrift:"Platzhalter" }
       ],
-      bildunterschrift: "Hochzeitstag, 23.10.1966",
-      bausteine: []
+      bildunterschrift: "Platzhalter",
+      bausteine: [
+        { art:"zitat", text:"Jedem Anfang wohnt ein Zauber inne.", von:"Hermann Hesse" }
+      ]
     },
-    /* ═══ STATION 05 · 1966 · Die erste eigene Wohnung ══════════════════════ */
+    /* ═══ STATION 05 · 1966 · Die erste gemeinsame Wohnung ══════════════════ */
     {
       jahr: "1966",                     // direkt nach der Hochzeit – prüfen
-      titel: "Die erste eigene Wohnung",
+      titel: "Die erste gemeinsame Wohnung",
       ortId: "muehlberg",
       ort: "Steinhausenstraße, Frankfurt-Sachsenhausen",
       text: "Platzhalter",              // Wie groß, was hat sie gekostet, wie lange gewohnt
@@ -1677,36 +1708,33 @@ const DATEN = {
           text:"Erst raten, dann aufklappen – wer war alles dabei?",
           tiere:[
             { emoji:"🐹", name:"Die Hamster",
-              text:"Den ersten hat X in der Glauburgstraße in Frankfurt gekauft und in der Schultasche nach Hause getragen – in X’ alter Ledertasche. X war da fünfzehn oder sechzehn. Später bekam X zum sechzehnten Geburtstag einen Fellhamster von ihrem ersten Freund geschenkt. Das Tier war trächtig, und eines Morgens lagen acht nackte Babys im Käfig. Drei durften bleiben." },
+              text:"Platzhalter" },
 
             { emoji:"🦆", name:"Die Enten",
-              text:"Zwei Küken vom Markt in Oberursel, die X und X nach Hause brachten. Bis sie zu groß wurden, lebten sie im kleinen Zimmer. Später ging die Familie mit ihnen im Maasgrund spazieren, eine Schnur ums Bein – und dort sind sie dann geblieben.",
-              unsicher:true },   // chinesische Enten? Rasse noch unklar
+              text:"Platzhalter"},   // chinesische Enten? Rasse noch unklar
 
             { emoji:"🐴", name:"Kioma, das Pferd",
-              text:"Das Pferd aus X’ Jugend." },
+              text:"Platzhalter" },
 
             { emoji:"🐦", name:"Die Nachtigallen",
-              text:"Chinesische Nachtigallen. In der Sommerpflege sind sie ertrunken – wie genau, weiß heute keiner mehr. X bekam die Schuld.",
-              unsicher:true },   // Vogelart und Hergang bestätigen
+              text:"Platzhalter"},   // Vogelart und Hergang bestätigen
 
             { emoji:"🐱", name:"Die Katze",
-              text:"X hat sie zusammen mit einer Freundin gekauft. Sie musste wieder zurück." },
+              text:"Platzhalter" },
 
             { emoji:"🐢", name:"Die Schildkröte",
               text:"Platzhalter" },
 
             { emoji:"🐰", name:"Der Hase",
-              text:"Er war ständig aus dem Käfig heraus. Und böse soll er gewesen sein.",
-              unsicher:true },   // gab es den Hasen wirklich?
+              text:"Platzhalter"},   // gab es den Hasen wirklich?
 
             { emoji:"🐾", name:"Muckel, das Meerschweinchen",
-              text:"Muckel wurde von einer Ratte halb angeknabbert – und hat es überlebt.",
-              unsicher:true }    // Meerschweinchen oder doch der Hund?
+              text:"Platzhalter"}    // Meerschweinchen oder doch der Hund?
           ],
-          nachsatz:"Fische gab es nie, Sittiche auch nicht." },
-
-        { art:"frage", text:"Platzhalter", antwort:"Platzhalter" }
+          nachsatz:"Fische gab es nie, Sittiche auch nicht." }
+        /* Die Quizfrage ist hier weg – die Tiere zum Aufklappen sind
+           das Ratespiel. Wieder einschalten mit:
+           , { art:"frage", text:"Platzhalter", antwort:"Platzhalter" } */
       ]
     },
     /* ═══ STATION 13 · 1976 · Die dritte Tochter ════════════════════════════ */
@@ -1732,8 +1760,8 @@ const DATEN = {
       jahr: "1991",
       titel: "Silberne Hochzeit",
       typ: "jubilaeum", stein: "silber",
-      ort: "Platzhalter",
-      text: "Platzhalter",              // Wie wurde gefeiert, wer war dabei
+      ort: "25 Jahre Ehe",
+      text: "Der helle Glanz des Silbers steht für eine Verbindung, die nach 25 Jahren nichts von ihrem Schimmer verloren hat.",
       bild: "bilder/14-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Silberhochzeit, 23.10.1991",
       bausteine: [
@@ -1767,8 +1795,8 @@ const DATEN = {
       jahr: "1996",
       titel: "Perlenhochzeit",
       typ: "jubilaeum", stein: "perle",
-      ort: "Platzhalter",
-      text: "Platzhalter",              // Station löschen, falls nichts zu erzählen
+      ort: "30 Jahre Ehe",
+      text: "Die Perle wächst Schicht um Schicht über viele Jahre – so wie alles, was in 30 Jahren miteinander entstanden ist.",
       bild: "bilder/17-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: []
@@ -1782,9 +1810,10 @@ const DATEN = {
       bild: "bilder/18-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: [
-        /* Peters Radtour, während Hildegard in Australien war: den Main aufwärts bis Bamberg,
-           über den Main-Donau-Kanal nach Kelheim, dann die Donau hinunter bis Passau.
-           Rund 740 km auf ausgeschilderten Radwegen.
+        /* Peters Radtour, während Hildegard in Australien war: den Main aufwärts
+           bis Bamberg, über den Main-Donau-Kanal nach Kelheim, den Regen hinauf
+           in den Bayerischen Wald, die Donau aufwärts bis zur Quelle und den
+           Neckar hinunter bis Mannheim. Rund 1.700 km auf Radwegen.
            Punkte ergänzen oder streichen – die Linie folgt der Reihenfolge.
            Koordinaten bei openstreetmap.org per Rechtsklick → "Adresse anzeigen".  */
         /* ACHTUNG – die Reihenfolge ist nur rekonstruiert.
@@ -1852,13 +1881,19 @@ const DATEN = {
             { name:"Mosbach",        lat:49.3531, lng: 9.1439 },
             { name:"Eberbach",       lat:49.4650, lng: 8.9900 },
             { name:"Heidelberg",     lat:49.3988, lng: 8.6724 },
-            { name:"Mannheim",       lat:49.4875, lng: 8.4660 },
+            { name:"Mannheim",       lat:49.4875, lng: 8.4660 }
+            /* Schluss in Mannheim, wo der Neckar in den Rhein mündet. */
+          ] },
 
-            /* ── Am Rhein und am Main wieder nach Hause ── */
-            { name:"Worms",          lat:49.6319, lng: 8.3653 },
-            { name:"Mainz",          lat:49.9929, lng: 8.2473 },
-            { name:"Frankfurt",      lat:50.1109, lng: 8.6821 },
-            { name:"Oberursel",      lat:50.2014, lng: 8.5776 }
+        /* Die vier Flüsse zum Aufklappen – je ein Abschnitt der Tour.
+           Titel und Text beliebig ändern, Einträge dürfen weg oder dazu.  */
+        { art:"klapp", titel:"Die Route, Fluss für Fluss",
+          text:"Welche Strecke genau – vier Abschnitte zum Aufklappen.",
+          punkte:[
+            { name:"Der Main – von Frankfurt bis Bamberg",      text:"Platzhalter" },
+            { name:"Der Regen – hinauf in den Bayerischen Wald", text:"Platzhalter" },
+            { name:"Die Donau – aufwärts bis zur Quelle",        text:"Platzhalter" },
+            { name:"Der Neckar – hinunter bis Mannheim",         text:"Platzhalter" }
           ] }
       ]
     },
@@ -1968,8 +2003,8 @@ const DATEN = {
       jahr: "2006",
       titel: "Rubinhochzeit",
       typ: "jubilaeum", stein: "rubin",
-      ort: "Platzhalter",
-      text: "Platzhalter",              // Station löschen, falls nichts zu erzählen
+      ort: "40 Jahre Ehe",
+      text: "Die tiefrote Farbe symbolisiert die Liebe, die auch nach 40 Jahren noch brennt.",
       bild: "bilder/25-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: []
@@ -2058,8 +2093,8 @@ const DATEN = {
       jahr: "2016",
       titel: "Goldene Hochzeit",
       typ: "jubilaeum", stein: "gold",
-      ort: "Platzhalter",
-      text: "Platzhalter",              // Fünfzig Jahre – wie wurde gefeiert
+      ort: "50 Jahre Ehe",
+      text: "Gold rostet nicht und läuft nicht an – nach 50 Jahren ist es so kostbar wie am ersten Tag.",
       bild: "bilder/28-01.jpg",           // Datei genau so benennen
       bildunterschrift: "Platzhalter",
       bausteine: [
@@ -2197,28 +2232,41 @@ function kopfAufbauen(){
 /* ---------- Bausteine einer Station ---------- */
 function bausteinHTML(b){
   switch(b.art){
+    /* Zitat. Ist ein Urheber angegeben, kommt zwischen Zitat und Namen
+       eine kleine Wellenlinie.                                          */
     case "zitat":
       return '<blockquote class="baustein zitat">„' + sicher(b.text) + '”' +
-             (b.von ? "<cite>" + sicher(b.von) + "</cite>" : "") + "</blockquote>";
+             (b.von
+               ? '<span class="zitat-welle" aria-hidden="true">' +
+                   '<svg viewBox="0 0 64 8" preserveAspectRatio="none">' +
+                   '<path d="M0 4 Q4 0 8 4 T16 4 T24 4 T32 4 T40 4 T48 4 T56 4 T64 4"/>' +
+                   "</svg></span>" +
+                 "<cite>" + sicher(b.von) + "</cite>"
+               : "") + "</blockquote>";
     case "notiz":
       return '<div class="baustein notiz"><b>' + sicher(b.titel || "Notiz") + "</b>" +
              sicher(b.text) + "</div>";
     /* Tiere zum Aufklappen: erst nur Emoji und Name, die Geschichte
        kommt erst beim Antippen. "unsicher" setzt einen kleinen Vermerk. */
+    /* "tiere" und "klapp" bauen dieselbe Klappliste. Der Unterschied ist
+       nur das Feld, in dem die Einträge stehen: "tiere" oder "punkte".  */
     case "tiere":
-      return '<div class="baustein notiz tiere"><b>' + sicher(b.titel || "Die Tiere") + "</b>" +
-             (b.text ? '<p class="tiere-vorspann">' + sicher(b.text) + "</p>" : "") +
-             '<ul class="tier-liste">' +
-             (b.tiere || []).map(t =>
+    case "klapp": {
+      const eintraege = b.tiere || b.punkte || [];
+      return '<div class="baustein notiz klapp"><b>' + sicher(b.titel || "Zum Aufklappen") + "</b>" +
+             (b.text ? '<p class="klapp-vorspann">' + sicher(b.text) + "</p>" : "") +
+             '<ul class="klapp-liste">' +
+             eintraege.map(t =>
                "<li><details><summary>" +
-               '<span class="tier-emoji" aria-hidden="true">' + sicher(t.emoji || "🐾") + "</span>" +
-               '<span class="tier-name">' + sicher(t.name) + "</span>" +
-               (t.unsicher ? '<span class="tier-unsicher">nachfragen</span>' : "") +
-               '<span class="tier-pfeil" aria-hidden="true"></span>' +
+               (t.emoji ? '<span class="klapp-emoji" aria-hidden="true">' + sicher(t.emoji) + "</span>" : "") +
+               '<span class="klapp-name">' + sicher(t.name || t.titel) + "</span>" +
+               (t.unsicher ? '<span class="klapp-unsicher">nachfragen</span>' : "") +
+               '<span class="klapp-pfeil" aria-hidden="true"></span>' +
                "</summary><p>" + sicher(t.text) + "</p></details></li>").join("") +
              "</ul>" +
-             (b.nachsatz ? '<p class="tiere-nachsatz">' + sicher(b.nachsatz) + "</p>" : "") +
+             (b.nachsatz ? '<p class="klapp-nachsatz">' + sicher(b.nachsatz) + "</p>" : "") +
              "</div>";
+    }
     case "frage":
       return '<div class="baustein frage">' +
              '<p class="frage-text">' + sicher(b.text) + "</p>" +
@@ -2294,7 +2342,7 @@ function strahlAufbauen(){
            "--band-r:" + w(9.11, 7, 43).toFixed(1) + "deg;" +
            "--schub:" + w(3.77, -10, 10).toFixed(0) + "px;" +
            "--breite:" + (schmal ? "78" : w(6.41, 88, 100).toFixed(1)) + "%;" +
-           "--luft:" + w(2.13, 96, 150).toFixed(0) + "px;" +
+           "--luft:" + w(2.13, 38, 60).toFixed(0) + "px;" +   /* Abstand zwischen den Stationen */
            "--einzug:" + w(7.53, 0, 26).toFixed(0) + "px;" +
            "--rand:" + w(5.19, 9, 22).toFixed(0) + "px;" +
            "--alterung:" + w(8.31, .06, .28).toFixed(2) + ";" +
@@ -2347,8 +2395,17 @@ function strahlAufbauen(){
           '<h2 class="jubel-titel">' + sicher(s.titel) + "</h2>" +
           (s.ort ? '<p class="station-ort">' + sicher(s.ort) + "</p>" : "") +
           "<p>" + sicher(s.text) + "</p>" +
-          (s.bild ? '<img class="jubel-bild" src="' + sicher(s.bild) + '" alt="' + sicher(s.titel) +
-                    '" onerror="this.remove()">' : "") +
+          /* Auch die Hochzeitstage bekommen eine Bildfläche. Fehlt die Datei
+             noch, steht dort der Platzhalter statt eines leeren Kastens.  */
+          '<figure class="jubel-rahmen">' +
+            (s.bild
+              ? '<img class="jubel-bild" src="' + sicher(s.bild) + '" alt="' + sicher(s.titel) +
+                '" loading="lazy" onerror="bildFehlt(this)">'
+              : '<div class="bild-flaeche bild-platzhalter jubel-bild">Hier kommt ein Foto hin</div>') +
+            (s.bildunterschrift
+              ? '<figcaption class="jubel-unterschrift">' + sicher(s.bildunterschrift) + "</figcaption>"
+              : "") +
+          "</figure>" +
           (s.bausteine || []).map(bausteinHTML).join("") +
           sprungHTML(s) +
         "</div></article>";
@@ -2716,7 +2773,25 @@ function buehneSteuern(buehne, inhalt){
 /* ---------- Stammbaum ---------------------------------------------------- */
 function baumBauen(){
   const F = DATEN.familie;
-  const KB = 150, KH = 56, LUECKE = 22, EBENE = 132;
+  const KB = 150, KH = 56, LUECKE = 22, EBENE = 166;
+  const FOTO = 23;            // Radius der Miniatur über dem Kasten
+
+  /* Kleines rundes Foto, das über der Oberkante eines Kastens sitzt.
+     Darunter liegt ein grauer Kreis – fehlt die Bilddatei noch, bleibt
+     einfach der Kreis stehen, ganz ohne kaputtes Bildsymbol.          */
+  function fotoKreis(quelle, id, mx, oben){
+    const cy = oben - FOTO - 6;
+    const schnitt = "rund-" + String(id).replace(/[^\w-]/g, "");
+    return `<g class="baum-foto">
+      <circle class="baum-foto-grund" cx="${mx}" cy="${cy}" r="${FOTO}"/>
+      ${quelle ? `<clipPath id="${schnitt}"><circle cx="${mx}" cy="${cy}" r="${FOTO}"/></clipPath>
+      <image href="${sicher(quelle)}" x="${mx - FOTO}" y="${cy - FOTO}"
+             width="${FOTO * 2}" height="${FOTO * 2}"
+             preserveAspectRatio="xMidYMid slice" clip-path="url(#${schnitt})"
+             onerror="this.remove()"/>` : ""}
+      <circle class="baum-foto-ring" cx="${mx}" cy="${cy}" r="${FOTO}"/>
+    </g>`;
+  }
 
   /* Wurzel ist das Paar; darunter die Kinder */
   const wurzel = { paar:F.paar, kinder:F.kinder || [] };
@@ -2786,17 +2861,20 @@ function baumBauen(){
     maxY = Math.max(maxY, k._y);
     (k.kinder || []).forEach(messen);
   })(wurzel);
+  /* Oben braucht es zusätzlich Platz für die runden Fotos, die über den
+     Kästen sitzen – sonst wird die oberste Reihe abgeschnitten. */
+  const kopfLuft = FOTO * 2 + 10;
   const rand = 30, verschub = rand - minX;
   const breiteGesamt = (maxX - minX) + rand * 2;
-  const hoeheGesamt = maxY + KH + rand * 2;
+  const hoeheGesamt = maxY + KH + rand * 2 + kopfLuft;
 
   const teile = [];
   (function zeichnen(k, elternRolle){
-    const x = k._x + verschub, y = k._y + rand;
+    const x = k._x + verschub, y = k._y + rand + kopfLuft;
 
     /* Linien zu den Kindern */
     (k.kinder || []).forEach(c => {
-      const cx = c._x + verschub, cy = c._y + rand;
+      const cx = c._x + verschub, cy = c._y + rand + kopfLuft;
       const mitte = y + KH + (EBENE - KH) / 2;
       teile.push(`<path class="baum-linie" d="M ${x} ${y + KH} V ${mitte} H ${cx} V ${cy}"/>`);
     });
@@ -2805,7 +2883,8 @@ function baumBauen(){
       const links = x - KB - 8, rechts = x + 8;
       k.paar.forEach((person, i) => {
         const px = i === 0 ? links : rechts;
-        teile.push(`<g class="baum-person" data-id="${sicher(person.id||"")}" data-name="${sicher(person.name)}" data-jahr="${sicher(person.jahr||"")}" data-rolle="${i===0?"Oma":"Opa"}" data-text="${sicher(person.text||"")}">
+        teile.push(`<g class="baum-person" data-id="${sicher(person.id||"")}" data-name="${sicher(person.name)}" data-jahr="${sicher(person.jahr||"")}" data-rolle="${i===0?"Oma":"Opa"}" data-bild="${sicher(person.bild||"")}">
+          ${fotoKreis(person.bild, person.id, px + KB/2, y)}
           <rect class="baum-kasten baum-kasten--paar" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
           ${namenSatz(person.name, px + KB/2, y + 22, "baum-name baum-name--hell")}
           <text class="baum-jahr baum-jahr--hell" x="${px + KB/2}" y="${y + 42}">${sicher(person.jahr||"")}</text>
@@ -2817,7 +2896,8 @@ function baumBauen(){
       const hatPartner = !!k.partner;
       const px = hatPartner ? x - KB - 6 : x - KB/2;
 
-      teile.push(`<g class="baum-person" data-id="${sicher(k.id||"")}" data-name="${sicher(k.name)}" data-jahr="${sicher(k.jahr||"")}" data-rolle="${sicher(k.rolle || elternRolle)}" data-text="${sicher(k.text||"")}" data-partner="${sicher(k.partner||"")}">
+      teile.push(`<g class="baum-person" data-id="${sicher(k.id||"")}" data-name="${sicher(k.name)}" data-jahr="${sicher(k.jahr||"")}" data-rolle="${sicher(k.rolle || elternRolle)}" data-bild="${sicher(k.bild||"")}" data-partner="${sicher(k.partner||"")}">
+        ${fotoKreis(k.bild, k.id, px + KB/2, y)}
         <rect class="baum-kasten" x="${px}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
         ${namenSatz(k.name, px + KB/2, y + 22, "baum-name")}
         <text class="baum-jahr" x="${px + KB/2}" y="${y + 42}">${sicher(k.jahr||"")}</text>
@@ -2826,7 +2906,8 @@ function baumBauen(){
       if(hatPartner){
         const rx = x + 6;
         teile.push(`<path class="baum-band" d="M ${x - 6} ${y + KH/2} H ${x + 6}"/>`);
-        teile.push(`<g class="baum-person baum-person--partner" data-id="${sicher((k.id||"") + "-partner")}" data-name="${sicher(k.partner)}" data-jahr="" data-rolle="Angeheiratet" data-text="${sicher(k.partnerText||"")}" data-partner="">
+        teile.push(`<g class="baum-person baum-person--partner" data-id="${sicher((k.id||"") + "-partner")}" data-name="${sicher(k.partner)}" data-jahr="" data-rolle="Angeheiratet" data-bild="${sicher(k.partnerBild||"")}" data-partner="">
+          ${fotoKreis(k.partnerBild, (k.id||"") + "-partner", rx + KB/2, y)}
           <rect class="baum-kasten baum-kasten--partner" x="${rx}" y="${y}" width="${KB}" height="${KH}" rx="14"/>
           ${namenSatz(k.partner, rx + KB/2, y + 30, "baum-name baum-name--partner")}
         </g>`);
@@ -2842,8 +2923,8 @@ function baumBauen(){
   /* Positionen merken, damit man einzelne Personen anspringen kann */
   baumPunkte = {};
   (function sammeln(k){
-    if(k.paar){ k.paar.forEach(pp => baumPunkte[pp.id] = { x:k._x + verschub, y:k._y + rand }); }
-    else if(k.id){ baumPunkte[k.id] = { x:k._x + verschub, y:k._y + rand }; }
+    if(k.paar){ k.paar.forEach(pp => baumPunkte[pp.id] = { x:k._x + verschub, y:k._y + rand + kopfLuft }); }
+    else if(k.id){ baumPunkte[k.id] = { x:k._x + verschub, y:k._y + rand + kopfLuft }; }
     (k.kinder || []).forEach(sammeln);
   })(wurzel);
 
@@ -2859,11 +2940,18 @@ function baumBauen(){
     g.classList.add("ist-gewaehlt");
     const karte = $("#person-karte");
     karte.hidden = false;
-    const partner = "";
+    /* In der Karte steht ein Foto statt eines Textes. Fehlt die Datei
+       noch, erscheint der Platzhalter.                                */
+    const quelle = g.dataset.bild || "";
     karte.innerHTML = "<h3>" + g.dataset.name + "</h3>" +
       '<p class="rolle">' + g.dataset.rolle +
-      (g.dataset.jahr ? " · " + g.dataset.jahr : "") + partner + "</p>" +
-      "<p>" + (g.dataset.text && g.dataset.text !== "" ? g.dataset.text : "Platzhalter") + "</p>";
+      (g.dataset.jahr ? " · " + g.dataset.jahr : "") + "</p>" +
+      '<figure class="person-bild">' +
+        (quelle
+          ? '<img src="' + quelle + '" alt="' + g.dataset.name +
+            '" loading="lazy" onerror="bildFehlt(this)">'
+          : '<div class="bild-flaeche bild-platzhalter">Hier kommt ein Foto hin</div>') +
+      "</figure>";
   });
 
   /* Jede Person auch mit der Tastatur erreichbar machen: mit Tab
@@ -3256,7 +3344,13 @@ function routenStarten(){
          .addTo(k).bindPopup("<b>" + sicher(pp.name) + "</b>" +
            (i === 0 ? "<br>Start" : i === punkte.length-1 ? "<br>Ziel" : ""));
       });
-      k.fitBounds(L.latLngBounds(linie).pad(.15));
+      /* Auch hier: die Route ins Bild holen und die Karte darauf begrenzen. */
+      const strecke = L.latLngBounds(linie);
+      k.fitBounds(strecke.pad(.15));
+      const grenze = strecke.pad(.45);
+      k.setMaxBounds(grenze);
+      k.options.maxBoundsViscosity = 1;
+      k.setMinZoom(k.getBoundsZoom(grenze));
     }
   }, { rootMargin:"200px" });
   routen.forEach((_, nr) => {
@@ -3325,9 +3419,21 @@ function karteBauen(){
       });
     };
 
+    /* Alle Punkte ins Bild holen – und die Karte gleich darauf begrenzen.
+       Man kann dann nur noch ein Stück über diese Ansicht hinaus schieben
+       und nicht mehr weiter herauszoomen. Sonst landet man schnell bei
+       ganz Deutschland, und die Punkte liegen als Häufchen in der Mitte. */
     const einpassen = () => {
       const alle = orte.filter(o => o.art !== "fern" && o.lat && o.lng);
-      if(alle.length) karte.fitBounds(L.latLngBounds(alle.map(o => [o.lat, o.lng])).pad(.18));
+      if(!alle.length) return;
+      const punkte = L.latLngBounds(alle.map(o => [o.lat, o.lng]));
+      karte.fitBounds(punkte.pad(.18));
+      /* Etwas Luft drumherum, damit man die Randpunkte noch frei schieben
+         kann – aber eben nur etwas.                                      */
+      const grenze = punkte.pad(.6);
+      karte.setMaxBounds(grenze);
+      karte.options.maxBoundsViscosity = 1;      // hart an der Kante stoppen
+      karte.setMinZoom(karte.getBoundsZoom(grenze));
     };
 
     /* Erste Runde: alles, was schon Koordinaten mitbringt */
